@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 
+
+
 public class DBConnection {
 
     public static final String db_name = "marketplace_server";
@@ -20,8 +22,6 @@ public class DBConnection {
 
         String user_info = "CREATE TABLE IF NOT EXISTS USER_INFORMATION" +
                 "(username VARCHAR(255) not NULL, " +
-                " firstName VARCHAR(255), " +
-                " lastName VARCHAR(255), " +
                 " password CHAR(64), " +
                 " accountType VARCHAR(255), " +
                 " organisationalUnit VARCHAR(255), " +
@@ -85,24 +85,58 @@ public class DBConnection {
 
     public static void main(String [] args) throws SQLException {
 
+        // clear the local database so things don't get messy - remove before release
         Connection conn = DriverManager.getConnection(url, user, password);
         Statement statement = conn.createStatement();
+        statement.executeUpdate("DROP DATABASE marketplace_server");
+        conn.close();
+
+
+        // create database
+        conn = DriverManager.getConnection(url, user, password);
+        statement = conn.createStatement();
         createTables(statement);
 
 
+        // insert a new user template
+        String sql = "INSERT INTO user_information " + "VALUES ('abc123', '1234', 'apple', 'also apple')";
+        statement.executeUpdate(sql);
 
-        String sql = "INSERT INTO user_information " + "VALUES ('abc123', 'Steve', 'Jobes', '1234', 'apple', 'also apple')";
+        sql = "INSERT INTO user_information " + "VALUES ('steveD', '145123', 'user', 'HR')";
         statement.executeUpdate(sql);
 
 
-        DatabaseMetaData md = conn.getMetaData();
-        ResultSet rs = md.getTables(null, null, "%", null);
-        while (rs.next()) {
-            System.out.println(rs.getString(3));
+        // print all database information to output
+//        DatabaseMetaData metadata = conn.getMetaData();
+//        ResultSet rs = metadata.getColumns(null, null, "%", null);
+//        while (rs.next()) {
+//            System.out.println(rs.getString(3));
+//        }
+
+        DatabaseMetaData metadata = conn.getMetaData();
+        ResultSet columns = metadata.getColumns(null, null, "user_information", null);
+
+        while (columns.next()){
+            String str2 = String.format("%20s|", columns.getString("COLUMN_NAME"));
+            System.out.print(str2);
+
+        }
+        System.out.println();
+        System.out.println("____________________________________________________________________________________");
+
+
+        columns = statement.executeQuery("SELECT * FROM user_information");
+        while (columns.next()){
+            String str1 = String.format("%20s|%20s|%20s|%20s|", columns.getObject(1), columns.getObject(2),
+                    columns.getObject(3), columns.getObject(4));
+            System.out.println(str1);
         }
 
 
 
+
+
+        // close connection to database
         conn.close();
 
     }
