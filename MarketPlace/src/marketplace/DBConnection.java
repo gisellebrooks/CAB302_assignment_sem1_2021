@@ -18,7 +18,7 @@ public class DBConnection {
     public static void createTables(Statement statement) throws SQLException {
 
         String user_info = "CREATE TABLE IF NOT EXISTS USER_INFORMATION" +
-                "(usernam VARCHAR(255) not NULL, " +
+                "(username VARCHAR(255) not NULL, " +
                 " firstName VARCHAR(255), " +
                 " lastName VARCHAR(255), " +
                 " password CHAR(64), " +
