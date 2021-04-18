@@ -106,13 +106,6 @@ public class DBConnection {
         statement.executeUpdate(sql);
 
 
-        // print all database information to output
-//        DatabaseMetaData metadata = conn.getMetaData();
-//        ResultSet rs = metadata.getColumns(null, null, "%", null);
-//        while (rs.next()) {
-//            System.out.println(rs.getString(3));
-//        }
-
         DatabaseMetaData metadata = conn.getMetaData();
         ResultSet columns = metadata.getColumns(null, null, "user_information", null);
 
@@ -131,10 +124,6 @@ public class DBConnection {
                     columns.getObject(3), columns.getObject(4));
             System.out.println(str1);
         }
-
-
-
-
 
         // close connection to database
         conn.close();
