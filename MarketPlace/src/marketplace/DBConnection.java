@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 
 public class DBConnection {
 
@@ -13,7 +15,6 @@ public class DBConnection {
     public static final String url = "jdbc:mariadb://localhost:3306/" + db_name + "?createDatabaseIfNotExist=true";
     public static final String user = "root";
     public static final String password = "302";
-
 
     public static void createTables(Statement statement) throws SQLException {
 
@@ -88,6 +89,21 @@ public class DBConnection {
         Statement statement = conn.createStatement();
         createTables(statement);
 
+
+
+        String sql = "INSERT INTO user_information " + "VALUES ('abc123', 'Steve', 'Jobes', '1234', 'apple', 'also apple')";
+        statement.executeUpdate(sql);
+
+
+        DatabaseMetaData md = conn.getMetaData();
+        ResultSet rs = md.getTables(null, null, "%", null);
+        while (rs.next()) {
+            System.out.println(rs.getString(3));
+        }
+
+
+
         conn.close();
+
     }
 }
