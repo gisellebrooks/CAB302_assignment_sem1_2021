@@ -5,6 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+
+
 
 public class DBConnection {
 
@@ -13,14 +17,12 @@ public class DBConnection {
     public static final String url = "jdbc:mariadb://localhost:3306/" + db_name + "?createDatabaseIfNotExist=true";
     public static final String user = "root";
     public static final String password = "302";
-
+    private static Connection connection;
 
     public static void createTables(Statement statement) throws SQLException {
 
         String user_info = "CREATE TABLE IF NOT EXISTS USER_INFORMATION" +
                 "(username VARCHAR(255) not NULL, " +
-                " firstName VARCHAR(255), " +
-                " lastName VARCHAR(255), " +
                 " password CHAR(64), " +
                 " accountType VARCHAR(255), " +
                 " organisationalUnit VARCHAR(255), " +
@@ -82,12 +84,107 @@ public class DBConnection {
         statement.executeBatch();
     }
 
+    private static int addUser(String username, String passwordHash, String accountType, String organisation) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO USER_INFORMATION VALUES (?, ?, ?, ?)");
+        statement.clearParameters();
+        statement.setString(1, username);
+        statement.setString(2, passwordHash);
+        statement.setString(3, accountType);
+        statement.setString(4, organisation);
+        return statement.executeUpdate();
+    }
+
+    private static int addOrganisation(int unit_id, String unitName, double unitCredits, int assets) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO ORGANISATIONAL_UNIT_INFORMATION VALUES (?, ?, ?, ?)");
+        statement.clearParameters();
+        statement.setInt(1, unit_id);
+        statement.setString(2, unitName);
+        statement.setDouble(3, unitCredits);
+        statement.setInt(4, assets);
+        return statement.executeUpdate();
+    }
+
+    private static void displayAllUsers() throws SQLException {
+        Statement statement = connection.createStatement();
+        DatabaseMetaData metadata = connection.getMetaData();
+        ResultSet columns = metadata.getColumns(null, null, "USER_INFORMATION", null);
+
+        System.out.println();
+        System.out.println();
+
+        // display all tables and data from database
+        while (columns.next()){
+            String str2 = String.format("%30s|", columns.getString("COLUMN_NAME"));
+            System.out.print(str2);
+
+        }
+        System.out.println();
+        System.out.println();
+
+        columns = statement.executeQuery("SELECT * FROM USER_INFORMATION");
+        while (columns.next()){
+            String str1 = String.format("%30s|%30s|%30s|%30s|", columns.getObject(1), columns.getObject(2),
+                    columns.getObject(3), columns.getObject(4));
+            System.out.println(str1);
+        }
+    }
+
+    private static void displayAllOrganisations() throws SQLException {
+        Statement viewOrganisations = connection.createStatement();
+        DatabaseMetaData metadata = connection.getMetaData();
+        ResultSet columns = metadata.getColumns(null, null, "ORGANISATIONAL_UNIT_INFORMATION", null);
+
+        System.out.println();
+        System.out.println();
+
+        // display all tables and data from database
+        while (columns.next()){
+            String str2 = String.format("%30s|", columns.getString("COLUMN_NAME"));
+            System.out.print(str2);
+
+        }
+        System.out.println();
+        System.out.println();
+
+        columns = viewOrganisations.executeQuery("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION");
+        while (columns.next()){
+            String str1 = String.format("%30s|%30s|%30s|%30s|", columns.getObject(1), columns.getObject(2),
+                    columns.getObject(3), columns.getObject(4));
+            System.out.println(str1);
+        }
+    }
+
     public static void main(String [] args) throws SQLException {
 
-        Connection conn = DriverManager.getConnection(url, user, password);
-        Statement statement = conn.createStatement();
+        // clear the local database so things don't get messy - remove before release
+        connection = DriverManager.getConnection(url, user, password);
+        Statement statement = connection.createStatement();
+        statement.executeUpdate("DROP DATABASE marketplace_server");
+        connection.close();
+
+
+        // create database
+        connection = DriverManager.getConnection(url, user, password);
+        statement = connection.createStatement();
         createTables(statement);
 
-        conn.close();
+
+        // insert new organisations
+        addOrganisation(1, "Admin", 0, 0);
+        addOrganisation(2, "Computational Research", 100, 5);
+        addOrganisation(3, "Web Design", 400, 65);
+
+
+        // insert new users
+        addUser("Bob Le", "k1234!2#@!dsaA", "user", "Computational Research");
+        addUser("Steve Deno", "ASDn213k21!@#", "user", "Web Design");
+        addUser("Sandra Meago", "ASDn213k21!@#", "Admin", "Admin");
+
+
+        // display all data
+        displayAllUsers();
+        displayAllOrganisations();
+
+        connection.close();
     }
 }
