@@ -9,6 +9,7 @@ public class PropStuff {
 
     private static final String salt = "4@#ndssa213";
 
+    // REFERENCE: geeks for geeks article on "SHA-256 Hash in Java"
     public static String toHexidecimalString(byte[] hash)
     {
         // Convert byte array into signum representation
@@ -30,8 +31,6 @@ public class PropStuff {
     public static String intoHash(String message) throws NoSuchAlgorithmException {
         message += salt;
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.digest((message).getBytes());
-        md.digest(message.getBytes(StandardCharsets.UTF_8));
         return toHexidecimalString(md.digest(message.getBytes(StandardCharsets.UTF_8)));
     }
 }
