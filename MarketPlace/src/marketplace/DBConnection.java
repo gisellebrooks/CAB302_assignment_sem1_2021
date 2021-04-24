@@ -1,5 +1,6 @@
 package marketplace;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,11 +14,11 @@ import java.sql.ResultSet;
 public class DBConnection {
 
     public static final String db_name = "marketplace_server";
-
     public static final String url = "jdbc:mariadb://localhost:3306/" + db_name + "?createDatabaseIfNotExist=true";
     public static final String user = "root";
     public static final String password = "302";
     private static Connection connection;
+    private static String displayLine = "_".repeat(124);
 
     public static void createTables(Statement statement) throws SQLException {
 
@@ -111,14 +112,16 @@ public class DBConnection {
 
         System.out.println();
         System.out.println();
+        System.out.println(displayLine);
 
         // display all tables and data from database
         while (columns.next()){
             String str2 = String.format("%30s|", columns.getString("COLUMN_NAME"));
             System.out.print(str2);
-
         }
+
         System.out.println();
+        System.out.print(displayLine);
         System.out.println();
 
         columns = statement.executeQuery("SELECT * FROM USER_INFORMATION");
@@ -127,6 +130,7 @@ public class DBConnection {
                     columns.getObject(3), columns.getObject(4));
             System.out.println(str1);
         }
+        System.out.println(displayLine);
     }
 
     private static void displayAllOrganisations() throws SQLException {
@@ -136,14 +140,16 @@ public class DBConnection {
 
         System.out.println();
         System.out.println();
+        System.out.println(displayLine);
 
         // display all tables and data from database
         while (columns.next()){
             String str2 = String.format("%30s|", columns.getString("COLUMN_NAME"));
             System.out.print(str2);
-
         }
+
         System.out.println();
+        System.out.print(displayLine);
         System.out.println();
 
         columns = viewOrganisations.executeQuery("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION");
@@ -152,9 +158,11 @@ public class DBConnection {
                     columns.getObject(3), columns.getObject(4));
             System.out.println(str1);
         }
+
+        System.out.println(displayLine);
     }
 
-    public static void main(String [] args) throws SQLException {
+    public static void main(String [] args) throws SQLException, NoSuchAlgorithmException {
 
         // clear the local database so things don't get messy - remove before release
         connection = DriverManager.getConnection(url, user, password);
@@ -181,10 +189,32 @@ public class DBConnection {
         addUser("Sandra Meago", "ASDn213k21!@#", "Admin", "Admin");
 
 
+        // insert new assets
+//        addAsset();
+//        addAsset();
+//        addAsset();
+
         // display all data
         displayAllUsers();
         displayAllOrganisations();
+        // displayAllAssets();
+        // displayAllActiveBuy();
+        // displayAllActiveSell();
+        // displayAllClosedBuy();
+        // displayAllClosedSell();
+        // displayAllActiveBuy();
 
         connection.close();
+
+        System.out.println();
+        System.out.println();
+
+        String password = "Password1234";
+        ToHash getHash = new ToHash();
+        System.out.println(getHash.intoHash(password));
+
+        String password2 = "asdsdakbj123kj";
+        getHash = new ToHash();
+        System.out.println(getHash.intoHash(password2));
     }
 }
