@@ -209,12 +209,12 @@ public class DBConnection {
         System.out.println();
         System.out.println();
 
-
-
         String password = "Password1234";
-        System.out.println(PropStuff.intoHash(password));
+        ToHash getHash = new ToHash();
+        System.out.println(getHash.intoHash(password));
 
         String password2 = "asdsdakbj123kj";
-        System.out.println(PropStuff.intoHash(password2));
+        getHash = new ToHash();
+        System.out.println(getHash.intoHash(password2));
     }
 }
