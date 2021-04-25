@@ -112,7 +112,9 @@ public class UnitTesting {
     /* typical case - test if password can be changed to another valid password */
     public void checkChangePasswordValid() {
         // addUser("name2", "password12#A", "user", "org1");
+        // login("name2", "password12#A")
         // changePassword("name2", "password12#A", "abcDSA123!@#ads");
+        // logout("name2")
         // assertEquals(1, login("name2", "abcDSA123!@#ads"));
     }
 
@@ -120,7 +122,9 @@ public class UnitTesting {
     /* typical case - test if password can be changed to a weak password */
     public void checkChangePasswordWeak() {
         // addUser("name2", "password12#A", "user", "org1");
+        // login("name2", "password12#A")
         // changePassword("name2", "password12#A", "123abc");
+        // logout("name2")
         // assertEquals(0, login("name2", "123abc"));
         // assertEquals(1, login("name2", "password12#A"));
     }
@@ -129,7 +133,9 @@ public class UnitTesting {
     /* typical case - test if password can be changed to an empty password */
     public void checkChangePasswordEmpty() {
         // addUser("name2", "password12#A", "user", "org1");
+        // login("name2", "password12#A")
         // changePassword("name2", "password12#A", "");
+        // logout("name2")
         // assertEquals(0, login("name2", ""));
         // assertEquals(1, login("name2", "password12#A"));
     }
@@ -138,7 +144,9 @@ public class UnitTesting {
     /* boundary case - test if password can be changed to same as before */
     public void checkChangePasswordSame() {
         // addUser("name2", "password12#A", "user", "org1");
+        // login("name2", "password12#A")
         // changePassword("name2", "password12#A", "password12#A");
+        // logout("name2");
         // assertEquals(1, login("name2", "password12#A"));
     }
 
@@ -146,6 +154,7 @@ public class UnitTesting {
     /* boundary case - test if user is locked out after failing to enter current password 3 times in change password */
     public void checkChangePasswordLockout() {
         // addUser("name2", "password12#A", "user", "org1");
+        // login("name2", "password12#A");
         // changePassword("name2", "p1", "12b321j!@#dasF");
         // changePassword("name2", "p1", "12b321j!@#dasF");
         // changePassword("name2", "p1", "12b321j!@#dasF");
@@ -166,8 +175,9 @@ public class UnitTesting {
 
 
 
+
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // maybe do all password change, password input filter tests for admin as well, but maybe note seeing as theyre already tested above
+    // maybe we should do all the above tests but with changing a password as a Admin user, but this might be arbitrary and needless
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -251,16 +261,64 @@ public class UnitTesting {
     @Test
     /* typical case - add a user to admin role */
     public void checkChangeToAdmin() {
-
+        // addUser("name2", "password12#A", "user", "org1");
+        // assertEquals(1, SELECT * FROM [Users] WHERE username = "name2");
+        // assertEquals("user", SELECT accountType FROM [Users] WHERE username = "name2");
+        // changeUserRole("name2", admin);
+        // assertEquals("admin", SELECT accountType FROM [Users] WHERE username = "name2");
     }
 
+    @Test
     /* typical case - remove a user from admin role */
     public void checkRemoveFromAdmin() {
-
+        // addUser("name2", "password12#A", "admin", "org1");
+        // assertEquals(1, SELECT * FROM [Users] WHERE username = "name2");
+        // assertEquals("admin", SELECT accountType FROM [Users] WHERE username = "name2");
+        // changeUserRole("name2", user);
+        // assertEquals("user", SELECT accountType FROM [Users] WHERE username = "name2");
     }
 
+    @Test
     /* typical case - add a user to admin role and then remove them over a few times*/
     public void checkBackandFourthFromToAdmin() {
 
+    }
+
+
+    // Testing user's organisation changes -----------------------------------------------------------------------------
+    @Test
+    /* typical case - add a user to an existing organisation, when they have no organisation */
+    public void checkAddUserOrganisation() {
+        // addUser("name2", "password12#A", "user", "");
+        // assertEquals("", SELECT organisationalUnit FROM [Users] WHERE username = "name2");
+        // addUserOrganisation("name2", "org2");
+        // assertEquals("org2", SELECT organisationalUnit FROM [Users] WHERE username = "name2");
+    }
+
+    @Test
+    /* typical case - add a user to an existing organisation, when they are already in that organisation */
+    public void checkAddUserOrganisationRepeat() {
+        // addUser("name2", "password12#A", "user", "org2");
+        // assertEquals("org2", SELECT organisationalUnit FROM [Users] WHERE username = "name2");
+        // addUserOrganisation("name2", "org2");
+        // assertEquals("org2", SELECT organisationalUnit FROM [Users] WHERE username = "name2");
+    }
+
+    @Test
+    /* typical case - remove a user from all organisations they're in, when in one */
+    public void checkRemoveUserOrganisationExist() {
+        // addUser("name2", "password12#A", "user", "org2");
+        // assertEquals("org2", SELECT organisationalUnit FROM [Users] WHERE username = "name2");
+        // removeUserOrganisation("name2");
+        // assertEquals("", SELECT organisationalUnit FROM [Users] WHERE username = "name2");
+    }
+
+    @Test
+    /* typical case - remove a user from all organisations they're in, when in none */
+    public void checkRemoveUserOrganisationNonExist() {
+        // addUser("name2", "password12#A", "user", "");
+        // assertEquals("", SELECT organisationalUnit FROM [Users] WHERE username = "name2");
+        // removeUserOrganisation("name2");
+        // assertEquals("", SELECT organisationalUnit FROM [Users] WHERE username = "name2");
     }
 }
