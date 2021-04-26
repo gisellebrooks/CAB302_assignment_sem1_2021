@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GUI implements ActionListener {
+public class Login extends JFrame implements ActionListener, Runnable {
 
     private static JLabel userLabel;
     private static JTextField userText;
@@ -14,13 +14,22 @@ public class GUI implements ActionListener {
     private static JLabel valid;
     private static JLabel invalid;
 
-    public static void main(String[] args) {
-        JPanel panel = new JPanel();
-        JFrame frame = new JFrame();
-        frame.setSize(350,200);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public static void main(String[] args) { JFrame.setDefaultLookAndFeelDecorated(true);
+        SwingUtilities.invokeLater(new Login());
+    }
 
-        frame.add(panel);
+    @Override
+    public void run() {
+        createGui();
+        this.setVisible(true);
+    }
+
+    public void createGui() {
+        JPanel panel = new JPanel();
+        this.setSize(350,200);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        this.add(panel);
         panel.setLayout(null);
 
         userLabel = new JLabel("User");
@@ -41,7 +50,7 @@ public class GUI implements ActionListener {
 
         button = new JButton("Login");
         button.setBounds(10, 80, 80, 25);
-        button.addActionListener(new GUI());
+        button.addActionListener(new Login());
         panel.add(button);
 
         valid = new JLabel("");
@@ -53,10 +62,6 @@ public class GUI implements ActionListener {
         invalid.setForeground(Color.red);
         invalid.setBounds(10, 110, 300, 25);
         panel.add(invalid);
-
-
-        frame.setVisible(true);
-
     }
 
     @Override
