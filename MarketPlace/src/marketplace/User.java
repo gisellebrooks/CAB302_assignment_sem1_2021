@@ -46,7 +46,8 @@ public class User {
      */
     public boolean removeUser(String username) {
         // run checks to see if user exists
-        server.removeUser(username);
+        // server.removeUser(username);
+        return false;
     }
 
     /**
@@ -56,7 +57,7 @@ public class User {
      */
     public boolean ChangeUserPassword(String username, String newPassword) {
         // run checks to see if user exists
-        server.changePasword(username);
+        // server.changePasword(username);
 
         return false;
     }
@@ -71,12 +72,12 @@ public class User {
         ToHash getHash = new ToHash();
         String hash = getHash.intoHash(password);
         return false;
-        if (hash == server.getPasswordHash(username)){
-            return true;
-        }
-        else {
-            return false;
-        }
+        // if (hash == server.getPasswordHash(username)){
+        //    return true;
+        //}
+        //else {
+          //  return false;
+        //}
     }
 
     /**
@@ -87,6 +88,7 @@ public class User {
     public boolean login(String username, String password) throws SQLException, NoSuchAlgorithmException {
         // throw exceptions if wrong password, etc
         // return true if login successful
+        return false;
     }
 
     /**
@@ -95,7 +97,7 @@ public class User {
      * @return
      */
     public boolean logout(String username, String password) throws SQLException, NoSuchAlgorithmException {
-
+        return false;
         // return true if logout successful
     }
 }
