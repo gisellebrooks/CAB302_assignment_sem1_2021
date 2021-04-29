@@ -24,8 +24,8 @@ public class TestBuyOrder {
      *      check if number of assets is available to buy
      */
 
-
-    @Test
-    public void
+//
+//    @Test
+//    public void
 
 }

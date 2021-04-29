@@ -3,37 +3,29 @@ package marketplace;
 
 import java.sql.Statement;
 
-public interface Order {
 
-    public enum OrderType {
-        BUY, SELL;
-    }
+public interface InteractWithDB {
 
-//    private OrderType type;
-//    private long quantity;
-//    private double price; //placeholder type
-//    private int asset_id;
-//    private int order_id;
-//    private long availableCredits;
-
-//    public Order(int asset_id, int order_id, double price, long quantity) {
-//        this.asset_id = asset_id;
-//        this.price = price;
-//        this.quantity = quantity;
-//
-//    }
-
-    public long getQuantity();
+    // Assets
+    public double getAssetQuantity();
 
     public int getAssetId();
 
-    public double getPrice();
+    public double getAssetPrice();
 
+    // Orders
     public int getOrderId();
 
-    public long orderValue();
+    public default double orderValue(){
+        return getAssetQuantity() * getAssetPrice();
+    }
 
-    public boolean hasCredits();
+    // Organisations
+    public boolean hasEnoughCredits();
+
+    public void displayAllUsers();
+
+
 }
 
 
