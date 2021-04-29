@@ -16,6 +16,7 @@ public class MariaDBDataSource {
     private MariaDbPoolDataSource MDBDS;
     private static Connection instance = null;
 
+
     /**
      * Constructor intializes the connection.
      */
@@ -34,6 +35,7 @@ public class MariaDBDataSource {
             MDBDS.setUser(props.getProperty("jdbc.username"));
             MDBDS.setPassword(props.getProperty("jdbc.password"));
             MDBDS.setMaxPoolSize(8);
+            MDBDS.setMinPoolSize(1);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -54,14 +56,17 @@ public class MariaDBDataSource {
         } catch (SQLException e){
             e.printStackTrace();
         }
+
         return instance;
     }
 
+    private void Close() {
+        MDBDS.close();
+    }
 
-
-
-
-
-
+    public static void CloseInstance() {
+        if (ds != null)
+            ds.Close();
+    }
 
 }
