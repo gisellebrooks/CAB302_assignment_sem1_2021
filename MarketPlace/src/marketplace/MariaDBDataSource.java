@@ -5,13 +5,17 @@ import org.mariadb.jdbc.MariaDbPoolDataSource;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import java.util.Properties;
 
 public class MariaDBDataSource {
     private static MariaDBDataSource ds;
     private MariaDbPoolDataSource MDBDS;
     private static Connection instance = null;
+
     /**
      * Constructor intializes the connection.
      */
@@ -21,16 +25,15 @@ public class MariaDBDataSource {
 
         try {
             MDBDS = new MariaDbPoolDataSource();
-            in = new FileInputStream("C:\\Users\\gisel\\Documents\\2021\\cab302\\CAB302_assignment_sem1_2021\\db.props");
+            in = new FileInputStream("db.props");
             props.load(in);
             in.close();
-            // specify the data source, username and password
 
+            // specify the data source, username and password
             MDBDS.setUrl(props.getProperty("jdbc.url"));
             MDBDS.setUser(props.getProperty("jdbc.username"));
             MDBDS.setPassword(props.getProperty("jdbc.password"));
             MDBDS.setMaxPoolSize(8);
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

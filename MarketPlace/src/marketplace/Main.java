@@ -1,11 +1,14 @@
 package marketplace;
 
-import org.mariadb.jdbc.MariaDbPoolDataSource;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
-import java.io.*;
-import java.sql.*;
-import java.util.Scanner;
-import java.util.stream.Collectors;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 
 public class Main {
 
@@ -15,7 +18,7 @@ public class Main {
         StringBuffer buffer = new StringBuffer();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("./setupDB.sql"));
+            BufferedReader reader = new BufferedReader(new FileReader("setupDB.sql"));
             while ((string = reader.readLine()) != null) {
                 buffer.append(string + "\n");
             }
@@ -39,6 +42,8 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
         initDb(pool);
+        System.out.println("Database successfully setup");
+
 
     }
 }
