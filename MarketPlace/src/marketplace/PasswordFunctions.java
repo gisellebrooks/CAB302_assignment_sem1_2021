@@ -1,8 +1,13 @@
 package marketplace;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
@@ -11,47 +16,112 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class PasswordFunctions {
 
-    /**
-     * constructor
-     * @param
-     * @return
-     */
-    public PasswordFunctions() {
+    private static final String salt = "4@#ndssa213";
 
-    }
+    // reference: https://stackoverflow.com/questions/3802192/regexp-java-for-password-validation
+    private final String passwordRegex = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{12,20}$";
+//
+//    /**
+//     * constructor
+//     * @param
+//     * @return
+//     */
+//    public PasswordFunctions() {
+//
+//    }
 
     /**
-     *
-     * @param
-     * @return
+     * Generates a strong random password with 13-19 characters, picked from digits, letters and characters
+     * @return newPassword , the randomly generated password
      */
     public String generatePassword() {
+
+        Pattern pattern = Pattern.compile(passwordRegex);
+        SecureRandom random = new SecureRandom();
+        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()?";
         String newPassword = "";
+        Matcher match = pattern.matcher(newPassword);
+        int randomLength = ThreadLocalRandom.current().nextInt(13, 19);
 
-        int randomLength = ThreadLocalRandom.current().nextInt(12, 16);
+        while (!match.matches()) {
+            newPassword = "";
 
-        for (int i = 0; i < randomLength; i++) {
-            // generate random characters and have at least one of each necessary onnes
+            for (int i = 0; i < randomLength; i++) {
+                int randomIndex = random.nextInt(chars.length());
+                newPassword += chars.charAt(randomIndex);
+            }
+            match = pattern.matcher(newPassword);
         }
 
         return newPassword;
     }
 
     /**
-     *
-     * @param
-     * @return
+     * Checks if a password is strong against previously declared standards
+     * @param password , the password to be checked
+     * @return boolean of whether the input was a storng password or not
      */
-    public boolean checkStrength(String password) {
-        if (password.length() >= 12) {
-            // do other if statements in here
-            return true;
-        } else {
-            // throw password too short exception
-            return false;
+    public boolean IsPasswordStrong(String password) {
+
+        // is password null
+        if (password == null || password == "") {
+            return false; // throw error for new password being empty
         }
 
-        // go through each character in for loop
-        // check if digit, letter, capital, symbol
+        // check password is strong
+        Pattern pattern = Pattern.compile(passwordRegex);
+        Matcher match = pattern.matcher(password);
+
+        if (match.matches()){
+            return true;
+        } else {
+            return false;
+        }
     }
+
+
+
+    /**
+     * REFERENCE: geeks for geeks article on "SHA-256 Hash in Java"
+     * @param hash sha-256 encryption of input message, byte array
+     * @return hexString hexadecimal string of SHA-256 hash
+     */
+    public static String toHexidecimalString(byte[] hash)
+    {
+        // Convert byte array into sign number representation
+        BigInteger number = new BigInteger(1, hash);
+
+        // Convert sha256 message into hex value
+        StringBuilder hexString = new StringBuilder(number.toString(16));
+
+        // Pad with leading zeros
+        while (hexString.length() < 32)
+        {
+            hexString.insert(0, '0');
+        }
+
+        return hexString.toString();
+    }
+
+    /**
+     * adds a salt to the input message and gets it's SHA-256 hash
+     * @param message string that is to be encrypted with SHA-256
+     * @return SHA256 hash of the message in a string
+     * @throws NoSuchAlgorithmException if sha-256 algorithm can't be found
+     */
+    public static String intoHash(String message) throws NoSuchAlgorithmException {
+        message += salt;
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        return toHexidecimalString(md.digest(message.getBytes(StandardCharsets.UTF_8)));
+    }
+
+//    // for testing purposes ---- remove before submission
+//    public static void main(String [] args) {
+//        String strong = "Password123!@#";
+//        String weak = "123asd";
+//        PasswordFunctions ps = new PasswordFunctions();
+//
+//        System.out.println(ps.IsPasswordStrong(strong));
+//        System.out.println(ps.IsPasswordStrong(weak));
+//    }
 }

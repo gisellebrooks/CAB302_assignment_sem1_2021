@@ -2,9 +2,10 @@ package marketplace;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.regex.*;
 
 /**
  *
@@ -15,28 +16,71 @@ public class User {
 
     private String username;
     private String passwordHash;
-    private String type;
+    private String accountType;
     private String organisation;
+    private final MariaDBDataSource pool;
+    private PasswordFunctions passwordFunctions;
+
+    // reference: https://stackoverflow.com/questions/3802192/regexp-java-for-password-validation
+    private final String passwordRegex = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{12,20}$";
 
     /**
      *
      * @param
-     * @return
-     */
-    public User() {
-
-    }
-
-    /**
-     *
      * @param
      * @return
      */
-    public User(String username, String passwordHash, String type, String organisation) {
+    public User(String username, String password, String type, String organisation, MariaDBDataSource pool) {
         username = username;
-        passwordHash = passwordHash;
-        type = type;
+        // passwordHash = passwordHash;
+        accountType = type;
         organisation = organisation;
+
+        passwordFunctions = new PasswordFunctions();
+
+        this.pool = pool;
+
+
+
+
+        // password check
+
+        // is password null
+        if (password == null || password == "") {
+            // password is not valid
+        }
+
+
+        Pattern pattern = Pattern.compile(passwordRegex);
+        Matcher match = pattern.matcher(password);
+
+        if (match.matches()){
+            // password is valid
+        } else {
+            // password is not valid
+        }
+
+
+
+        // check db doesnt have user already, check all parameters are valid
+        // add them to the db and create object correctly, otherwise throw an error in construction
+        try(Connection conn = pool.getConnection()) {
+
+            ResultSet queriedResult;
+
+            // delete user from the database
+            try (PreparedStatement statement = conn.prepareStatement("INSERT INTO USER_INFORMATION VALUES (?, ?, ?, ?)")) {
+                statement.clearParameters();
+                statement.setString(1, username);
+                statement.setString(2, passwordHash);
+                statement.setString(3, accountType);
+                statement.setString(4, organisation);
+                statement.executeUpdate();
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     /**
@@ -44,10 +88,24 @@ public class User {
      * @param
      * @return
      */
-    public boolean removeUser(String username) {
+    public boolean removeUser(String username) throws SQLException {
         // run checks to see if user exists
         // server.removeUser(username);
-        return false;
+
+        try(Connection conn = pool.getConnection()) {
+
+            ResultSet queriedResult;
+
+            // delete user from the database
+            try (PreparedStatement statement = conn.prepareStatement("DELETE FROM USER_INFORMATION " +
+                    " WHERE username=?")) {
+                statement.setString(1, username);
+                statement.executeQuery();
+            }
+
+        }
+
+        return true;
     }
 
     /**
@@ -55,11 +113,29 @@ public class User {
      * @param
      * @return
      */
-    public boolean ChangeUserPassword(String username, String newPassword) {
-        // run checks to see if user exists
-        // server.changePasword(username);
+    public boolean ChangeUserPassword(String username, String currentPassword, String newPassword) throws NoSuchAlgorithmException, SQLException {
+        // check current password matches user's stored hash password
+        // get users password hash
 
-        return false;
+        if (!passwordFunctions.IsPasswordStrong(currentPassword)) {
+            // throw error as current password cannot possibly be weak in the db
+        }
+
+
+        if (!checkPasswordMatches(username, currentPassword)){
+            // throw error, current password does not match
+        }
+
+        // MAKE THIS A TRY BLOCK
+        if (passwordFunctions.IsPasswordStrong(newPassword)){
+            // password is valid
+            passwordFunctions.intoHash(newPassword); // send to db for user
+            // add to db
+            return true;
+        } else {
+            // password is weak, throw weak password error
+            return false;
+        }
     }
 
     /**
@@ -67,17 +143,28 @@ public class User {
      * @param
      * @return
      */
-    public boolean checkPassword(String username, String password) throws SQLException, NoSuchAlgorithmException {
+    public String getPasswordHash(String username) throws SQLException, NoSuchAlgorithmException {
 
-        ToHash getHash = new ToHash();
-        String hash = getHash.intoHash(password);
-        return false;
-        // if (hash == server.getPasswordHash(username)){
-        //    return true;
-        //}
-        //else {
-          //  return false;
-        //}
+        String passwordHash = "";
+        // get users passwordHash from db
+        return passwordHash;
+    }
+
+    /**
+     *
+     * @param
+     * @return
+     */
+    public boolean checkPasswordMatches(String username, String passwordToBeChecked) throws SQLException, NoSuchAlgorithmException {
+
+        String hashToBeChecked = passwordFunctions.intoHash(passwordToBeChecked);
+
+         if (hashToBeChecked == this.getPasswordHash(username)){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
