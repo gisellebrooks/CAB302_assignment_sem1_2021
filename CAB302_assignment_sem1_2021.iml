@@ -33,7 +33,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-<<<<<<< HEAD
-    <orderEntry type="library" name="org.mariadb.jdbc:mariadb-java-client:2.7.22" level="project" />
+    <orderEntry type="library" name="org.mariadb.jdbc:mariadb-java-client:2.7.2" level="project" />
   </component>
 </module>
