@@ -39,9 +39,13 @@ public class Main {
 
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
         initDb(pool);
+
+
+
 //        ResultSet rs;
 //
-//        BuyOrder order = new BuyOrder(pool);
+        BuyOrder order = new BuyOrder(pool);
+        order.createBuyOrder("CPU", 30000, "org1");
 //        double quantity = order.getAssetQuantity("246", "123");
 //        System.out.println(quantity);
 //        double price = order.getAssetPrice("246", "123");

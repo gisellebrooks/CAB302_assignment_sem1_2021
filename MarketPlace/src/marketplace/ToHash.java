@@ -48,4 +48,3 @@ public class ToHash {
         return toHexidecimalString(md.digest(message.getBytes(StandardCharsets.UTF_8)));
     }
 }
-

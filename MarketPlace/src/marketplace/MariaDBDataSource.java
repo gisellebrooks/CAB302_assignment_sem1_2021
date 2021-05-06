@@ -37,6 +37,7 @@ public class MariaDBDataSource {
             MDBDS.setMaxPoolSize(8);
             MDBDS.setMinPoolSize(1);
 
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -29,12 +29,58 @@ public class BuyOrder implements Order {
 
     private static final String GET_ASSET_PRICE = "SELECT priceUpper, sell_id FROM ACTIVE_SELL_ORDERS WHERE unit_id=? AND asset_id=?";
 
+   // private static final String GET_ACTIVE_BUY_ORDERS = " SELECT ACTIVE_BUY_ORDERS.buyID, ORGANISATIONAL_UNIT_INFORMATION.orgName, INVENTORY.assetID, INVENTORY.assetName, ACTIVE_BUY_ORDERS.quantity, ACTIVE_BUY_ORDERS.priceUpper, ACTIVE_BUY_ORDERS.orderDate
+    // FROM ACTIVE_BUY_ORDERS
+    // JOIN ORGANISATIONAL_UNIT_INFORMATION ON ACTIVE_BUY_ORDERS.orgID=ORGANISATIONAL_UNIT_INFORMATION.orgID
+    // LEFT JOIN INVENTORY ON ACTIVE_BUY_ORDERS.assetID=INVENTORY.assetID
+    // INNER JOIN INVENTORY ON ACTIVE_BUY_ORDERS.assetID = INVENTORY.assetID ORDER BY INVENTORY
+
+    private static final String GET_CREDITS = "SELECT credits FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID=?;";
+    private static final String INSERT_NEW_BUY_ORDER ="INSERT INTO ACTIVE_BUY_ORDERS (buyID, assetName, orgID)" +
+            "VALUES ('buy5', ?, ?)";
+
+    private static final String HAS_CREDITS =  "SELECT credits" +
+            " FROM ORGANISATIONAL_UNIT_INFORMATION" +
+            " WHERE orgID=? and credits >= ?";
+
+    // INSERT INTO INVENTORY orgID
+    // SELECT org.orgID
+    // FROM ORGANISATIONAL_UNIT_INFORMATION org
 
     public BuyOrder (MariaDBDataSource pool){
         this.pool = pool;
 //        this.assetPrice = assetPrice;
 //        this.assetQuantity = assetQuantity;
     }
+
+    public void createBuyOrder(String assetName, double price, String orgID){
+
+        ResultSet hasCredits;
+        try(Connection conn = pool.getConnection()) {
+            try(PreparedStatement statement = conn.prepareStatement(HAS_CREDITS)){
+                statement.setString(1, orgID);
+                statement.setDouble(2, price);
+                hasCredits = statement.executeQuery();
+
+
+            }
+            if (hasCredits.next()) {
+                System.out.println(hasCredits.getLong("credits"));
+                try (PreparedStatement statement = conn.prepareStatement(INSERT_NEW_BUY_ORDER)) {
+                    statement.setString(1, assetName);
+                    statement.setString(2, orgID);
+                    statement.executeQuery();
+                }
+            } else {
+                System.out.println("Sorry, you don't have enough credits to place this order");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public ResultSet getOrderHistory(String order_id, String unit_id){
 

@@ -1,57 +1,54 @@
 CREATE TABLE IF NOT EXISTS USER_INFORMATION
-                (username VARCHAR(255) NOT NULL, 
-                 firstName VARCHAR(255), 
-                 lastName VARCHAR(255), 
+                (userID VARCHAR(255) NOT NULL, 
                  password CHAR(64), 
                  accountType VARCHAR(255), 
-                 organisationalUnit VARCHAR(255), 
-                 PRIMARY KEY ( username ));
+                 orgID VARCHAR(255), 
+		 name CHAR(64),
+                 PRIMARY KEY ( userID));
 
 CREATE TABLE IF NOT EXISTS ORGANISATIONAL_UNIT_INFORMATION
-                (unit_id INTEGER NOT NULL AUTO_INCREMENT, 
-                 unitName VARCHAR(255), 
+                (orgID VARCHAR(255), 
+                 orgName VARCHAR(255), 
                  credits NUMERIC(19,2), 
-                 assets INTEGER, 
-                 PRIMARY KEY ( unit_id ));
+                 PRIMARY KEY ( orgID ));
 
 CREATE TABLE IF NOT EXISTS ACTIVE_BUY_ORDERS
-                (buy_id INTEGER NOT NULL AUTO_INCREMENT, 
-                 unitName VARCHAR(255), 
+                (buyID VARCHAR(255), 
+		 orgID VARCHAR(255),
+		 assetID VARCHAR(255),
                  assetName VARCHAR(255), 
                  quantity INTEGER, 
                  priceUpper NUMERIC(19,2), 
                  orderDate TIMESTAMP, 
-                 PRIMARY KEY ( buy_id ));
+                 PRIMARY KEY ( buyID));
 
 CREATE TABLE IF NOT EXISTS ACTIVE_SELL_ORDERS
-                (sell_id INTEGER NOT NULL AUTO_INCREMENT,
-                 unitName VARCHAR(255),
+                (sellID VARCHAR(255),
                  assetName VARCHAR(255), 
                  quantity INTEGER, 
                  priceUpper NUMERIC(19,2), 
                  orderDate TIMESTAMP, 
-                 PRIMARY KEY ( sell_id )) ;
+                 PRIMARY KEY ( sellID )) ;
 
 CREATE TABLE IF NOT EXISTS BUY_ORDER_HISTORY 
-                (buy_id INTEGER NOT NULL, 
-                 unitName VARCHAR(255),
-                 assetName VARCHAR(255), 
+                (buyID VARCHAR(255), 
+                 orgID VARCHAR(255),
+                 assetID VARCHAR(255), 
                  quantity INTEGER, 
                  priceUpper NUMERIC(19,2), 
                  orderDate TIMESTAMP);
 
 CREATE TABLE IF NOT EXISTS SELL_ORDER_HISTORY
-                (sell_id INTEGER NOT NULL AUTO_INCREMENT, 
-                 unitName VARCHAR(255), 
-                 assetName VARCHAR(255), 
+                (sellID VARCHAR(255) NOT NULL, 
+                 orgID VARCHAR(255), 
+                 assetID VARCHAR(255), 
                  quantity INTEGER, 
-                 priceUpper NUMERIC(19,2), 
-                 orderDate TIMESTAMP);
+                 reconcilePrice NUMERIC(19,2), 
+                 reconcileDate TIMESTAMP);
 
-CREATE TABLE IF NOT EXISTS ASSETS
-                (asset_id INTEGER NOT NULL AUTO_INCREMENT, 
-                 assetName VARCHAR(255),
-                 unit_id INTEGER, 
-                 unitName VARCHAR(255), 
+CREATE TABLE IF NOT EXISTS INVENTORY
+                (assetID VARCHAR(255), 
+		 assetName CHAR(64),
+                 orgID VARCHAR(255), 
                  quantity INTEGER, 
-                 PRIMARY KEY ( asset_id ));
+                 PRIMARY KEY ( assetID ));
