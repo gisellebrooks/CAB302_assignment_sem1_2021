@@ -171,6 +171,7 @@ public class DBConnection {
         connection.close();
 
 
+
         // create database
         connection = DriverManager.getConnection(url, user, password);
         statement = connection.createStatement();
@@ -184,9 +185,11 @@ public class DBConnection {
 
 
         // insert new users
-        addUser("Bob Le", "k1234!2#@!dsaA", "user", "Computational Research");
+        // addUser("Bob Le", "k1234!2#@!dsaA", "user", "Computational Research");
         addUser("Steve Deno", "ASDn213k21!@#", "user", "Web Design");
         addUser("Sandra Meago", "ASDn213k21!@#", "Admin", "Admin");
+
+        // User testUser = new User("Bob Le", "k1234!2#@!dsaA", "user", "Computational Research", dataSource);
 
 
         // insert new assets
@@ -209,12 +212,10 @@ public class DBConnection {
         System.out.println();
         System.out.println();
 
-        String password = "Password1234";
-        ToHash getHash = new ToHash();
-        System.out.println(getHash.intoHash(password));
+//        String password = "Password1234";
+//        ToHash getHash = new ToHash();
+//        System.out.println(getHash.intoHash(password));
 
-        String password2 = "asdsdakbj123kj";
-        getHash = new ToHash();
-        System.out.println(getHash.intoHash(password2));
+
     }
 }
