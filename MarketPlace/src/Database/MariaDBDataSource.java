@@ -1,4 +1,4 @@
-package marketplace;
+package Database;
 
 import org.mariadb.jdbc.MariaDbPoolDataSource;
 

@@ -1,13 +1,29 @@
-package marketplace;
+package Application;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import Database.BuyOrder;
+import Database.MariaDBDataSource;
+
+import java.io.*;
 
 import java.sql.*;
+import java.util.Properties;
 
 public class Main {
+
+    private static Properties loadServerConfig() {
+        Properties props = new Properties();
+        FileInputStream in = null;
+
+        try {
+            in = new FileInputStream("server.props");
+            props.load(in);
+            in.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return props;
+    }
 
     private static void initDb(MariaDBDataSource pool) throws SQLException {
         String string;
@@ -36,11 +52,17 @@ public class Main {
     }
 
     public static void main(String[] args) throws SQLException {
+        Properties serverProps = loadServerConfig();
+
+        MarketplaceServer server = new MarketplaceServer(serverProps);
+        server.startServer();
 
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
         initDb(pool);
 
-
+        // Not sure where to put this client connection, leaving it here for now lol
+        Client client = new Client(serverProps);
+        client.createConnection();
 
 //        ResultSet rs;
 //
@@ -52,28 +74,6 @@ public class Main {
 
 
 
-        // Testing the connection pool -- testing purposes only
-//        for (int i = 0; i < 7; i++ )
-//        {
-//            try (Connection conn1 = pool.getConnection(); Connection conn2 = pool.getConnection(); Connection conn3 = pool.getConnection()) {
-//
-//                Statement stmt1 = conn1.createStatement();
-//                Statement stmt2 = conn2.createStatement();
-//                Statement stmt3 = conn3.createStatement();
-//
-//                rs = stmt1.executeQuery("SELECT CONNECTION_ID()");
-//                rs.next();
-//                System.out.println(rs.getLong(1));
-//                //
-//                rs = stmt2.executeQuery("SELECT CONNECTION_ID()");
-//                rs.next();
-//                System.out.println(rs.getLong(1));
-//
-//                rs = stmt3.executeQuery("SELECT CONNECTION_ID()");
-//                rs.next();
-//                System.out.println(rs.getLong(1));
-//            }
-//        }
     }
 }
 

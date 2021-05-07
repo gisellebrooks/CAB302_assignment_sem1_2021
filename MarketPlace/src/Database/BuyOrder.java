@@ -1,4 +1,7 @@
-package marketplace;
+package Database;
+
+import Database.MariaDBDataSource;
+import Database.Order;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

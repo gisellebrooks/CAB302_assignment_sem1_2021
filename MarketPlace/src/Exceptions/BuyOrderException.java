@@ -1,4 +1,4 @@
-package marketplace;
+package Exceptions;
 
 @SuppressWarnings("serial")
 public class BuyOrderException extends Exception{

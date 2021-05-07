@@ -1,5 +1,8 @@
 package marketplace;
 
+import Database.MariaDBDataSource;
+import Database.User;
+
 /**
  *
  * @param
