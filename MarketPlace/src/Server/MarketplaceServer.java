@@ -1,4 +1,4 @@
-package Application;
+package Server;
 
 
 import java.io.*;

@@ -1,7 +1,7 @@
 package Application;
 
-import Database.BuyOrder;
-import Database.MariaDBDataSource;
+import orders.BuyOrder;
+import Server.MariaDBDataSource;
 
 import java.io.*;
 

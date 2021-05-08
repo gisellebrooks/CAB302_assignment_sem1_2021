@@ -1,7 +1,6 @@
-package Database;
+package orders;
 
 import java.sql.ResultSet;
-import java.util.Set;
 
 /**
  * Provides functionality needed by any data source for the Address Book
@@ -21,17 +20,17 @@ public interface Order {
     ResultSet getOrderHistory(String order_id, String unit_id);
 
 
-    ResultSet getActiveOrders();
+    ResultSet getActiveOrders(String assetName);
 
     double getAssetQuantity(String organisationID, String assetID);
 
     int getAssetId();
 
-    double getAssetPrice(String organisationID, String assetID);
+    double getAssetPrice(String assetID);
 
 
 
-    void processOrder();
+    void processOrder(String order_id);
 
 
 }

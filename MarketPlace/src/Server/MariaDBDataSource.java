@@ -1,4 +1,4 @@
-package Database;
+package Server;
 
 import org.mariadb.jdbc.MariaDbPoolDataSource;
 

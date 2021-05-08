@@ -1,35 +1,37 @@
-package Database;
+package users;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import Server.QueryTemplate;
+import Server.MariaDBDataSource;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class User{
+public class ImplementUser {
     private final MariaDBDataSource pool;
+    private final QueryTemplate query;
 
-    public User(MariaDBDataSource pool){
+    private static final String ADD_USER = "";
+
+    public ImplementUser(MariaDBDataSource pool){
         this.pool = pool;
+        this.query = new QueryTemplate(pool);
 
     }
 
-    public void addUser(String username, String password, String accountType, String organisation, String name) {
-        UserAccount userAcc = new UserAccount(username, password, accountType, organisation, name);
+    public void addUser(String userID, String password, String accountType, String orgID, String name) {
+        User person = new User(userID, password, accountType, orgID, name);
 
-        try (Connection conn = pool.getConnection()) {
-            try (PreparedStatement statement = conn.prepareStatement()) {
-                statement.setString(1, userAcc.getUsername());
-                statement.setString(2, userAcc.getPassword());
-                // etc
-                // execute
+        Map<String, Object> params = new HashMap<>();
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        params.put("userID", userID);
+        params.put("password", password);
+        params.put("accountType", accountType);
+        params.put("orgID", orgID);
+        params.put("name", name);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        query.add(ADD_USER, params);
+
     }
 
     public boolean userExists(String userID){

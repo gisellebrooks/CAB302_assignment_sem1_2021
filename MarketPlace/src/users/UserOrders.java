@@ -1,4 +1,4 @@
-package Database;
+package users;
 
 import java.sql.ResultSet;
 
