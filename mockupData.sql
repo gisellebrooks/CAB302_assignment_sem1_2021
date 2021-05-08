@@ -1,0 +1,64 @@
+INSERT INTO USER_INFORMATION
+VALUES ('user1', 'password123', 'user', 'Hardware Unit', 'Mike Wazowski');
+
+INSERT INTO USER_INFORMATION
+VALUES ('user2', 'password1234', 'admin', 'Human Resources', 'John Smith');
+
+INSERT INTO USER_INFORMATION
+VALUES ('user3', 'Plants!!%', 'user', 'Machine Learning Unit', 'Jane Smith');
+
+INSERT INTO USER_INFORMATION
+VALUES ('user4', 'oofSecurity707', 'user', 'Web Development Unit', 'Missy Moo');
+
+
+INSERT INTO ORGANISATIONAL_UNIT_INFORMATION
+VALUES ('org1', 'Hardware Unit', 3000);
+
+INSERT INTO ORGANISATIONAL_UNIT_INFORMATION
+VALUES ('org2', 'Human Resources', 3030);
+
+INSERT INTO ORGANISATIONAL_UNIT_INFORMATION
+VALUES ('org3', 'Machine Learning Unit', 5000);
+
+INSERT INTO ORGANISATIONAL_UNIT_INFORMATION
+VALUES ('org4', 'Web Development Unit', 4700);
+
+
+INSERT INTO INVENTORY
+VALUES ('asset1', 'CPU', 'org1', 30);
+
+INSERT INTO INVENTORY
+VALUES ('asset2', 'RAM', 'org4', 30);
+
+INSERT INTO INVENTORY
+VALUES ('asset3', 'ARDUINOS', 'org3', 30);
+
+INSERT INTO INVENTORY
+VALUES ('asset4', 'CPU', 'org4', 30);
+
+
+INSERT INTO ACTIVE_BUY_ORDERS 
+VALUES ('buy1', 'user1', 'RAM', 15, 10, '2021-03-24 16:34:26.66');
+
+INSERT INTO ACTIVE_BUY_ORDERS 
+VALUES ('buy2', 'user4', 'CPU', 15, 10, '2021-03-24 16:34:26.66');
+
+INSERT INTO ACTIVE_BUY_ORDERS 
+VALUES ('buy3', 'user3', 'CPU', 5, 20, '2021-03-24 16:34:26.66');
+
+INSERT INTO ACTIVE_BUY_ORDERS 
+VALUES ('buy4', 'user4', 'ARDUINOS', 30, 15, '2021-03-24 16:34:26.66');
+
+
+INSERT INTO ACTIVE_SELL_ORDERS 
+VALUES ('sell1', 'user3', 'asset3', 'ARDUINOS', 15, 10, '2021-03-24 16:34:26.66');
+
+INSERT INTO ACTIVE_SELL_ORDERS 
+VALUES ('sell2', 'user4', 'asset4', 'CPU', 15, 10, '2021-03-24 16:34:26.66');
+
+INSERT INTO ACTIVE_SELL_ORDERS 
+VALUES ('sell3', 'user1', 'asset1', 'CPU', 10, 12, '2021-03-24 16:34:26.66');
+
+
+
+

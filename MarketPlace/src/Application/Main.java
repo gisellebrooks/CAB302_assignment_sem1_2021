@@ -15,7 +15,7 @@ public class Main {
         FileInputStream in = null;
 
         try {
-            in = new FileInputStream("server.props");
+            in = new FileInputStream("MarketPlace/server.props");
             props.load(in);
             in.close();
 
@@ -51,18 +51,46 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws SQLException {
-        Properties serverProps = loadServerConfig();
+    private static void loadMockData(MariaDBDataSource pool) throws SQLException {
+        String string;
+        StringBuffer buffer = new StringBuffer();
 
-        MarketplaceServer server = new MarketplaceServer(serverProps);
-        server.startServer();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("./mockupData.sql"));
+            while ((string = reader.readLine()) != null) {
+                buffer.append(string + "\n");
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String[] queries = buffer.toString().split(";");
+
+        for (String query : queries) {
+            if (query.isBlank()) continue;
+            try (Connection conn = pool.getConnection();
+                 PreparedStatement statement = conn.prepareStatement(query)) {
+                statement.execute();
+            }
+        }
+
+    }
+
+    public static void main(String[] args) throws SQLException {
+        //Properties serverProps = loadServerConfig();
+
+//        MarketplaceServer server = new MarketplaceServer(serverProps);
+//        server.startServer();
 
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
         initDb(pool);
+        loadMockData(pool);
 
         // Not sure where to put this client connection, leaving it here for now lol
-        Client client = new Client(serverProps);
-        client.createConnection();
+//        Client client = new Client(serverProps);
+//        client.createConnection();
 
 //        ResultSet rs;
 //
