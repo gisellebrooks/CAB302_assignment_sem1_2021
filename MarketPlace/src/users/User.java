@@ -22,7 +22,6 @@ public class User {
     private String accountType;
     private String organisation;
     private String name;
-    private UserOrders orders;
 
     private ResultSet orderHistory;
     private final MariaDBDataSource pool;
@@ -35,6 +34,7 @@ public class User {
 
     private static final String GET_USER_DETAILS = "SELECT * FROM Users WHERE username=?";
     private static final String INSERT_NEW_USER = "INSERT INTO Users VALUES (?, ?, ?, ?, ?)";
+    private static final String DELETE_USER = "DELETE FROM Users WHERE Username=?";
 
     public User(String username, String passwordHash, String accountType, String organisation, String name, MariaDBDataSource pool){
         this.username = username;
@@ -42,7 +42,6 @@ public class User {
         this.accountType = accountType;
         this.organisation = organisation;
         this.name = name;
-        orders = new UserOrders(username);
 
         this.pool = pool;
         this.query = new QueryTemplate(pool);
@@ -87,22 +86,27 @@ public class User {
         return name;
     }
 
-    public UserOrders getOrders(){
-        return orders;
-    }
 
 
     // after a new user is created, this method can be invoked to add them to the database
     public void addUser(User user) throws SQLException {
 
         Map<String, Object> params = new HashMap<>();
-        params.put("username", this.username);
+        params.put("Username", this.username);
         params.put("passwordHash", this.passwordHash);
         params.put("accountType", this.accountType);
         params.put("organisation", this.organisation);
         params.put("name", this.name);
 
         query.add(INSERT_NEW_USER, params);
+    }
+
+    public void removeUser(User user) throws SQLException {
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("Username", this.username);
+
+        query.update(DELETE_USER, params);
     }
 
     public boolean userExists(String username) {
