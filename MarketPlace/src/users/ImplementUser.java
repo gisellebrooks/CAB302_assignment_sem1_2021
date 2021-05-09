@@ -19,13 +19,13 @@ public class ImplementUser {
 
     }
 
-    public void addUser(String userID, String password, String accountType, String orgID, String name) {
-        User person = new User(userID, password, accountType, orgID, name);
+    public void addUser(String userID, String passwordHash, String accountType, String orgID, String name) {
+        User person = new User(userID, passwordHash, accountType, orgID, name, pool);
 
         Map<String, Object> params = new HashMap<>();
 
         params.put("userID", userID);
-        params.put("password", password);
+        params.put("password", passwordHash);
         params.put("accountType", accountType);
         params.put("orgID", orgID);
         params.put("name", name);
