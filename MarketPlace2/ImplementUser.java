@@ -1,48 +1,46 @@
-//package users;
-//
-//import Server.QueryTemplate;
-//import Server.MariaDBDataSource;
-//
-//import java.util.HashMap;
-//import java.util.Map;
-//
-//
-//public class ImplementUser {
-//    private final MariaDBDataSource pool;
-//    private final QueryTemplate query;
-//
-//    private static final String ADD_USER = "";
-//
-//    public ImplementUser(MariaDBDataSource pool){
-//        this.pool = pool;
-//        this.query = new QueryTemplate(pool);
-//
-//    }
-//
-//    public void addUser(String userID, String password, String accountType, String orgID, String name) {
-//        // User person = new User(userID, password, accountType, orgID, name);
-//
-//        Map<String, Object> params = new HashMap<>();
-//
-//        params.put("userID", userID);
-//        params.put("password", password);
-//        params.put("accountType", accountType);
-//        params.put("orgID", orgID);
-//        params.put("name", name);
-//
-//        query.add(ADD_USER, params);
-//
-//    }
-//
-//    public boolean userExists(String userID){
-//        // check db if user already exits
-//        return false;
-//    }
-//
-//    // all other methods for user stuff and password set n check etc
-//
-//
-//}
+import Server.MariaDBDataSource;
+import Server.QueryTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
+
+
+public class ImplementUser {
+    private final MariaDBDataSource pool;
+    private final QueryTemplate query;
+
+    private static final String ADD_USER = "INSERT INTO USER_INFORMATION VALUES (?, ?, ?, ?)";
+
+    public ImplementUser(MariaDBDataSource pool){
+        this.pool = pool;
+        this.query = new QueryTemplate(pool);
+
+    }
+
+    public void addUser(String username, String password, String accountType, String organisation, String name) {
+        User person = new User(username, password, accountType, organisation, name);
+
+        Map<String, Object> params = new HashMap<>();
+
+        params.put("userID", username);
+        params.put("password", password);
+        params.put("accountType", accountType);
+        params.put("orgID", organisation);
+        params.put("name", name);
+
+        query.add(ADD_USER, params);
+
+    }
+
+    public boolean userExists(String userID){
+        // check db if user already exits
+        return false;
+    }
+
+    // all other methods for user stuff and password set n check etc
+
+
+}
 
 /**
  *

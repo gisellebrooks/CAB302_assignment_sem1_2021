@@ -1,8 +1,15 @@
+import Server.MariaDBDataSource;
+import Server.QueryTemplate;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.*;
 
 
 public class LoginGUI extends JFrame implements ActionListener, Runnable {
@@ -15,7 +22,89 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
     private static JLabel valid;
     private static JLabel invalid;
 
-    public static void main(String[] args) { JFrame.setDefaultLookAndFeelDecorated(true);
+    private static void initDb(MariaDBDataSource pool) throws SQLException {
+        String string;
+        StringBuffer buffer = new StringBuffer();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("./setupDB.sql"));
+            while ((string = reader.readLine()) != null) {
+                buffer.append(string + "\n");
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String[] queries = buffer.toString().split(";");
+
+        for (String query : queries) {
+            if (query.isBlank()) continue;
+            try (Connection conn = pool.getConnection();
+                 PreparedStatement statement = conn.prepareStatement(query)) {
+                statement.execute();
+            }
+        }
+    }
+
+    private static void loadMockData(MariaDBDataSource pool) throws SQLException {
+        String string;
+        StringBuffer buffer = new StringBuffer();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("./mockupData.sql"));
+            while ((string = reader.readLine()) != null) {
+                buffer.append(string + "\n");
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String[] queries = buffer.toString().split(";");
+
+        for (String query : queries) {
+            if (query.isBlank()) continue;
+            try (Connection conn = pool.getConnection();
+                 PreparedStatement statement = conn.prepareStatement(query)) {
+                statement.execute();
+            }
+        }
+
+    }
+
+    public static void main(String[] args) throws SQLException {
+        MariaDBDataSource pool = MariaDBDataSource.getInstance();
+        initDb(pool);
+        loadMockData(pool);
+
+        ImplementUser manualTestUser = new ImplementUser(pool);
+        manualTestUser.addUser("1", "14e3885dc3a6764f84023badcdaa54b9f3f6121ff28c68174636f533ce97e3a5", "USER", "CPU HQ", "Jack Gate-Leven");
+
+        QueryTemplate query = new QueryTemplate(pool);
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("userID", username);
+//        params.put("password", password);
+//        params.put("accountType", accountType);
+//        params.put("orgID", organisation);
+//        params.put("name", name);
+
+        ResultSet rs;
+        rs = query.get("SELECT userID FROM USER_INFORMATION WHERE userID = '1'", null);
+
+        System.out.println(rs.next());
+
+
+//        while (rs.next()){
+//            System.out.println(rs.getString(1));
+//        }
+
+
+
+
+        JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new GUI.Login());
     }
 
@@ -71,6 +160,12 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         String password = passwordText.getText();
         valid.setText("");
         invalid.setText("");
+
+
+
+
+
+
         if(user.equals("Alex") && password.equals("fluffyDino123")){
             valid.setText("Login successful!");
         } else {

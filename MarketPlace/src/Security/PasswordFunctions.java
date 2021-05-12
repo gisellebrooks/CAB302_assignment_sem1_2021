@@ -116,12 +116,12 @@ public class PasswordFunctions {
     }
 
 //    // for testing purposes ---- remove before submission
-//    public static void main(String [] args) {
-//        String strong = "Password123!@#";
-//        String weak = "123asd";
+//    public static void main(String [] args) throws NoSuchAlgorithmException {
+//        String strong = "password123";
+//        // String weak = "123asd";
 //        PasswordFunctions ps = new PasswordFunctions();
 //
-//        System.out.println(ps.IsPasswordStrong(strong));
-//        System.out.println(ps.IsPasswordStrong(weak));
+//        //System.out.println(ps.intoHash(strong));
+//        // System.out.println(ps.IsPasswordStrong(weak));
 //    }
 }
