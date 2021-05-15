@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS USER_INFORMATION
                 (userID VARCHAR(255) NOT NULL, 
-                 password CHAR(64), 
+                 passwordHash VARCHAR(255),
                  accountType VARCHAR(255), 
                  orgID VARCHAR(255), 
 		 name CHAR(64),

@@ -1,5 +1,4 @@
 import Server.MariaDBDataSource;
-import Server.QueryTemplate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +8,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.*;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class LoginGUI extends JFrame implements ActionListener, Runnable {
@@ -21,6 +24,12 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
     private static JButton button;
     private static JLabel valid;
     private static JLabel invalid;
+
+
+
+
+
+
 
     private static void initDb(MariaDBDataSource pool) throws SQLException {
         String string;
@@ -78,12 +87,32 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
     public static void main(String[] args) throws SQLException {
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
         initDb(pool);
-        loadMockData(pool);
 
-        ImplementUser manualTestUser = new ImplementUser(pool);
-        manualTestUser.addUser("1", "14e3885dc3a6764f84023badcdaa54b9f3f6121ff28c68174636f533ce97e3a5", "USER", "CPU HQ", "Jack Gate-Leven");
+
+//         loadMockData(pool);
+
+//        ImplementUser manualTestUser = new ImplementUser(pool);
+//
+//        try (Connection conn = pool.getConnection()) {
+//            try (PreparedStatement statement = conn.prepareStatement("INSERT INTO USER_INFORMATION VALUES (?, ?, ?, ?, ?)")) {
+//                if (params != null){
+//                    conn.executeQuery();
+//
+//                } else{
+//                    statement.executeQuery();
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+//        manualTestUser.addUser("1", "14e3885dc3a6764f84023badcdaa54b9f3f6121ff28c68174636f533ce97e3a5",
+//                "USER", "CPU HQ", "Jack Gate-Leven");
 
         QueryTemplate query = new QueryTemplate(pool);
+
+        //query.add("INSERT INTO USER_INFORMATION VALUES ('adsadsdsadas', 'adsadsdsadas', 'adsadsdsadas', 'adsadsdsadas', 'adsadsdsadas')");
+
 //        Map<String, Object> params = new HashMap<>();
 //        params.put("userID", username);
 //        params.put("password", password);
@@ -92,9 +121,12 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 //        params.put("name", name);
 
         ResultSet rs;
-        rs = query.get("SELECT userID FROM USER_INFORMATION WHERE userID = '1'", null);
+        rs = query.get("SELECT * FROM USER_INFORMATION", null);
 
-        System.out.println(rs.next());
+        while (rs.next()){
+            System.out.println(rs.getString("userID"));
+        }
+
 
 
 //        while (rs.next()){
@@ -105,7 +137,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
 
         JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new GUI.Login());
+        SwingUtilities.invokeLater(new LoginGUI());
     }
 
     @Override
@@ -140,7 +172,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
         button = new JButton("Login");
         button.setBounds(10, 80, 80, 25);
-        button.addActionListener(new GUI.Login());
+        button.addActionListener(new LoginGUI());
         panel.add(button);
 
         valid = new JLabel("");
@@ -163,13 +195,44 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
 
 
+        PasswordFunctions passwordFunctions = new PasswordFunctions();
+        MariaDBDataSource pool = null;
 
+        try {
+            pool = MariaDBDataSource.getInstance();
+            invalid.setText("invalid");
+            ResultSet rs;
+            QueryTemplate query = new QueryTemplate(pool);
 
+            PreparedStatement getUserExists = pool.getConnection().prepareStatement("SELECT * FROM USER_INFORMATION WHERE userID = ?");
+            PreparedStatement getPasswordHash = pool.getConnection().prepareStatement("SELECT passwordHash FROM USER_INFORMATION WHERE userID = ?");
 
-        if(user.equals("Alex") && password.equals("fluffyDino123")){
-            valid.setText("Login successful!");
-        } else {
-            invalid.setText("Invalid user name or password");
+            String dbPasswordHash = "";
+            int rowsReturned = 0;
+
+            getUserExists.setString(1,user);
+            rs = getUserExists.executeQuery();
+            System.out.println("got to 1");
+            if (rs.next()) { // if user found
+
+                getPasswordHash.setString(1, user);
+                rs = getPasswordHash.executeQuery();
+                System.out.println("got to 2");
+                while (rs.next()) { // if password hash found
+                    dbPasswordHash = rs.getString(1);
+                    System.out.println("got to 3");
+
+                    if (dbPasswordHash.equals(passwordFunctions.intoHash(password))) { // if given password matches users saved password
+                        invalid.setText("");
+                        valid.setText("Login successful!");
+                    }
+                }
+            }
+
+        } catch (SQLException | NoSuchAlgorithmException throwable) {
+            throwable.printStackTrace();
         }
+
+
     }
 }

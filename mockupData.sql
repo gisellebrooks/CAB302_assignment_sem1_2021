@@ -1,15 +1,18 @@
 INSERT INTO USER_INFORMATION
-VALUES ('user1', 'password123', 'user', 'Hardware Unit', 'Mike Wazowski');
+VALUES ('user1', '14e3885dc3a6764f84023badcdaa54b9f3f6121ff28c68174636f533ce97e3a5', 'user', 'Hardware Unit', 'Mike Wazowski');
+-- password123
 
 INSERT INTO USER_INFORMATION
-VALUES ('user2', 'password1234', 'admin', 'Human Resources', 'John Smith');
+VALUES ('user2', '14e3885dc3a6764f84023badcdaa54b9f3f6121ff28c68174636f533ce97e3a5', 'admin', 'Human Resources', 'John Smith');
+-- password123
 
 INSERT INTO USER_INFORMATION
-VALUES ('user3', 'Plants!!%', 'user', 'Machine Learning Unit', 'Jane Smith');
+VALUES ('user3', '434848baf76dabf925abbf64374170f281fcf08e5fd6fda3648275ad3a602819', 'user', 'Machine Learning Unit', 'Jane Smith');
+-- password is 123ps
 
 INSERT INTO USER_INFORMATION
-VALUES ('user4', 'oofSecurity707', 'user', 'Web Development Unit', 'Missy Moo');
-
+VALUES ('user4', '8213448bc7c05ea87c37e2d8c02b5a9f46c7391c8ea8697b4d776c831b01545f', 'user', 'Web Development Unit', 'Missy Moo');
+-- password is 123
 
 INSERT INTO ORGANISATIONAL_UNIT_INFORMATION
 VALUES ('org1', 'Hardware Unit', 3000);

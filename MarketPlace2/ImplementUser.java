@@ -9,7 +9,7 @@ public class ImplementUser {
     private final MariaDBDataSource pool;
     private final QueryTemplate query;
 
-    private static final String ADD_USER = "INSERT INTO USER_INFORMATION VALUES (?, ?, ?, ?)";
+    private static final String ADD_USER = "INSERT INTO USER_INFORMATION VALUES (?, ?, ?, ?, ?);";
 
     public ImplementUser(MariaDBDataSource pool){
         this.pool = pool;
@@ -17,15 +17,15 @@ public class ImplementUser {
 
     }
 
-    public void addUser(String username, String password, String accountType, String organisation, String name) {
-        User person = new User(username, password, accountType, organisation, name);
+    public void addUser(String username, String passwordHash, String accountType, String organisationID, String name) {
+        User person = new User(username, passwordHash, accountType, organisationID, name);
 
         Map<String, Object> params = new HashMap<>();
 
         params.put("userID", username);
-        params.put("password", password);
+        params.put("passwordHash", passwordHash);
         params.put("accountType", accountType);
-        params.put("orgID", organisation);
+        params.put("orgID", organisationID);
         params.put("name", name);
 
         query.add(ADD_USER, params);
