@@ -26,11 +26,6 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
     private static JLabel invalid;
 
 
-
-
-
-
-
     private static void initDb(MariaDBDataSource pool) throws SQLException {
         String string;
         StringBuffer buffer = new StringBuffer();
@@ -91,47 +86,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
 //         loadMockData(pool);
 
-//        ImplementUser manualTestUser = new ImplementUser(pool);
-//
-//        try (Connection conn = pool.getConnection()) {
-//            try (PreparedStatement statement = conn.prepareStatement("INSERT INTO USER_INFORMATION VALUES (?, ?, ?, ?, ?)")) {
-//                if (params != null){
-//                    conn.executeQuery();
-//
-//                } else{
-//                    statement.executeQuery();
-//                }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
-//        manualTestUser.addUser("1", "14e3885dc3a6764f84023badcdaa54b9f3f6121ff28c68174636f533ce97e3a5",
-//                "USER", "CPU HQ", "Jack Gate-Leven");
-
-        QueryTemplate query = new QueryTemplate(pool);
-
         //query.add("INSERT INTO USER_INFORMATION VALUES ('adsadsdsadas', 'adsadsdsadas', 'adsadsdsadas', 'adsadsdsadas', 'adsadsdsadas')");
-
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("userID", username);
-//        params.put("password", password);
-//        params.put("accountType", accountType);
-//        params.put("orgID", organisation);
-//        params.put("name", name);
-
-        ResultSet rs;
-        rs = query.get("SELECT * FROM USER_INFORMATION", null);
-
-        while (rs.next()){
-            System.out.println(rs.getString("userID"));
-        }
-
-
-
-//        while (rs.next()){
-//            System.out.println(rs.getString(1));
-//        }
 
 
 
@@ -193,36 +148,28 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         valid.setText("");
         invalid.setText("");
 
-
-
-        PasswordFunctions passwordFunctions = new PasswordFunctions();
-        MariaDBDataSource pool = null;
-
         try {
-            pool = MariaDBDataSource.getInstance();
+            MariaDBDataSource pool = MariaDBDataSource.getInstance();
             invalid.setText("invalid");
             ResultSet rs;
-            QueryTemplate query = new QueryTemplate(pool);
 
             PreparedStatement getUserExists = pool.getConnection().prepareStatement("SELECT * FROM USER_INFORMATION WHERE userID = ?");
             PreparedStatement getPasswordHash = pool.getConnection().prepareStatement("SELECT passwordHash FROM USER_INFORMATION WHERE userID = ?");
 
-            String dbPasswordHash = "";
-            int rowsReturned = 0;
-
             getUserExists.setString(1,user);
             rs = getUserExists.executeQuery();
-            System.out.println("got to 1");
-            if (rs.next()) { // if user found
 
+            // if user found
+            if (rs.next()) {
                 getPasswordHash.setString(1, user);
                 rs = getPasswordHash.executeQuery();
-                System.out.println("got to 2");
-                while (rs.next()) { // if password hash found
-                    dbPasswordHash = rs.getString(1);
-                    System.out.println("got to 3");
 
-                    if (dbPasswordHash.equals(passwordFunctions.intoHash(password))) { // if given password matches users saved password
+                // if password hash found
+                while (rs.next()) {
+                    String dbPasswordHash = rs.getString(1);
+
+                    // if given password matches users saved password
+                    if (dbPasswordHash.equals(PasswordFunctions.intoHash(password))) {
                         invalid.setText("");
                         valid.setText("Login successful!");
                     }
@@ -232,7 +179,5 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         } catch (SQLException | NoSuchAlgorithmException throwable) {
             throwable.printStackTrace();
         }
-
-
     }
 }

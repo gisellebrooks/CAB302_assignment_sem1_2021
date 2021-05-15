@@ -12,7 +12,9 @@ public class loginTesting {
         // addUser("name1", "password12#A", "user", "org1");
         // addOrganisation(1, "org1", 200, 10);
         // addOrganisation(1, "org2", 200, 10);
-        LoginGUI gui = new LoginGUI();
+//        Robot robot = new Robot();
+//        LoginGUI gui = new LoginGUI();
+//        gui.userTest();
     }
 
 
@@ -23,6 +25,10 @@ public class loginTesting {
         // assertEquals(1, SELECT * FROM [Users] WHERE Username = "name1");
         // removeUser("name1", "password12#A", "user", "org1");
         // assertEquals(0, SELECT * FROM [Users] WHERE Username = "name1");
+
+
+
+//        userText.setText();
     }
 
     @Test
