@@ -10,19 +10,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 
-public class changeUserPasswordGUI extends JFrame implements ActionListener, Runnable {
+public class CreateOrganisationGUI extends JFrame implements ActionListener, Runnable {
 
-    private static JLabel currentPasswordPromptLabel;
-    private static JTextField currentPasswordText;
-    private static JLabel newPasswordPromptLabel;
-    private static JTextField newPasswordText;
-    private static JLabel confirmPasswordPromptLabel;
-    private static JTextField confirmPasswordText;
+    private static JLabel organisationPromptLabel;
+    private static JTextField organisationText;
+    private static JLabel creditsPromptLabel;
+    private static JTextField creditsText;
 
-    private static JButton button;
+    private static JButton createButton;
     private static JLabel valid;
     private static JLabel invalid;
 
@@ -87,7 +87,7 @@ public class changeUserPasswordGUI extends JFrame implements ActionListener, Run
 //        loadMockData(pool);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new changeUserPasswordGUI());
+        SwingUtilities.invokeLater(new CreateOrganisationGUI());
     }
 
     @Override
@@ -106,74 +106,59 @@ public class changeUserPasswordGUI extends JFrame implements ActionListener, Run
 
 
         // get all organisations for use in combo box
-//        ArrayList<String> organisationsList = new ArrayList<String>();
-//        try {
-//            MariaDBDataSource pool = MariaDBDataSource.getInstance();
-//            ResultSet rs;
-//
-//            PreparedStatement getAllOrganisations = pool.getConnection().prepareStatement("SELECT distinct orgName FROM ORGANISATIONAL_UNIT_INFORMATION");
-//
-//            rs = getAllOrganisations.executeQuery();
-//
-//            while (rs.next()) {
-//                organisationsList.add(rs.getString("orgName"));
-//            }
-//
-//        } catch (SQLException throwable) {
-//            throwable.printStackTrace();
-//        }
+        ArrayList<String> organisationsList = new ArrayList<String>();
+        try {
+            MariaDBDataSource pool = MariaDBDataSource.getInstance();
+            ResultSet rs;
+
+            PreparedStatement getAllOrganisations = pool.getConnection().prepareStatement("SELECT distinct orgName FROM ORGANISATIONAL_UNIT_INFORMATION");
+
+            rs = getAllOrganisations.executeQuery();
+
+            while (rs.next()) {
+                organisationsList.add(rs.getString("orgName"));
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
 
 
 
-        currentPasswordPromptLabel = new JLabel("Current Password:");
-        currentPasswordPromptLabel.setBounds(10, 20, 160, 25);
-        panel.add(currentPasswordPromptLabel);
+        organisationPromptLabel = new JLabel("Organisation Name:");
+        organisationPromptLabel.setBounds(10, 20, 160, 25);
+        panel.add(organisationPromptLabel);
 
-        confirmPasswordText = new JTextField(20);
-        confirmPasswordText.setBounds(10, 40, 165, 25);
-        panel.add(confirmPasswordText);
+        organisationText = new JTextField(20);
+        organisationText.setBounds(10, 40, 165, 25);
+        panel.add(organisationText);
 
-        newPasswordPromptLabel = new JLabel("New Password (12 > characters, including capital, letter, digit and symbol):");
-        newPasswordPromptLabel.setBounds(10, 70, 450, 25);
-        panel.add(newPasswordPromptLabel);
+        creditsPromptLabel = new JLabel("Credits:");
+        creditsPromptLabel.setBounds(10, 80, 180, 25);
+        panel.add(creditsPromptLabel);
 
-        newPasswordText = new JTextField(20);
-        newPasswordText.setBounds(10, 90, 165, 25);
-        panel.add(newPasswordText);
+        creditsText = new JTextField(20);
+        creditsText.setBounds(10, 100, 165, 25);
+        panel.add(creditsText);
 
-        confirmPasswordPromptLabel = new JLabel("Confirm New Password:");
-        confirmPasswordPromptLabel.setBounds(10, 120, 160, 25);
-        panel.add(confirmPasswordPromptLabel);
-
-        confirmPasswordText = new JTextField(20);
-        confirmPasswordText.setBounds(10, 140, 165, 25);
-        panel.add(confirmPasswordText);
-
-
-        button = new JButton("Change");
-        button.setBounds(10, 180, 80, 25);
-        button.addActionListener(new changeUserPasswordGUI());
-        panel.add(button);
+        createButton = new JButton("Create");
+        createButton.setBounds(10, 150, 80, 25);
+        createButton.addActionListener(new CreateOrganisationGUI());
+        panel.add(createButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
-        valid.setBounds(10, 170, 340, 25);
+        valid.setBounds(10, 360, 340, 25);
         panel.add(valid);
 
         invalid = new JLabel("");
         invalid.setForeground(Color.red);
-        invalid.setBounds(10, 170, 340, 25);
+        invalid.setBounds(10, 360, 340, 25);
         panel.add(invalid);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        String userID = "user3";
-        // String organisation = passwordText.getText();
-        valid.setText("");
-        invalid.setText("Can't signup");
-
         String newUserID;
         String newPasswordHash = null;
         String newPassword;
