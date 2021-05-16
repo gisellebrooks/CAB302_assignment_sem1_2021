@@ -39,7 +39,7 @@ public class PasswordFunctions {
         final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()?";
         String newPassword = "";
         Matcher match = pattern.matcher(newPassword);
-        int randomLength = ThreadLocalRandom.current().nextInt(13, 19);
+        int randomLength = ThreadLocalRandom.current().nextInt(13, 15);
 
         while (!match.matches()) {
             newPassword = "";
