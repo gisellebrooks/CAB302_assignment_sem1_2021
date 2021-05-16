@@ -12,13 +12,28 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 
-public class RemoveUserGUI extends JFrame implements ActionListener, Runnable {
+public class EditUserGUI extends JFrame implements ActionListener, Runnable {
 
     private static JLabel userIDPromptLabel;
     private static JTextField userIDText;
-    private static JButton button;
+    private static JButton find;
+
+    private static JTextField newPasswordText;
+    private static JButton resetPassword;
+
+    private static JLabel namePromptLabel;
+    private static JTextField nameText;
+
+    private static JLabel organisationPromptLabel;
+    private static JComboBox organisationComboBox;
+
+    private static JLabel userTypePromptLabel;
+    private static JComboBox userTypeComboBox;
+
+    private static JButton save;
     private static JLabel valid;
     private static JLabel invalid;
 
@@ -83,7 +98,7 @@ public class RemoveUserGUI extends JFrame implements ActionListener, Runnable {
 //        loadMockData(pool);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new RemoveUserGUI());
+        SwingUtilities.invokeLater(new EditUserGUI());
     }
 
     @Override
@@ -94,11 +109,40 @@ public class RemoveUserGUI extends JFrame implements ActionListener, Runnable {
 
     public void createGui() {
         JPanel panel = new JPanel();
-        this.setSize(550,400);
+        this.setSize(550,450);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.add(panel);
         panel.setLayout(null);
+
+
+        // get all organisations for use in combo box
+        ArrayList<String> organisationsList = new ArrayList<String>();
+        try {
+            MariaDBDataSource pool = MariaDBDataSource.getInstance();
+            ResultSet rs;
+
+            PreparedStatement getAllOrganisations = pool.getConnection().prepareStatement("SELECT distinct orgName FROM ORGANISATIONAL_UNIT_INFORMATION");
+
+            rs = getAllOrganisations.executeQuery();
+
+            while (rs.next()) {
+                organisationsList.add(rs.getString("orgName"));
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        resetPassword = new JButton("Reset Password");
+        resetPassword.setBounds(300, 40, 160, 25);
+        resetPassword.addActionListener(new EditUserGUI());
+        panel.add(resetPassword);
+
+        newPasswordText = new JTextField(20);
+        newPasswordText.setBounds(300, 80, 165, 25);
+        panel.add(newPasswordText);
+
 
 
         userIDPromptLabel = new JLabel("User ID:");
@@ -106,30 +150,81 @@ public class RemoveUserGUI extends JFrame implements ActionListener, Runnable {
         panel.add(userIDPromptLabel);
 
         userIDText = new JTextField(20);
-        userIDText.setBounds(10, 40, 165, 25);
+        userIDText.setBounds(10, 50, 150, 25);
         panel.add(userIDText);
+        userIDText.setText("user id go here");
 
-        button = new JButton("Remove User");
-        button.setBounds(10, 80, 120, 25);
-        button.addActionListener(new RemoveUserGUI());
-        panel.add(button);
+        find = new JButton("Find user");
+        find.setBounds(10, 90, 100, 25);
+        find.addActionListener(new EditUserGUI());
+        panel.add(find);
+
+
+        namePromptLabel = new JLabel("Full Name:");
+        namePromptLabel.setBounds(10, 150, 165, 25);
+        panel.add(namePromptLabel);
+
+        nameText = new JTextField(20);
+        nameText.setBounds(10, 170, 165, 25);
+        panel.add(nameText);
+
+
+        organisationPromptLabel = new JLabel("Organisation:");
+        organisationPromptLabel.setBounds(10, 210, 165, 25);
+        panel.add(organisationPromptLabel);
+
+        organisationComboBox = new JComboBox(organisationsList.toArray());
+        organisationComboBox.setBounds(10, 230, 165, 25);
+        panel.add(organisationComboBox);
+
+
+        userTypePromptLabel = new JLabel("User Type:");
+        userTypePromptLabel.setBounds(10, 270, 165, 25);
+        panel.add(userTypePromptLabel);
+
+        ArrayList<String> userTypes = new ArrayList<String>();
+        userTypes.add("USER");
+        userTypes.add("ADMIN");
+
+        userTypeComboBox = new JComboBox(userTypes.toArray());
+        userTypeComboBox.setBounds(10, 290, 165, 25);
+        panel.add(userTypeComboBox);
+
+
+        save = new JButton("Save");
+        save.setBounds(10, 330, 100, 25);
+        save.addActionListener(new EditUserGUI());
+        panel.add(save);
+
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
-        valid.setBounds(10, 110, 340, 25);
+        valid.setBounds(10, 370, 340, 25);
         panel.add(valid);
 
         invalid = new JLabel("");
         invalid.setForeground(Color.red);
-        invalid.setBounds(10, 110, 340, 25);
+        invalid.setBounds(10, 370, 340, 25);
         panel.add(invalid);
     }
+
+    // when find button is pressed
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//
+//    }
+
+    // when resetPassword button is pressed
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String userID = userIDText.getText();
         valid.setText("");
-        invalid.setText("User doesn't exist or can't be removed");
+        invalid.setText("User doesn't exist or can't be edited");
 
         String newUserID;
 

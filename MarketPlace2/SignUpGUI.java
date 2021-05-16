@@ -222,7 +222,7 @@ public class SignUpGUI extends JFrame implements ActionListener, Runnable {
             noSuchAlgorithmException.printStackTrace();
         }
 
-        if (nameText.isValid() && nameText.getText().length() > 4) {
+        if (nameText.isValid() && nameText.getText().length() > 2 && nameText.getText().length() < 250) {
             System.out.println(nameText.getText());
             name = nameText.getText();
 
@@ -231,7 +231,6 @@ public class SignUpGUI extends JFrame implements ActionListener, Runnable {
                 invalid.setText("can't signup");
                 ResultSet rs;
 
-                PreparedStatement getNameExists = pool.getConnection().prepareStatement("SELECT * FROM USER_INFORMATION WHERE name = ?");
                 PreparedStatement getAllUserID = pool.getConnection().prepareStatement("SELECT userID FROM USER_INFORMATION");
                 PreparedStatement getOrganisationsID = pool.getConnection().prepareStatement("SELECT orgID FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = ?");
                 PreparedStatement addNewUser = pool.getConnection().prepareStatement("INSERT INTO USER_INFORMATION VALUES (?, ?, ?, ?, ?)");
@@ -273,6 +272,11 @@ public class SignUpGUI extends JFrame implements ActionListener, Runnable {
                 invalid.setText("");
                 givenPasswordLabel.setText(newPassword);
                 givenIDLabel.setText(newUserID);
+
+                rs.close();
+                addNewUser.close();
+                getAllUserID.close();
+                getOrganisationsID.close();
 
             } catch (SQLException throwable) {
                 throwable.printStackTrace();

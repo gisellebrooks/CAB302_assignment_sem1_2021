@@ -83,13 +83,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
         initDb(pool);
 
-
 //         loadMockData(pool);
-
-        //query.add("INSERT INTO USER_INFORMATION VALUES ('adsadsdsadas', 'adsadsdsadas', 'adsadsdsadas', 'adsadsdsadas', 'adsadsdsadas')");
-
-
-
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new LoginGUI());
@@ -175,6 +169,10 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
                     }
                 }
             }
+
+            rs.close();
+            getUserExists.close();
+            getPasswordHash.close();
 
         } catch (SQLException | NoSuchAlgorithmException throwable) {
             throwable.printStackTrace();
