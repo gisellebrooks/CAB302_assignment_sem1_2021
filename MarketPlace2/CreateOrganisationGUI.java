@@ -22,6 +22,8 @@ public class CreateOrganisationGUI extends JFrame implements ActionListener, Run
     private static JLabel creditsPromptLabel;
     private static JTextField creditsText;
 
+    private static JLabel givenOrgananisationID;
+
     private static JButton createButton;
     private static JLabel valid;
     private static JLabel invalid;
@@ -146,93 +148,72 @@ public class CreateOrganisationGUI extends JFrame implements ActionListener, Run
         createButton.addActionListener(new CreateOrganisationGUI());
         panel.add(createButton);
 
+        givenOrgananisationID = new JLabel("Your organisations ID is");
+        givenOrgananisationID.setBounds(10, 180, 165, 25);
+        panel.add(givenOrgananisationID);
+        givenOrgananisationID.setText("");
+
         valid = new JLabel("");
         valid.setForeground(Color.green);
-        valid.setBounds(10, 360, 340, 25);
+        valid.setBounds(10, 220, 340, 25);
         panel.add(valid);
 
         invalid = new JLabel("");
         invalid.setForeground(Color.red);
-        invalid.setBounds(10, 360, 340, 25);
+        invalid.setBounds(10, 220, 340, 25);
         panel.add(invalid);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String newUserID;
-        String newPasswordHash = null;
-        String newPassword;
-        String accountType;
-        String orgID = null;
-        String name = null;
-        String latestUserID;
+        String orgName = null;
+        double orgCredits = 0;
+        String maxorgID = null;
+        String neworgID = null;
 
-//        newPassword = new PasswordFunctions().generatePassword();
-//        try {
-//            newPasswordHash = new PasswordFunctions().intoHash(newPassword);
-//        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-//            noSuchAlgorithmException.printStackTrace();
-//        }
-//
-//        if (nameText.isValid() && nameText.getText().length() > 2 && nameText.getText().length() < 250) {
-//            System.out.println(nameText.getText());
-//            name = nameText.getText();
-//
-//            try {
-//                MariaDBDataSource pool = MariaDBDataSource.getInstance();
-//                invalid.setText("can't signup");
-//                ResultSet rs;
-//
-//                PreparedStatement getAllUserID = pool.getConnection().prepareStatement("SELECT userID FROM USER_INFORMATION");
-//                PreparedStatement getOrganisationsID = pool.getConnection().prepareStatement("SELECT orgID FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = ?");
-//                PreparedStatement addNewUser = pool.getConnection().prepareStatement("INSERT INTO USER_INFORMATION VALUES (?, ?, ?, ?, ?)");
-//
-//                // get organisation ID with org name
-//                String userOrganisation = organisationComboBox.getSelectedItem().toString();
-//                getOrganisationsID.setString(1, userOrganisation);
-//
-//                rs = getOrganisationsID.executeQuery();
-//
-//                if (rs.next()) {
-//                    orgID = rs.getString(1);
-//                }
-//
-//                accountType = userTypeComboBox.getSelectedItem().toString();
-//
-//                // getting the next user ID
-//                ArrayList<String> userIDs = new ArrayList<String>();
-//                rs = getAllUserID.executeQuery();
-//                while (rs.next()) {
-//                    userIDs.add(rs.getString("userID"));
-//                }
-//                userIDs.sort(String::compareToIgnoreCase);
-//
-//                latestUserID = userIDs.get(userIDs.size() - 1);
-//                latestUserID = latestUserID.replace("user", "");
-//                newUserID = (String.valueOf(Integer.parseInt(latestUserID) + 1));
-//                newUserID = "user" + newUserID;
-//
-//                addNewUser.setString(1, newUserID);
-//                addNewUser.setString(2, newPasswordHash);
-//                addNewUser.setString(3, accountType);
-//                addNewUser.setString(4, orgID);
-//                addNewUser.setString(5, name);
-//
-//                addNewUser.executeQuery();
-//
-//                valid.setText("signup successful!");
-//                invalid.setText("");
-//                givenPasswordLabel.setText(newPassword);
-//                givenIDLabel.setText(newUserID);
-//
-//                rs.close();
-//                addNewUser.close();
-//                getAllUserID.close();
-//                getOrganisationsID.close();
-//
-//            } catch (SQLException throwable) {
-//                throwable.printStackTrace();
-//            }
-//        }
+        if (organisationText.isValid() && organisationText.getText().length() > 2 && organisationText.getText().length() < 250) {
+            orgName = organisationText.getText();
+            orgCredits = Double.parseDouble(creditsText.getText());
+
+            try {
+                MariaDBDataSource pool = MariaDBDataSource.getInstance();
+                invalid.setText("can't create new organisation");
+                ResultSet rs;
+
+                PreparedStatement getAllOrganisationID = pool.getConnection().prepareStatement("SELECT orgID FROM ORGANISATIONAL_UNIT_INFORMATION");
+                PreparedStatement addNewOrganisation = pool.getConnection().prepareStatement("INSERT INTO ORGANISATIONAL_UNIT_INFORMATION VALUES (?, ?, ?)");
+
+                // getting the next organisation ID
+                ArrayList<String> orgIDs = new ArrayList<String>();
+                rs = getAllOrganisationID.executeQuery();
+                while (rs.next()) {
+                    orgIDs.add(rs.getString("orgID"));
+                }
+                orgIDs.sort(String::compareToIgnoreCase);
+
+                maxorgID = orgIDs.get(orgIDs.size() - 1);
+                maxorgID = maxorgID.replace("org", "");
+                neworgID = (String.valueOf(Integer.parseInt(maxorgID) + 1));
+                neworgID = "org" + neworgID;
+
+                addNewOrganisation.setString(1, neworgID);
+                addNewOrganisation.setString(2, orgName);
+                addNewOrganisation.setDouble(3, orgCredits);
+
+                addNewOrganisation.executeQuery();
+
+                valid.setText("creation of " + orgName + " successful!");
+                invalid.setText("");
+                givenOrgananisationID.setText("Your organisation ID: " + neworgID);
+
+                rs.close();
+                addNewOrganisation.close();
+                getAllOrganisationID.close();
+                addNewOrganisation.close();
+
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+        }
     }
 }

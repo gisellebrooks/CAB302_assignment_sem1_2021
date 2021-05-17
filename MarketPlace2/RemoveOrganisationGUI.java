@@ -102,6 +102,7 @@ public class RemoveOrganisationGUI extends JFrame implements ActionListener, Run
         panel.setLayout(null);
 
 
+
         // get all organisations for use in combo box
         ArrayList<String> organisationsList = new ArrayList<String>();
         try {
@@ -148,82 +149,47 @@ public class RemoveOrganisationGUI extends JFrame implements ActionListener, Run
     @Override
     public void actionPerformed(ActionEvent e) {
         valid.setText("");
-        invalid.setText("Can't signup");
+        invalid.setText("Can't remove organisation");
 
-        String newUserID;
-        String newPasswordHash = null;
-        String newPassword;
-        String accountType;
-        String orgID = null;
-        String name = null;
-        String latestUserID;
 
-//        newPassword = new PasswordFunctions().generatePassword();
-//        try {
-//            newPasswordHash = new PasswordFunctions().intoHash(newPassword);
-//        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-//            noSuchAlgorithmException.printStackTrace();
-//        }
-//
+
 //        if (nameText.isValid() && nameText.getText().length() > 2 && nameText.getText().length() < 250) {
 //            System.out.println(nameText.getText());
 //            name = nameText.getText();
-//
-//            try {
-//                MariaDBDataSource pool = MariaDBDataSource.getInstance();
-//                invalid.setText("can't signup");
-//                ResultSet rs;
-//
-//                PreparedStatement getAllUserID = pool.getConnection().prepareStatement("SELECT userID FROM USER_INFORMATION");
-//                PreparedStatement getOrganisationsID = pool.getConnection().prepareStatement("SELECT orgID FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = ?");
-//                PreparedStatement addNewUser = pool.getConnection().prepareStatement("INSERT INTO USER_INFORMATION VALUES (?, ?, ?, ?, ?)");
-//
-//                // get organisation ID with org name
-//                String userOrganisation = organisationComboBox.getSelectedItem().toString();
-//                getOrganisationsID.setString(1, userOrganisation);
-//
-//                rs = getOrganisationsID.executeQuery();
-//
-//                if (rs.next()) {
-//                    orgID = rs.getString(1);
-//                }
-//
-//                accountType = userTypeComboBox.getSelectedItem().toString();
-//
-//                // getting the next user ID
-//                ArrayList<String> userIDs = new ArrayList<String>();
-//                rs = getAllUserID.executeQuery();
-//                while (rs.next()) {
-//                    userIDs.add(rs.getString("userID"));
-//                }
-//                userIDs.sort(String::compareToIgnoreCase);
-//
-//                latestUserID = userIDs.get(userIDs.size() - 1);
-//                latestUserID = latestUserID.replace("user", "");
-//                newUserID = (String.valueOf(Integer.parseInt(latestUserID) + 1));
-//                newUserID = "user" + newUserID;
-//
-//                addNewUser.setString(1, newUserID);
-//                addNewUser.setString(2, newPasswordHash);
-//                addNewUser.setString(3, accountType);
-//                addNewUser.setString(4, orgID);
-//                addNewUser.setString(5, name);
-//
-//                addNewUser.executeQuery();
-//
-//                valid.setText("signup successful!");
-//                invalid.setText("");
-//                givenPasswordLabel.setText(newPassword);
-//                givenIDLabel.setText(newUserID);
-//
-//                rs.close();
-//                addNewUser.close();
-//                getAllUserID.close();
-//                getOrganisationsID.close();
-//
-//            } catch (SQLException throwable) {
-//                throwable.printStackTrace();
-//            }
-//        }
+
+
+            try {
+                MariaDBDataSource pool = MariaDBDataSource.getInstance();
+                invalid.setText("can't signup");
+                ResultSet rs;
+                String orgID = null;
+                String organisationName = organisationComboBox.getSelectedItem().toString();
+
+                PreparedStatement getOrganisationsID = pool.getConnection().prepareStatement("SELECT orgID FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = ?");
+                PreparedStatement removeOrganisation = pool.getConnection().prepareStatement("DELETE FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = ?");
+
+                // get organisation ID with org name
+                getOrganisationsID.setString(1, organisationName);
+
+                rs = getOrganisationsID.executeQuery();
+
+                if (rs.next()) {
+                    orgID = rs.getString(1);
+                }
+
+                removeOrganisation.setString(1, orgID);
+
+                removeOrganisation.executeQuery();
+
+                getOrganisationsID.close();
+                removeOrganisation.close();
+                rs.close();
+
+                invalid.setText("");
+                valid.setText(organisationName + " was removed from the server");
+
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+        }
     }
-}
