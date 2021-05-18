@@ -217,7 +217,7 @@ public class SignUpGUI extends JFrame implements ActionListener, Runnable {
 
         newPassword = new PasswordFunctions().generatePassword();
         try {
-            newPasswordHash = new PasswordFunctions().intoHash(newPassword);
+            newPasswordHash = new PasswordFunctions().IntoHash(newPassword);
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
             noSuchAlgorithmException.printStackTrace();
         }

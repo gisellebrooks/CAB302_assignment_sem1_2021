@@ -4,12 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,64 +21,9 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
     private static JLabel invalid;
 
 
-    private static void initDb(MariaDBDataSource pool) throws SQLException {
-        String string;
-        StringBuffer buffer = new StringBuffer();
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("./setupDB.sql"));
-            while ((string = reader.readLine()) != null) {
-                buffer.append(string + "\n");
-            }
-            reader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String[] queries = buffer.toString().split(";");
-
-        for (String query : queries) {
-            if (query.isBlank()) continue;
-            try (Connection conn = pool.getConnection();
-                 PreparedStatement statement = conn.prepareStatement(query)) {
-                statement.execute();
-            }
-        }
-    }
-
-    private static void loadMockData(MariaDBDataSource pool) throws SQLException {
-        String string;
-        StringBuffer buffer = new StringBuffer();
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("./mockupData.sql"));
-            while ((string = reader.readLine()) != null) {
-                buffer.append(string + "\n");
-            }
-            reader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String[] queries = buffer.toString().split(";");
-
-        for (String query : queries) {
-            if (query.isBlank()) continue;
-            try (Connection conn = pool.getConnection();
-                 PreparedStatement statement = conn.prepareStatement(query)) {
-                statement.execute();
-            }
-        }
-
-    }
-
     public static void main(String[] args) throws SQLException {
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
-        initDb(pool);
-
-//         loadMockData(pool);
+        new InitDatabase().initDb(pool);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new LoginGUI());
@@ -163,7 +103,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
                     String dbPasswordHash = rs.getString(1);
 
                     // if given password matches users saved password
-                    if (dbPasswordHash.equals(PasswordFunctions.intoHash(password))) {
+                    if (dbPasswordHash.equals(PasswordFunctions.IntoHash(password))) {
                         invalid.setText("");
                         valid.setText("Login successful!");
                     }

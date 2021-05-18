@@ -4,11 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.Connection;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,6 +19,7 @@ public class EditUserGUI extends JFrame implements ActionListener, Runnable {
 
     private static JTextField newPasswordText;
     private static JButton resetPassword;
+    private static JLabel passwordResetSuccessLabel;
 
     private static JLabel namePromptLabel;
     private static JTextField nameText;
@@ -37,65 +34,9 @@ public class EditUserGUI extends JFrame implements ActionListener, Runnable {
     private static JLabel valid;
     private static JLabel invalid;
 
-
-    private static void initDb(MariaDBDataSource pool) throws SQLException {
-        String string;
-        StringBuffer buffer = new StringBuffer();
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("./setupDB.sql"));
-            while ((string = reader.readLine()) != null) {
-                buffer.append(string + "\n");
-            }
-            reader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String[] queries = buffer.toString().split(";");
-
-        for (String query : queries) {
-            if (query.isBlank()) continue;
-            try (Connection conn = pool.getConnection();
-                 PreparedStatement statement = conn.prepareStatement(query)) {
-                statement.execute();
-            }
-        }
-    }
-
-    private static void loadMockData(MariaDBDataSource pool) throws SQLException {
-        String string;
-        StringBuffer buffer = new StringBuffer();
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("./mockupData.sql"));
-            while ((string = reader.readLine()) != null) {
-                buffer.append(string + "\n");
-            }
-            reader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String[] queries = buffer.toString().split(";");
-
-        for (String query : queries) {
-            if (query.isBlank()) continue;
-            try (Connection conn = pool.getConnection();
-                 PreparedStatement statement = conn.prepareStatement(query)) {
-                statement.execute();
-            }
-        }
-
-    }
-
     public static void main(String[] args) throws SQLException {
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
-        initDb(pool);
-
-//        loadMockData(pool);
+        new InitDatabase().initDb(pool);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new EditUserGUI());
@@ -143,6 +84,9 @@ public class EditUserGUI extends JFrame implements ActionListener, Runnable {
         newPasswordText.setBounds(300, 80, 165, 25);
         panel.add(newPasswordText);
 
+        passwordResetSuccessLabel = new JLabel("User ID:");
+        passwordResetSuccessLabel.setBounds(10, 120, 160, 25);
+        panel.add(passwordResetSuccessLabel);
 
 
         userIDPromptLabel = new JLabel("User ID:");
@@ -152,7 +96,7 @@ public class EditUserGUI extends JFrame implements ActionListener, Runnable {
         userIDText = new JTextField(20);
         userIDText.setBounds(10, 50, 150, 25);
         panel.add(userIDText);
-        userIDText.setText("user id go here");
+        userIDText.setText("user ID");
 
         find = new JButton("Find user");
         find.setBounds(10, 90, 100, 25);
@@ -222,39 +166,102 @@ public class EditUserGUI extends JFrame implements ActionListener, Runnable {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String userID = userIDText.getText();
-        valid.setText("");
-        invalid.setText("User doesn't exist or can't be edited");
 
-        String newUserID;
+        String userID = null;
+        String newPassword = null;
+        String newPasswordHash = null;
+        String name = null;
+        String userOrganisationID = null;
+        String userOrganisationName = null;
+        String userType = null;
+        boolean validUser = false;
 
-        try {
-            MariaDBDataSource pool = MariaDBDataSource.getInstance();
-            invalid.setText("can't remove user");
-            ResultSet rs;
+        // if userID is possibly real
+        if (userIDText.getText().length() > 2) {
 
-            PreparedStatement checkUserIDExist = pool.getConnection().prepareStatement("SELECT name FROM USER_INFORMATION WHERE userID = ?");
-            PreparedStatement removeUser = pool.getConnection().prepareStatement("DELETE FROM USER_INFORMATION WHERE userID = ?");
+            userID = userIDText.getText();
 
-            // check userID exists
-            checkUserIDExist.setString(1, userID);
+            try {
 
-            rs = checkUserIDExist.executeQuery();
+                MariaDBDataSource pool = MariaDBDataSource.getInstance();
+                ResultSet rs;
 
-            if (rs.next()) {
-                removeUser.setString(1, userID);
-                removeUser.executeUpdate();
-                valid.setText("user was removed");
-                invalid.setText("");
-                userIDText.setText("");
+                PreparedStatement checkUserIDExist = pool.getConnection().prepareStatement("SELECT name FROM USER_INFORMATION WHERE userID = ?");
+                PreparedStatement removeUser = pool.getConnection().prepareStatement("DELETE FROM USER_INFORMATION WHERE userID = ?");
+                PreparedStatement updatePassword = pool.getConnection().prepareStatement("UPDATE USER_INFORMATION SET passwordHash = ? WHERE userID = ?");
+                PreparedStatement getUsersDetails = pool.getConnection().prepareStatement("SELECT accountType, orgID, name FROM USER_INFORMATION WHERE userID = ?");
+                PreparedStatement getOrganisationName = pool.getConnection().prepareStatement("SELECT orgName FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = ?");
+
+                // check userID exists
+                checkUserIDExist.setString(1, userID);
+
+                rs = checkUserIDExist.executeQuery();
+
+                if (rs.next()) {
+                    validUser = true;
+                } else {
+                    validUser = false;
+                }
+
+
+                // if find user is clicked
+                if (e.getSource() == find) {
+                    newPasswordText.setText("");
+
+                    getUsersDetails.setString(1, userID);
+
+                    rs = getUsersDetails.executeQuery();
+
+                    if (rs.next()) {
+                        userType = rs.getString("accountType");
+                        userOrganisationID = rs.getString("orgID");
+                        name = rs.getString("name");
+                    }
+
+                    userTypeComboBox.setSelectedItem(userType);
+                    nameText.setText(name);
+
+                    getOrganisationName.setString(1, userOrganisationID);
+                    rs = getOrganisationName.executeQuery();
+
+                    if (rs.next()) {
+                        userOrganisationName = rs.getString("orgName");
+                    }
+
+                    organisationComboBox.setSelectedItem(userOrganisationName);
+
+
+
+                }
+
+                // if reset password is activated
+                if (e.getSource() == resetPassword) {
+                    if (validUser) {
+                        newPassword = new PasswordFunctions().generatePassword();
+                        newPasswordHash = new PasswordFunctions().IntoHash(newPassword);
+                        newPasswordText.setText(newPassword);
+
+                        updatePassword.setString(1, newPasswordHash);
+                        updatePassword.setString(2, userID);
+                        updatePassword.executeQuery();
+
+                        passwordResetSuccessLabel.setText("Password has been reset");
+                    } else {
+                        passwordResetSuccessLabel.setText("Please find a valid userID");
+                    }
+                }
+
+                rs.close();
+                checkUserIDExist.close();
+                removeUser.close();
+                updatePassword.close();
+                getUsersDetails.close();
+                getOrganisationName.close();
+
+            } catch (SQLException | NoSuchAlgorithmException throwable) {
+                throwable.printStackTrace();
             }
-
-            rs.close();
-            checkUserIDExist.close();
-            removeUser.close();
-
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
         }
+
     }
 }

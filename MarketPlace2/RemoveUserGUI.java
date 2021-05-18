@@ -4,11 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,64 +18,9 @@ public class RemoveUserGUI extends JFrame implements ActionListener, Runnable {
     private static JLabel invalid;
 
 
-    private static void initDb(MariaDBDataSource pool) throws SQLException {
-        String string;
-        StringBuffer buffer = new StringBuffer();
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("./setupDB.sql"));
-            while ((string = reader.readLine()) != null) {
-                buffer.append(string + "\n");
-            }
-            reader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String[] queries = buffer.toString().split(";");
-
-        for (String query : queries) {
-            if (query.isBlank()) continue;
-            try (Connection conn = pool.getConnection();
-                 PreparedStatement statement = conn.prepareStatement(query)) {
-                statement.execute();
-            }
-        }
-    }
-
-    private static void loadMockData(MariaDBDataSource pool) throws SQLException {
-        String string;
-        StringBuffer buffer = new StringBuffer();
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("./mockupData.sql"));
-            while ((string = reader.readLine()) != null) {
-                buffer.append(string + "\n");
-            }
-            reader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String[] queries = buffer.toString().split(";");
-
-        for (String query : queries) {
-            if (query.isBlank()) continue;
-            try (Connection conn = pool.getConnection();
-                 PreparedStatement statement = conn.prepareStatement(query)) {
-                statement.execute();
-            }
-        }
-
-    }
-
     public static void main(String[] args) throws SQLException {
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
-        initDb(pool);
-
-//        loadMockData(pool);
+        new InitDatabase().initDb(pool);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new RemoveUserGUI());
@@ -127,39 +67,43 @@ public class RemoveUserGUI extends JFrame implements ActionListener, Runnable {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String userID = userIDText.getText();
-        valid.setText("");
-        invalid.setText("User doesn't exist or can't be removed");
 
-        String newUserID;
+        if (e.getSource() == button) {
+            String userID = userIDText.getText();
+            valid.setText("");
+            invalid.setText("User doesn't exist or can't be removed");
 
-        try {
-            MariaDBDataSource pool = MariaDBDataSource.getInstance();
-            invalid.setText("can't remove user");
-            ResultSet rs;
+            String newUserID;
 
-            PreparedStatement checkUserIDExist = pool.getConnection().prepareStatement("SELECT name FROM USER_INFORMATION WHERE userID = ?");
-            PreparedStatement removeUser = pool.getConnection().prepareStatement("DELETE FROM USER_INFORMATION WHERE userID = ?");
+            try {
+                MariaDBDataSource pool = MariaDBDataSource.getInstance();
+                invalid.setText("can't remove user");
+                ResultSet rs;
 
-            // check userID exists
-            checkUserIDExist.setString(1, userID);
+                PreparedStatement checkUserIDExist = pool.getConnection().prepareStatement("SELECT name FROM USER_INFORMATION WHERE userID = ?");
+                PreparedStatement removeUser = pool.getConnection().prepareStatement("DELETE FROM USER_INFORMATION WHERE userID = ?");
 
-            rs = checkUserIDExist.executeQuery();
+                // check userID exists
+                checkUserIDExist.setString(1, userID);
 
-            if (rs.next()) {
-                removeUser.setString(1, userID);
-                removeUser.executeUpdate();
-                valid.setText("user was removed");
-                invalid.setText("");
-                userIDText.setText("");
+                rs = checkUserIDExist.executeQuery();
+
+                if (rs.next()) {
+                    removeUser.setString(1, userID);
+                    removeUser.executeUpdate();
+                    valid.setText("user was removed");
+                    invalid.setText("");
+                    userIDText.setText("");
+                }
+
+                rs.close();
+                checkUserIDExist.close();
+                removeUser.close();
+
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
             }
-
-            rs.close();
-            checkUserIDExist.close();
-            removeUser.close();
-
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
         }
+
     }
 }
