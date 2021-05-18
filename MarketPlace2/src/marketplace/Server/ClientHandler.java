@@ -25,7 +25,7 @@ public class ClientHandler extends Thread {
     public void run(){
         try {
             ResultSet result;
-            inputFromClient = new ObjectInputStream(socket.getInputStream());
+            //inputFromClient = new ObjectInputStream(socket.getInputStream());
             outputToClient = new ObjectOutputStream(socket.getOutputStream());
 
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -36,13 +36,14 @@ public class ClientHandler extends Thread {
                 if (!socket.isClosed())
                 {
                     String line = in.readLine();
-                    Map<String, TableObject> map = (Map) inputFromClient.readObject();
-                    Map.Entry<String, TableObject> entry = map.entrySet().iterator().next();
+                    String[] parts = line.split("-");
+                    String query = parts[0];
+                    TableObject type = TableObject.valueOf(parts[1]);
 
-                    String query= entry.getKey();
-                    TableObject type =entry.getValue();
+                    System.out.println(query);
+                    System.out.println(type);
 
-                    result = pool.getResult(query);
+                    result = pool.getResult( query);
 
                     switch(type){
                         case USER:

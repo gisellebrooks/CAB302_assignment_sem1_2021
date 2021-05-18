@@ -92,6 +92,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         valid.setText("");
         invalid.setText("");
         User user = userHandler.getUserInformation(userID);
+        userHandler.addUser("'user10'", "'12345'", "'user'", "'org10'", "'bob bob'");
 
         if (user.getUsername().equals(userID)){
             System.out.println("successful bitch");

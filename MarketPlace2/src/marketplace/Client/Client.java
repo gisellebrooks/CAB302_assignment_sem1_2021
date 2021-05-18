@@ -47,16 +47,23 @@ public class Client {
 
         try {
             Properties props = loadServerConfig();
-            address = props.getProperty("app.address");
+            address = props.getProperty("app.hostname");
             port = Integer.parseInt(props.getProperty("app.port"));
-
+            System.out.println("here");
+            System.out.println(address);
+            System.out.println(port);
             socket = new Socket(address, port);
 
             //this.input = getInputStream();
-            inp = new ObjectInputStream(socket.getInputStream());
+            try {
+                inp = new ObjectInputStream(socket.getInputStream());
+                //out = new ObjectOutputStream(socket.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             output = getOutputStream();
-            out = new ObjectOutputStream(socket.getOutputStream());
 
+            System.out.println("setup streams");
         } catch (IOException e) {
             this.input = null;
             this.output = null;
@@ -87,9 +94,11 @@ public class Client {
 
     /** Write to the connection socket */
     public void writeToServer(String query, TableObject type) throws IOException {
-        Map<String, TableObject> writeMap = new LinkedHashMap<>();
-        writeMap.put(query, type);
-        out.writeObject(writeMap);
+//        LinkedHashMap<String, TableObject> writeMap = new LinkedHashMap<>();
+//        writeMap.put(query, type);
+
+        output.println(query +"-"+ type);
+        output.flush();
 //        output.println(query);
 //        output.flush();
     }

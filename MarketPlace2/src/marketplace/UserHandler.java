@@ -27,11 +27,11 @@ public class UserHandler {
     }
 
     public void addUser(String username, String passwordHash, String accountType, String organisationID, String name) {
-        User person = new User(username, passwordHash, accountType, organisationID, name);
+        //User person = new User(username, passwordHash, accountType, organisationID, name);
 
         try {
             client.writeToServer("INSERT INTO USER_INFORMATION VALUES("+username+", "+passwordHash+", "+ accountType +
-                    ", "+ organisationID + ", " + name +");", TableObject.USER);
+                    ", "+ organisationID + ", " + name +" );", TableObject.USER);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -15,10 +15,11 @@ public class ServerHandler {
     /** A list of active logged-in client sessions. */
     private ArrayList<Session> clientList;
 
-    public ServerHandler(int port){
+    public ServerHandler(int port, String address){
         try {
             MariaDBDataSource pool = MariaDBDataSource.getInstance();
-            listener = new ServerSocket(port);
+            InetAddress addr = InetAddress.getByName(address);
+            listener = new ServerSocket(port, 10, addr);
             while (true){
                 Socket socket = null;
                 try {
@@ -29,6 +30,7 @@ public class ServerHandler {
 
                     Thread thread = new ClientHandler(socket, pool);
                     thread.start();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -109,7 +111,7 @@ public class ServerHandler {
 
     public static void main(String[] args) throws IOException, SQLException {
         Properties props = loadServerConfig();
-        ServerHandler server = new ServerHandler(Integer.parseInt(props.getProperty("app.port")));
+        ServerHandler server = new ServerHandler(Integer.parseInt(props.getProperty("app.port")), props.getProperty("app.hostname"));
 
 
     }
