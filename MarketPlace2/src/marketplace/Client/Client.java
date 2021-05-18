@@ -1,10 +1,11 @@
 package marketplace.Client;
 
+import marketplace.TableObject;
 import marketplace.User;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Client
@@ -21,6 +22,7 @@ public class Client {
     private PrintWriter output;
     private BufferedReader input;
     private ObjectInputStream inp;
+    private ObjectOutputStream out;
 
     public Client(){
 
@@ -53,6 +55,7 @@ public class Client {
             //this.input = getInputStream();
             inp = new ObjectInputStream(socket.getInputStream());
             output = getOutputStream();
+            out = new ObjectOutputStream(socket.getOutputStream());
 
         } catch (IOException e) {
             this.input = null;
@@ -83,9 +86,12 @@ public class Client {
     }
 
     /** Write to the connection socket */
-    public void writeToServer(String query) {
-        output.println(query);
-        output.flush();
+    public void writeToServer(String query, TableObject type) throws IOException {
+        Map<String, TableObject> writeMap = new LinkedHashMap<>();
+        writeMap.put(query, type);
+        out.writeObject(writeMap);
+//        output.println(query);
+//        output.flush();
     }
 
     /** Attempt to read from the connection socket. */
@@ -93,15 +99,5 @@ public class Client {
         User user = (User)inp.readObject();
         return user;
     }
-
-
-
-//    public void sendChatMessage(String msg) {
-//        write(username + ": " + msg);
-//    }
-//
-//    public void sendQuitMessage() {
-//        write("QUIT");
-//    }
 
 }

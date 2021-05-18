@@ -1,14 +1,11 @@
 package marketplace;
 
 import marketplace.Client.Client;
-import marketplace.Server.ServerHandler;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 
@@ -26,8 +23,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
     private static UserHandler userHandler;
 
 
-
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args){
 
         client = new Client();
         userHandler= new UserHandler(client);
@@ -99,17 +95,12 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
         if (user.getUsername().equals(userID)){
             System.out.println("successful bitch");
-            try {
-                if (user.getPasswordHash().equals(PasswordFunctions.intoHash(password))) {
-                    invalid.setText("");
-                    valid.setText("Login successful!");
-                }
-                else{
-                    invalid.setText("wrong password!");
-
-                }
-            } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-                noSuchAlgorithmException.printStackTrace();
+            if (user.getPasswordHash().equals(password)) {
+                invalid.setText("");
+                valid.setText("Login successful!");
+            }
+            else{
+                invalid.setText("wrong password!");
             }
 
         }

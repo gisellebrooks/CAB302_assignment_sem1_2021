@@ -2,6 +2,8 @@ package marketplace;
 
 import marketplace.Client.Client;
 
+import java.io.IOException;
+
 public class UserHandler {
     private Client client;
 
@@ -16,7 +18,7 @@ public class UserHandler {
     public User getUserInformation(String userID){
         User result = null;
         try {
-            client.writeToServer("SELECT * FROM USER_INFORMATION WHERE userID = '"+ userID+"';");
+            client.writeToServer("SELECT * FROM USER_INFORMATION WHERE userID = '"+ userID+"';", TableObject.USER);
             result = client.readFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -25,15 +27,14 @@ public class UserHandler {
     }
 
     public void addUser(String username, String passwordHash, String accountType, String organisationID, String name) {
-//        User person = new User(username, passwordHash, accountType, organisationID, name);
-//
-//        Map<String, Object> params = new HashMap<>();
-//
-//        params.put("userID", username);
-//        params.put("passwordHash", passwordHash);
-//        params.put("accountType", accountType);
-//        params.put("orgID", organisationID);
-//        params.put("name", name);
+        User person = new User(username, passwordHash, accountType, organisationID, name);
+
+        try {
+            client.writeToServer("INSERT INTO USER_INFORMATION VALUES("+username+", "+passwordHash+", "+ accountType +
+                    ", "+ organisationID + ", " + name +");", TableObject.USER);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //query.add(ADD_USER, params);
 
