@@ -1,21 +1,50 @@
-package Application;
-
-import orders.BuyOrder;
-import Server.MariaDBDataSource;
+package marketplace.Server;
 
 import java.io.*;
-
-import java.sql.*;
+import java.net.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 
-public class Main {
+public class ServerHandler {
+
+    private ServerSocket listener;
+
+    /** A list of active logged-in client sessions. */
+    private ArrayList<Session> clientList;
+
+    public ServerHandler(int port){
+        try {
+            MariaDBDataSource pool = MariaDBDataSource.getInstance();
+            listener = new ServerSocket(port);
+            while (true){
+                Socket socket = null;
+                try {
+                    System.out.println("inb4 client connects");
+                    // socket object to receive incoming client requests
+                    socket = listener.accept();
+                    System.out.println("A new client is connected : " + socket);
+
+                    Thread thread = new ClientHandler(socket, pool);
+                    thread.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private static Properties loadServerConfig() {
         Properties props = new Properties();
         FileInputStream in = null;
 
         try {
-            in = new FileInputStream("MarketPlace/server.props");
+            in = new FileInputStream("server.props");
             props.load(in);
             in.close();
 
@@ -50,7 +79,6 @@ public class Main {
             }
         }
     }
-
     private static void loadMockData(MariaDBDataSource pool) throws SQLException {
         String string;
         StringBuffer buffer = new StringBuffer();
@@ -78,31 +106,11 @@ public class Main {
 
     }
 
-    public static void main(String[] args) throws SQLException {
-        //Properties serverProps = loadServerConfig();
 
-//        MarketplaceServer server = new MarketplaceServer(serverProps);
-//        server.startServer();
-
-        MariaDBDataSource pool = MariaDBDataSource.getInstance();
-        initDb(pool);
-        loadMockData(pool);
-
-        // Not sure where to put this client connection, leaving it here for now lol
-//        Client client = new Client(serverProps);
-//        client.createConnection();
-
-//        ResultSet rs;
-//
-        BuyOrder order = new BuyOrder(pool);
-        order.createBuyOrder("CPU", 30000, "org1");
-//        double quantity = order.getAssetQuantity("246", "123");
-//        System.out.println(quantity);
-//        double price = order.getAssetPrice("246", "123");
-
+    public static void main(String[] args) throws IOException, SQLException {
+        Properties props = loadServerConfig();
+        ServerHandler server = new ServerHandler(Integer.parseInt(props.getProperty("app.port")));
 
 
     }
 }
-
-

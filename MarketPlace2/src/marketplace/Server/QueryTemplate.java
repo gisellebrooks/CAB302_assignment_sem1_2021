@@ -1,9 +1,10 @@
-package Server;
+package marketplace.Server;
 
-import Server.MariaDBDataSource;
+//import Server.Server.MariaDBDataSource;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.Collections;
 import java.util.Map;
 
 public class QueryTemplate {
@@ -44,6 +45,13 @@ public class QueryTemplate {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void add(String query){
+
+        Map<String, Object> params = Collections.emptyMap();
+        add(query, params);
 
     }
 

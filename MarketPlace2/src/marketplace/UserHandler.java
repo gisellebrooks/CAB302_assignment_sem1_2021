@@ -1,48 +1,66 @@
-//package users;
-//
-//import Server.QueryTemplate;
-//import Server.MariaDBDataSource;
-//
-//import java.util.HashMap;
-//import java.util.Map;
-//
-//
-//public class ImplementUser {
-//    private final MariaDBDataSource pool;
-//    private final QueryTemplate query;
-//
-//    private static final String ADD_USER = "";
-//
-//    public ImplementUser(MariaDBDataSource pool){
-//        this.pool = pool;
-//        this.query = new QueryTemplate(pool);
-//
-//    }
-//
-//    public void addUser(String userID, String password, String accountType, String orgID, String name) {
-//        // User person = new User(userID, password, accountType, orgID, name);
+package marketplace;
+
+import marketplace.Client.Client;
+
+public class UserHandler {
+    private Client client;
+
+    private static final String ADD_USER = "INSERT INTO USER_INFORMATION VALUES (?, ?, ?, ?, ?);";
+    private static final String GET_USER = "SELECT * FROM USER_INFORMATION WHERE userID = ?;";
+
+    public UserHandler(Client client){
+        this.client = client;
+
+    }
+
+    public User getUserInformation(String userID){
+        User result = null;
+        try {
+            client.writeToServer("SELECT * FROM USER_INFORMATION WHERE userID = '"+ userID+"';");
+            result = client.readFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return result;
+    }
+
+    public void addUser(String username, String passwordHash, String accountType, String organisationID, String name) {
+//        User person = new User(username, passwordHash, accountType, organisationID, name);
 //
 //        Map<String, Object> params = new HashMap<>();
 //
-//        params.put("userID", userID);
-//        params.put("password", password);
+//        params.put("userID", username);
+//        params.put("passwordHash", passwordHash);
 //        params.put("accountType", accountType);
-//        params.put("orgID", orgID);
+//        params.put("orgID", organisationID);
 //        params.put("name", name);
-//
-//        query.add(ADD_USER, params);
-//
-//    }
-//
+
+        //query.add(ADD_USER, params);
+
+    }
+
 //    public boolean userExists(String userID){
-//        // check db if user already exits
+//        Map<String, Object> params = new HashMap<>();
+//        ResultSet rs;
+//        params.put("userID", userID);
+//
+//        rs = query.get(GET_USER, params);
+//
+//        try {
+//            if (rs.next()){
+//                return true;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 //        return false;
+//
 //    }
-//
-//    // all other methods for user stuff and password set n check etc
-//
-//
-//}
+
+    // all other methods for user stuff and password set n check etc
+
+
+}
 
 /**
  *
@@ -55,7 +73,7 @@
 //    private String passwordHash;
 //    private String accountType;
 //    private String organisation;
-//    private final MariaDBDataSource pool;
+//    private final Server.MariaDBDataSource pool;
 //    private PasswordFunctions passwordFunctions;
 //
 //    // set userID
@@ -70,7 +88,7 @@
 //     * @param
 //     * @return
 //     */
-//    public User(String username, String password, String type, String organisation, MariaDBDataSource pool) {
+//    public User(String username, String password, String type, String organisation, Server.MariaDBDataSource pool) {
 //        username = username;
 //        // passwordHash = passwordHash;
 //        accountType = type;

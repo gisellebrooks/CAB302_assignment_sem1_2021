@@ -1,56 +1,72 @@
+package marketplace;
 
+import java.io.Serializable;
 
-public class User {
-    private String username;
+public class User implements Serializable{
+    private String userID;
     private String passwordHash;
     private String accountType;
-    private String organisation;
+    private String orgID;
     private String name;
 
-    public User(String username, String passwordHash, String accountType, String organisation, String name){
-        this.username = username;
+    public User(String userID, String passwordHash, String accountType, String orgID, String name){
+        this.userID = userID;
         this.passwordHash = passwordHash;
         this.accountType = accountType;
-        this.organisation = organisation;
+        this.orgID = orgID;
         this.name = name;
     }
+    public User(){
 
-    public void setUsername(String username){
-        this.username = username;
+    }
+
+    public void setUsername(String userID){
+
+        this.userID = userID;
     }
 
     public void setPasswordHash(String passwordHash){
+
         this.passwordHash = passwordHash;
     }
 
     public void setAccountType(String accountType){
+
         this.accountType = accountType;
     }
 
-    public void setOrganisation(String organisation){
-        this.organisation = organisation;
+    public void setOrganisation(String orgID){
+
+        this.orgID = orgID;
     }
+
     public void setName(String name){
+
         this.name = name;
     }
 
     public String getUsername(){
-        return username;
+
+        return userID;
     }
 
     public String getPasswordHash(){
+
         return passwordHash;
     }
 
     public String getAccountType(){
+
         return accountType;
     }
 
     public String getOrganisation(){
-        return organisation;
+
+        return orgID;
     }
 
     public String getName(){
+
         return name;
     }
 
