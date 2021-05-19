@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS BUY_ORDER_HISTORY
 
 CREATE TABLE IF NOT EXISTS SELL_ORDER_HISTORY
                 (sellID VARCHAR(255) NOT NULL, 
-                 orgID VARCHAR(255), 
+                 userID VARCHAR(255),
                  assetID VARCHAR(255), 
                  quantity INTEGER, 
                  reconcilePrice NUMERIC(19,2), 

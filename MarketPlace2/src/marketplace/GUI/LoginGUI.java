@@ -1,4 +1,4 @@
-package marketplace;
+package marketplace.GUI;
 
 import marketplace.Client.Client;
 import marketplace.Handlers.UserHandler;

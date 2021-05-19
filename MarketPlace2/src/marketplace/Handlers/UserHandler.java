@@ -17,7 +17,7 @@ public class UserHandler {
         User result = null;
         try {
             client.writeToServer("SELECT * FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER);
-            result = (User) client.readFromServer();
+            result = (User) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class UserHandler {
         User user = null;
         try {
             client.writeToServer("SELECT * FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER);
-            user = (User) client.readFromServer();
+            user = (User) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }

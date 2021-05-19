@@ -103,9 +103,14 @@ public class Client {
     }
 
     /** Attempt to read from the connection socket. */
-    public Object readFromServer() throws IOException, ClassNotFoundException {
+    public Object readObjectFromServer() throws IOException, ClassNotFoundException {
         Object object = inp.readObject();
         return object;
+    }
+
+    public List readListFromServer() throws IOException, ClassNotFoundException {
+        List objectList = (List) inp.readObject();
+        return objectList;
     }
 
 }

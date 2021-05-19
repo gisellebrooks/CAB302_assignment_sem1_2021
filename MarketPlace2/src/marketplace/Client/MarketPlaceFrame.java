@@ -2,7 +2,7 @@ package marketplace.Client;
 
 
 
-import marketplace.LoginGUI;
+import marketplace.GUI.LoginGUI;
 
 import java.awt.Color;
 import java.awt.EventQueue;
