@@ -5,6 +5,7 @@ import marketplace.Objects.Organisation;
 import marketplace.TableObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class OrganisationHandler {
     private final Client client;
@@ -65,5 +66,18 @@ public class OrganisationHandler {
             return true;
         }
         return false;
+    }
+
+    // !!!!!!!!!!!!!!!!!!!!!!!  this needs to get multiple
+    public ArrayList<String> getAllOrganisationID() {
+        Organisation organisation = null;
+        ArrayList<String> organisationsIDList = new ArrayList<String>();
+        try {
+            client.writeToServer("SELECT ordID FROM ORGANISATIONAL_UNIT_INFORMATION;", TableObject.ORGANISATION);
+            organisation = (Organisation) client.readObjectFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return organisationsIDList;
     }
 }

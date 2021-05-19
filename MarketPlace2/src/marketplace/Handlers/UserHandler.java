@@ -67,4 +67,21 @@ public class UserHandler {
         }
         return false;
     }
+
+    public String newUserID() {
+        User user = null;
+        String returnID;
+        try {
+            client.writeToServer("SELECT userID FROM USER_INFORMATION ORDER BY userID DESC;", TableObject.USER);
+            user = (User) client.readObjectFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        returnID = user.getUserID();
+        returnID = returnID.replace("user", "");
+        returnID = (String.valueOf(Integer.parseInt(returnID)));
+        returnID = "user" + returnID;
+        return (returnID);
+    }
 }
