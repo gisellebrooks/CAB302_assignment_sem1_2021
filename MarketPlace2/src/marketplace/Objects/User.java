@@ -1,4 +1,4 @@
-package marketplace;
+package marketplace.Objects;
 
 import java.io.Serializable;
 

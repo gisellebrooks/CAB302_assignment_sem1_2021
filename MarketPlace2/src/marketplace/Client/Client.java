@@ -1,7 +1,7 @@
 package marketplace.Client;
 
 import marketplace.TableObject;
-import marketplace.User;
+import marketplace.Objects.User;
 
 import java.io.*;
 import java.net.Socket;
@@ -54,10 +54,9 @@ public class Client {
             System.out.println(port);
             socket = new Socket(address, port);
 
-            //this.input = getInputStream();
             try {
                 inp = new ObjectInputStream(socket.getInputStream());
-                //out = new ObjectOutputStream(socket.getOutputStream());
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -104,9 +103,9 @@ public class Client {
     }
 
     /** Attempt to read from the connection socket. */
-    public User readFromServer() throws IOException, ClassNotFoundException {
-        User user = (User)inp.readObject();
-        return user;
+    public Object readFromServer() throws IOException, ClassNotFoundException {
+        Object object = inp.readObject();
+        return object;
     }
 
 }

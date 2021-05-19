@@ -1,12 +1,14 @@
 package marketplace;
 
 import marketplace.Client.Client;
+import marketplace.Handlers.UserHandler;
+import marketplace.Objects.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.sql.SQLException;
 
 
 public class LoginGUI extends JFrame implements ActionListener, Runnable {
@@ -92,7 +94,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         valid.setText("");
         invalid.setText("");
         User user = userHandler.getUserInformation(userID);
-        userHandler.addUser("'user10'", "'12345'", "'user'", "'org10'", "'bob bob'");
+        userHandler.addUser("user10", "12345", "user", "org10", "bob bob");
 
         if (user.getUsername().equals(userID)){
             System.out.println("successful bitch");

@@ -1,12 +1,12 @@
 package marketplace.Server;
 
+import marketplace.Objects.BuyOrder;
+import marketplace.Objects.SellOrder;
 import marketplace.TableObject;
-import marketplace.User;
+import marketplace.Objects.User;
 import java.io.*;
 import java.net.Socket;
 import java.sql.ResultSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class ClientHandler extends Thread {
 
@@ -61,9 +61,27 @@ public class ClientHandler extends Thread {
                             break;
 
                         case BUY_ORDER:
+                            BuyOrder buy = new BuyOrder();
+                            while (result.next()){
+                                buy.setBuyId(result.getString("buyID"));
+                                buy.setUserID(result.getString("userID"));
+                                buy.setAssetName(result.getString("assetName"));
+                                buy.setQuantity(result.getInt("quantity"));
+                                buy.setPriceUpper(result.getBigDecimal("priceUpper"));
+                                buy.setOrderDate(result.getTimestamp("orderDate"));
+                            }
                             break;
 
                         case SELL_ORDER:
+                            SellOrder sell = new SellOrder();
+                            while (result.next()){
+                                sell.setSellId(result.getString("sellID"));
+                                sell.setUserID(result.getString("userID"));
+                                sell.setAssetName(result.getString("assetName"));
+                                sell.setQuantity(result.getInt("quantity"));
+                                sell.setPriceLower(result.getBigDecimal("priceLower"));
+                                sell.setOrderDate(result.getTimestamp("orderDate"));
+                            }
                             break;
 
                         case BUY_HISTORY:

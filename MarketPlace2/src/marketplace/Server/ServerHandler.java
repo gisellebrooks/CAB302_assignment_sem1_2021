@@ -12,9 +12,6 @@ public class ServerHandler {
 
     private ServerSocket listener;
 
-    /** A list of active logged-in client sessions. */
-    private ArrayList<Session> clientList;
-
     public ServerHandler(int port, String address){
         try {
             MariaDBDataSource pool = MariaDBDataSource.getInstance();
