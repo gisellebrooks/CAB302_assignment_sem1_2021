@@ -17,7 +17,7 @@ public class InventoryHandler {
         Inventory result = null;
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE assetID = '" + assetID + "';", TableObject.INVENTORY);
-            result = (Inventory) client.readFromServer();
+            result = (Inventory) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -37,8 +37,7 @@ public class InventoryHandler {
     public void removeAsset(String assetID, String assetName, String orgID, int quantity) {
 
         try {
-            client.writeToServer("D INTO INVENTORY VALUES('" + assetID + "', '" + assetName + "', '" + orgID +
-                    "', '" + quantity + "' );", TableObject.INVENTORY);
+            client.writeToServer("DELETE FROM INVENTORY WHERE assetID = '" + assetID + "' AND orgID = " + orgID + "';", TableObject.INVENTORY);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,18 +46,18 @@ public class InventoryHandler {
     public void updateUser(String assetID, String assetName, String orgID, int quantity) {
 
         try {
-            client.writeToServer("INSERT INTO INVENTORY VALUES('" + assetID + "', '" + assetName + "', '" + orgID +
-                    "', '" + quantity + "' );", TableObject.INVENTORY);
+            client.writeToServer("UPDATE INVENTORY SET assetName = '" + assetName
+                    + "', orgID = '" + orgID + "', quantity = '" + quantity + "' WHERE assetID = '" + assetID + "');", TableObject.INVENTORY);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean userIDExists(String assetID) {
+    public boolean assetExists(String assetID) {
         Inventory asset = null;
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE assetID = '" + assetID + "';", TableObject.INVENTORY);
-            asset = (Inventory) client.readFromServer();
+            asset = (Inventory) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }

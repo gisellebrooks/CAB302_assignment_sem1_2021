@@ -108,7 +108,7 @@ public class OrderGUI extends JFrame implements ActionListener, Runnable {
         User user = userHandler.getUserInformation(userID);
         userHandler.addUser("user10", "12345", "user", "org10", "bob bob");
 
-        if (user.getUsername().equals(userID)){
+        if (user.getUserID().equals(userID)){
             System.out.println("successful bitch");
             if (user.getPasswordHash().equals(password)) {
                 invalid.setText("");

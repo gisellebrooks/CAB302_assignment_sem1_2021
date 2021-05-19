@@ -1,10 +1,8 @@
 package marketplace.Server;
 
-import marketplace.Objects.BuyOrder;
-import marketplace.Objects.Organisation;
-import marketplace.Objects.SellOrder;
+import marketplace.Objects.*;
 import marketplace.TableObject;
-import marketplace.Objects.User;
+
 import java.io.*;
 import java.net.Socket;
 import java.sql.ResultSet;
@@ -107,6 +105,14 @@ public class ClientHandler extends Thread {
                             break;
 
                         case INVENTORY:
+                            Inventory inventory = new Inventory();
+                            while (result.next()) {
+                                inventory.setAssetID(result.getString("assetID"));
+                                inventory.setAssetName(result.getString("assetName"));
+                                inventory.setOrgID(result.getString("orgID"));
+                                inventory.setQuantity(result.getInt("quantity"));
+                            }
+                            outputToClient.writeObject(inventory);
                             break;
                     }
 

@@ -24,31 +24,31 @@ public class UserHandler {
         return result;
     }
 
-    public void addUser(String username, String passwordHash, String accountType, String organisationID, String name) {
+    public void addUser(String userID, String passwordHash, String accountType, String organisationID, String name) {
 
         try {
-            client.writeToServer("INSERT INTO USER_INFORMATION VALUES('" + username + "', '" + passwordHash + "', '" + accountType +
+            client.writeToServer("INSERT INTO USER_INFORMATION VALUES('" + userID + "', '" + passwordHash + "', '" + accountType +
                     "', '" + organisationID + "', '" + name + "' );", TableObject.USER);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void removeUser(String username, String passwordHash, String accountType, String organisationID, String name) {
+    public void removeUser(String userID, String passwordHash, String accountType, String organisationID, String name) {
 
         try {
-            client.writeToServer("D INTO USER_INFORMATION VALUES('" + username + "', '" + passwordHash + "', '" + accountType +
-                    "', '" + organisationID + "', '" + name + "' );", TableObject.USER);
+            client.writeToServer("DELETE FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER) ;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void updateUser(String username, String passwordHash, String accountType, String organisationID, String name) {
+    public void updateUser(String userID, String passwordHash, String accountType, String organisationID, String name) {
 
         try {
-            client.writeToServer("INSERT INTO USER_INFORMATION VALUES('" + username + "', '" + passwordHash + "', '" + accountType +
-                    "', '" + organisationID + "', '" + name + "' );", TableObject.USER);
+            client.writeToServer("UPDATE USER_INFORMATION SET passwordHash = '" + passwordHash + "', accountType = '" +
+                    accountType + "', or orgID = '" + organisationID + "', name = '" + name + "' WHERE userID = '" +
+                    userID + "';", TableObject.USER);
         } catch (IOException e) {
             e.printStackTrace();
         }

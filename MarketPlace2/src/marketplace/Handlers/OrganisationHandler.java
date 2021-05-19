@@ -17,7 +17,7 @@ public class OrganisationHandler {
         Organisation result = null;
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '"+ orgID+"';", TableObject.ORGANISATION);
-            result = (Organisation) client.readFromServer();
+            result = (Organisation) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -28,17 +28,16 @@ public class OrganisationHandler {
 
         try {
             client.writeToServer("INSERT INTO ORGANISATIONAL_UNIT_INFORMATION VALUES('" + orgID + "', '" + orgName
-                    + "', '" + credits + "');", TableObject.USER);
+                    + "', '" + credits + "');", TableObject.ORGANISATION);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void removeOrganisation(String orgID, String orgName, double credits) {
+    public void removeOrganisation(String orgID) {
 
         try {
-            client.writeToServer("INSERT INTO ORGANISATIONAL_UNIT_INFORMATION VALUES('" + orgID + "', '" + orgName
-                    + "', '" + credits + "');", TableObject.USER);
+            client.writeToServer("DELETE FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,8 +46,8 @@ public class OrganisationHandler {
     public void updateOrganisation(String orgID, String orgName, double credits) {
 
         try {
-            client.writeToServer("INSERT INTO ORGANISATIONAL_UNIT_INFORMATION VALUES('" + orgID + "', '" + orgName
-                    + "', '" + credits + "');", TableObject.USER);
+            client.writeToServer("UPDATE ORGANISATIONAL_UNIT_INFORMATION SET orgName = '" + orgName
+                    + "', credits = '" + credits + "' WHERE orgID = '" + orgID + "');", TableObject.ORGANISATION);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +57,7 @@ public class OrganisationHandler {
         Organisation organisation = null;
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
-            organisation = (Organisation) client.readFromServer();
+            organisation = (Organisation) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }

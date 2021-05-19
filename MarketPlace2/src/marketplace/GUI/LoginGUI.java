@@ -3,6 +3,7 @@ package marketplace.GUI;
 import marketplace.Client.Client;
 import marketplace.Handlers.UserHandler;
 import marketplace.Objects.User;
+import marketplace.PasswordFunctions;
 
 import javax.swing.*;
 import java.awt.*;
