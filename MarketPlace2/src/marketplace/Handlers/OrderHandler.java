@@ -6,21 +6,23 @@ import marketplace.Objects.SellOrder;
 import marketplace.TableObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
-public class OrderHandler {
+public class OrderHandler implements Serializable {
     private final Client client;
 
     public OrderHandler(Client client){
         this.client = client;
     }
 
-    public BuyOrder getAllActiveBuyOrders(){
-        BuyOrder result = null;
+    public List<BuyOrder> getAllActiveBuyOrders(){
+        List<BuyOrder> result = null;
         try {
             client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS;", TableObject.BUY_ORDER);
-            result = (BuyOrder) client.readFromServer();
+            result = (List) client.readListFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -31,7 +33,7 @@ public class OrderHandler {
         BuyOrder result = null;
         try {
             client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS WHERE buyID = '" +buyID+ "' ;", TableObject.BUY_ORDER);
-            result = (BuyOrder) client.readFromServer();
+            result = (BuyOrder) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -53,7 +55,7 @@ public class OrderHandler {
         SellOrder result = null;
         try {
             client.writeToServer("SELECT * FROM ACTIVE_SELL_ORDERS;", TableObject.SELL_ORDER);
-            result = (SellOrder) client.readFromServer();
+            result = (SellOrder) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -64,7 +66,7 @@ public class OrderHandler {
         SellOrder result = null;
         try {
             client.writeToServer("SELECT * FROM ACTIVE_SELL_ORDERS WHERE sellID = '" +sellID+ "' ;", TableObject.SELL_ORDER);
-            result = (SellOrder) client.readFromServer();
+            result = (SellOrder) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }

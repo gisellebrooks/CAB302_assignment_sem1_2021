@@ -1,17 +1,30 @@
-package marketplace;
+package marketplace.GUI;
 
 import marketplace.Client.Client;
+import marketplace.Handlers.OrderHandler;
 import marketplace.Handlers.UserHandler;
+import marketplace.Objects.BuyOrder;
 import marketplace.Objects.User;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class LoginGUI extends JFrame implements ActionListener, Runnable {
+public class OrderGUI extends JFrame implements ActionListener, Runnable {
+
+    private static JLabel Title;
+    private static JComboBox assetBox;
+    private static JButton sellButton;
+    private static JButton buyButton;
+
+    private static Client client;
+    private static UserHandler userHandler;
+    private static OrderHandler orderHandler;
+
 
     private static JLabel userLabel;
     private static JTextField userText;
@@ -21,14 +34,12 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
     private static JLabel valid;
     private static JLabel invalid;
 
-    private static Client client;
-    private static UserHandler userHandler;
-
 
     public static void main(String[] args){
 
         client = new Client();
         userHandler= new UserHandler(client);
+        orderHandler = new OrderHandler(client);
 
         try {
             client.connect();
@@ -38,7 +49,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         }
 
         JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new LoginGUI());
+        SwingUtilities.invokeLater(new OrderGUI());
     }
 
     @Override
@@ -49,46 +60,47 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
     public void createGui() {
         JPanel panel = new JPanel();
-        this.setSize(350,200);
+        this.setSize(500,450);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.add(panel);
         panel.setLayout(null);
 
-        userLabel = new JLabel("User");
-        userLabel.setBounds(10, 20, 80, 25);
-        panel.add(userLabel);
 
-        userText = new JTextField(20);
-        userText.setBounds(100, 20, 165, 25);
-        panel.add(userText);
 
-        passwordLabel = new JLabel("Password");
-        passwordLabel.setBounds(10, 50, 80, 25);
-        panel.add(passwordLabel);
+        Title = new JLabel("Orders");
+        Title.setBounds(210, 20, 80, 50);
+        panel.add(Title);
+        /// THIS NEEDS TO CHANGE TO GRAB ASSETS FROM INVENTORY INSTEAD OF BUY ORDERS
+        List<BuyOrder> buy = orderHandler.getAllActiveBuyOrders();
+        List<String> assets = new ArrayList<String>();
 
-        passwordText = new JPasswordField();
-        passwordText.setBounds(100, 50, 160, 25);
-        panel.add(passwordText);
+        for (BuyOrder buyOrder : buy) {
+            assets.add(buyOrder.getAssetName());
 
-        button = new JButton("Login");
-        button.setBounds(10, 80, 80, 25);
-        button.addActionListener(new LoginGUI());
-        panel.add(button);
+        }
 
-        valid = new JLabel("");
-        valid.setForeground(Color.green);
-        valid.setBounds(10, 110, 300, 25);
-        panel.add(valid);
+        assetBox = new JComboBox(assets.toArray(new String[0]));
+        assetBox.setBounds(210, 100, 80, 25);
+        panel.add(assetBox);
+//        assetBox.setSelectedIndex(buy.size());
+        assetBox.addActionListener(this);
 
-        invalid = new JLabel("");
-        invalid.setForeground(Color.red);
-        invalid.setBounds(10, 110, 300, 25);
-        panel.add(invalid);
+        buyButton = new JButton("Create Buy Order");
+        buyButton.setBounds(90, 250, 150, 25);
+        panel.add(buyButton);
+
+        sellButton = new JButton("Create Sell Order");
+        sellButton.setBounds(260, 250, 150, 25);
+        panel.add(sellButton);
+
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+
         String userID = userText.getText();
         String password = passwordText.getText();
         valid.setText("");

@@ -1,4 +1,4 @@
-package marketplace;
+package marketplace.GUI;
 
 import marketplace.Client.Client;
 import marketplace.Handlers.UserHandler;
@@ -11,9 +11,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 
-public class OrderGUI extends JFrame implements ActionListener, Runnable {
+public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
-    private static JLabel Title;
+    private static JLabel userLabel;
     private static JTextField userText;
     private static JLabel passwordLabel;
     private static JTextField passwordText;
@@ -49,17 +49,17 @@ public class OrderGUI extends JFrame implements ActionListener, Runnable {
 
     public void createGui() {
         JPanel panel = new JPanel();
-        this.setSize(500,450);
+        this.setSize(350,200);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.add(panel);
         panel.setLayout(null);
 
-        Title = new JLabel("Orders");
-        Title.setBounds(200, 20, 100, 50);
-        panel.add(Title);
+        userLabel = new JLabel("User");
+        userLabel.setBounds(10, 20, 80, 25);
+        panel.add(userLabel);
 
-        assetBox = new JComboBox(20);
+        userText = new JTextField(20);
         userText.setBounds(100, 20, 165, 25);
         panel.add(userText);
 

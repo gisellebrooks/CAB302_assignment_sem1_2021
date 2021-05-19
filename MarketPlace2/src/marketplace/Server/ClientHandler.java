@@ -7,6 +7,8 @@ import marketplace.Objects.User;
 import java.io.*;
 import java.net.Socket;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientHandler extends Thread {
 
@@ -61,15 +63,20 @@ public class ClientHandler extends Thread {
                             break;
 
                         case BUY_ORDER:
-                            BuyOrder buy = new BuyOrder();
+                            System.out.println("gut to buy switch statement");
+
+                            List<BuyOrder> objectList = new ArrayList<>();
                             while (result.next()){
+                                BuyOrder buy = new BuyOrder();
                                 buy.setBuyId(result.getString("buyID"));
                                 buy.setUserID(result.getString("userID"));
                                 buy.setAssetName(result.getString("assetName"));
                                 buy.setQuantity(result.getInt("quantity"));
                                 buy.setPriceUpper(result.getBigDecimal("priceUpper"));
                                 buy.setOrderDate(result.getTimestamp("orderDate"));
+                                objectList.add(buy);
                             }
+                            outputToClient.writeObject(objectList);
                             break;
 
                         case SELL_ORDER:
