@@ -16,7 +16,7 @@ public class MariaDBDataSource {
     /**
      * Constructor intializes the connection.
      */
-    private MariaDBDataSource() throws SQLException {
+    public MariaDBDataSource() throws SQLException {
         Properties props = new Properties();
         FileInputStream in = null;
 

@@ -1,5 +1,3 @@
-import Server.MariaDBDataSource;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,29 +25,23 @@ public class CreateOrganisationGUI extends JFrame implements ActionListener, Run
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
         new InitDatabase().initDb(pool);
 
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new CreateOrganisationGUI());
-    }
 
-    @Override
-    public void run() {
-        createGui();
-        this.setVisible(true);
-    }
-
-    public void createGui() {
+        JFrame frame = new JFrame();
+        frame.setDefaultLookAndFeelDecorated(true);
         JPanel panel = new JPanel();
-        this.setSize(550,450);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(550,200);
+        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 
-        this.add(panel);
+        frame.add(panel);
+        panel.setLayout(null);
+
+        frame.add(panel);
         panel.setLayout(null);
 
 
         // get all organisations for use in combo box
         ArrayList<String> organisationsList = new ArrayList<String>();
         try {
-            MariaDBDataSource pool = MariaDBDataSource.getInstance();
             ResultSet rs;
 
             PreparedStatement getAllOrganisations = pool.getConnection().prepareStatement("SELECT distinct orgName FROM ORGANISATIONAL_UNIT_INFORMATION");
@@ -63,8 +55,6 @@ public class CreateOrganisationGUI extends JFrame implements ActionListener, Run
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-
-
 
         organisationPromptLabel = new JLabel("Organisation Name:");
         organisationPromptLabel.setBounds(10, 20, 160, 25);
@@ -154,5 +144,10 @@ public class CreateOrganisationGUI extends JFrame implements ActionListener, Run
                 throwable.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 }

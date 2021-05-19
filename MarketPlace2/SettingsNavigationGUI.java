@@ -1,5 +1,3 @@
-import Server.MariaDBDataSource;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +36,7 @@ public class SettingsNavigationGUI extends JFrame implements ActionListener, Run
 
     public void createGui() {
         JPanel panel = new JPanel();
-        this.setSize(400,200);
+        this.setSize(400,300);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.add(panel);
