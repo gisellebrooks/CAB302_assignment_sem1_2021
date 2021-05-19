@@ -1,6 +1,7 @@
 package marketplace.Server;
 
 import marketplace.Objects.BuyOrder;
+import marketplace.Objects.Organisation;
 import marketplace.Objects.SellOrder;
 import marketplace.TableObject;
 import marketplace.Objects.User;
@@ -49,15 +50,23 @@ public class ClientHandler extends Thread {
                         case USER:
                             User user = new User();
                             while (result.next()) {
-                                user.setUsername(result.getString("userID"));
-                                user.setPasswordHash(result.getString("password"));
+                                user.setUserID(result.getString("userID"));
+                                user.setPasswordHash(result.getString("passwordHash"));
                                 user.setAccountType(result.getString("accountType"));
-                                user.setOrganisation(result.getString("orgID"));
+                                user.setOrganisationID(result.getString("orgID"));
                                 user.setName(result.getString("name"));
                             }
                             outputToClient.writeObject(user);
                             break;
+
                         case ORGANISATION:
+                            Organisation organisation = new Organisation();
+                            while (result.next()) {
+                                organisation.setOrgID(result.getString("orgID"));
+                                organisation.setOrgName(result.getString("orgName"));
+                                organisation.setCredits(result.getDouble("credits"));
+                            }
+                            outputToClient.writeObject(organisation);
                             break;
 
                         case BUY_ORDER:

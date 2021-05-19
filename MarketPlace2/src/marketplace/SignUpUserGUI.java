@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 
-public class LoginGUI extends JFrame implements ActionListener, Runnable {
+public class SignUpUserGUI extends JFrame implements ActionListener, Runnable {
 
     private static JLabel userLabel;
     private static JTextField userText;
@@ -38,7 +38,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         }
 
         JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new LoginGUI());
+        SwingUtilities.invokeLater(new SignUpUserGUI());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
 
         button = new JButton("Login");
         button.setBounds(10, 80, 80, 25);
-        button.addActionListener(new LoginGUI());
+        button.addActionListener(new SignUpUserGUI());
         panel.add(button);
 
         valid = new JLabel("");
