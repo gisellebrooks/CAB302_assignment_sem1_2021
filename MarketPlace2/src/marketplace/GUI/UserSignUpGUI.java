@@ -2,7 +2,6 @@ package marketplace.GUI;
 
 import marketplace.Client.Client;
 import marketplace.Handlers.UserHandler;
-import marketplace.Objects.User;
 import marketplace.PasswordFunctions;
 
 import javax.swing.*;
@@ -76,9 +75,9 @@ public class UserSignUpGUI extends JFrame implements ActionListener, Runnable {
         organisationLabel.setBounds(10, 80, 180, 25);
         panel.add(organisationLabel);
 
-        organisationComboBox = new JComboBox(organisationsList.toArray());
-        organisationComboBox.setBounds(10, 100, 165, 25);
-        panel.add(organisationComboBox);
+//        organisationComboBox = new JComboBox(organisationsList.toArray());
+//        organisationComboBox.setBounds(10, 100, 165, 25);
+//        panel.add(organisationComboBox);
 
         userTypeLabel = new JLabel("Select your user type:");
         userTypeLabel.setBounds(10, 140, 180, 25);
@@ -140,7 +139,7 @@ public class UserSignUpGUI extends JFrame implements ActionListener, Runnable {
         String password;
         String accountType = null;
         String organisationID = null;
-        User user = null;
+        //User user = null;
 
         password = new PasswordFunctions().generatePassword();
         try {
@@ -156,20 +155,26 @@ public class UserSignUpGUI extends JFrame implements ActionListener, Runnable {
             invalid.setText("can't signup");
 
             // get organisation ID with org name
-            String userOrganisation = organisationComboBox.getSelectedItem().toString();
+            // String userOrganisation = organisationComboBox.getSelectedItem().toString();
+            String userOrganisation = "org3";
 
             accountType = userTypeComboBox.getSelectedItem().toString();
 
             userID = userHandler.newUserID();
 
+            userHandler.addUser(userID, passwordHash, accountType, userOrganisation, name);
+
             // do all checks hear before adding new user values
 
-            userHandler.addUser(userID, passwordHash, accountType, organisationID, name);
-
-            valid.setText("signup successful!");
-            invalid.setText("");
-            givenPasswordLabel.setText(password);
-            givenIDLabel.setText(userID);
+//            User user = userHandler.getUserInformation("user10");
+//            userHandler.addUser("user10", "12345", "user", "org10", "bob bob");
+//
+//            //userHandler.addUser(userID, passwordHash, accountType, organisationID, name);
+//
+//            valid.setText("signup successful!");
+//            invalid.setText("");
+//            givenPasswordLabel.setText(password);
+//            givenIDLabel.setText(userID);
 
         }
     }

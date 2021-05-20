@@ -6,6 +6,7 @@ import marketplace.TableObject;
 import java.io.*;
 import java.net.Socket;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +19,15 @@ public class ClientHandler extends Thread {
     private BufferedReader in;
     private PrintWriter out;
 
-    public ClientHandler (Socket socket, MariaDBDataSource pool) throws IOException {
+    public ClientHandler (Socket socket, MariaDBDataSource pool) throws IOException, SQLException {
         this.socket = socket;
         this.pool = pool;
+        // ServerHandler.loadMockData(this.pool);
     }
 
     public void run(){
         try {
+
             ResultSet result;
             //inputFromClient = new ObjectInputStream(socket.getInputStream());
             outputToClient = new ObjectOutputStream(socket.getOutputStream());

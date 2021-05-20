@@ -4,7 +4,6 @@ import marketplace.Client.Client;
 import marketplace.Handlers.OrderHandler;
 import marketplace.Handlers.UserHandler;
 import marketplace.Objects.BuyOrder;
-import marketplace.Objects.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -101,24 +100,24 @@ public class OrderGUI extends JFrame implements ActionListener, Runnable {
     public void actionPerformed(ActionEvent e) {
 
 
-        String userID = userText.getText();
-        String password = passwordText.getText();
-        valid.setText("");
-        invalid.setText("");
-        User user = userHandler.getUserInformation(userID);
-        userHandler.addUser("user10", "12345", "user", "org10", "bob bob");
-
-        if (user.getUserID().equals(userID)){
-            System.out.println("successful bitch");
-            if (user.getPasswordHash().equals(password)) {
-                invalid.setText("");
-                valid.setText("Login successful!");
-            }
-            else{
-                invalid.setText("wrong password!");
-            }
-
-        }
+//        String userID = userText.getText();
+//        String password = passwordText.getText();
+//        valid.setText("");
+//        invalid.setText("");
+//        User user = userHandler.getUserInformation(userID);
+//        userHandler.addUser("user10", "12345", "user", "org10", "bob bob");
+//
+//        if (user.getUserID().equals(userID)){
+//            System.out.println("successful bitch");
+//            if (user.getPasswordHash().equals(password)) {
+//                invalid.setText("");
+//                valid.setText("Login successful!");
+//            }
+//            else{
+//                invalid.setText("wrong password!");
+//            }
+//
+//        }
 
     }
 }

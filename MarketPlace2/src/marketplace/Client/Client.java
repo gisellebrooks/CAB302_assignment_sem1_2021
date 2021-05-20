@@ -1,11 +1,12 @@
 package marketplace.Client;
 
 import marketplace.TableObject;
-import marketplace.Objects.User;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Client
@@ -93,13 +94,10 @@ public class Client {
 
     /** Write to the connection socket */
     public void writeToServer(String query, TableObject type) throws IOException {
-//        LinkedHashMap<String, TableObject> writeMap = new LinkedHashMap<>();
-//        writeMap.put(query, type);
 
         output.println(query +"-"+ type);
         output.flush();
-//        output.println(query);
-//        output.flush();
+
     }
 
     /** Attempt to read from the connection socket. */
@@ -109,8 +107,14 @@ public class Client {
     }
 
     public List readListFromServer() throws IOException, ClassNotFoundException {
-        List objectList = (List) inp.readObject();
+//        List objectList = (List) inp.readObject();
+//        return objectList;
+
+        // only sends last object at the moment
+        List objectList = new ArrayList();
+        objectList.add(inp.readObject());
         return objectList;
+        
     }
 
 }

@@ -1,11 +1,12 @@
 package marketplace.Server;
 
 import java.io.*;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Properties;
 
 public class ServerHandler {
@@ -78,7 +79,7 @@ public class ServerHandler {
             }
         }
     }
-    private static void loadMockData(MariaDBDataSource pool) throws SQLException {
+    public static void loadMockData(MariaDBDataSource pool) throws SQLException {
         String string;
         StringBuffer buffer = new StringBuffer();
 
@@ -102,7 +103,6 @@ public class ServerHandler {
                 statement.execute();
             }
         }
-
     }
 
 

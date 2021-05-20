@@ -27,9 +27,11 @@ public class UserHandler {
     public void addUser(String userID, String passwordHash, String accountType, String organisationID, String name) {
 
         try {
+            System.out.println("issue with adding user");
             client.writeToServer("INSERT INTO USER_INFORMATION VALUES('" + userID + "', '" + passwordHash + "', '" + accountType +
                     "', '" + organisationID + "', '" + name + "' );", TableObject.USER);
         } catch (IOException e) {
+
             e.printStackTrace();
         }
     }
@@ -72,15 +74,17 @@ public class UserHandler {
         User user = null;
         String returnID;
         try {
-            client.writeToServer("SELECT userID FROM USER_INFORMATION ORDER BY userID DESC;", TableObject.USER);
-            user = (User) client.readObjectFromServer();
+            client.writeToServer("SELECT * FROM USER_INFORMATION ORDER BY cast(userID as SIGNED) ASC;", TableObject.USER);
+
+            user = (User) client.readObjectFromServer(); // this is the issue
         } catch (Exception exception) {
+
             exception.printStackTrace();
         }
 
         returnID = user.getUserID();
         returnID = returnID.replace("user", "");
-        returnID = (String.valueOf(Integer.parseInt(returnID)));
+        returnID = (String.valueOf(Integer.parseInt(returnID) + 1));
         returnID = "user" + returnID;
         return (returnID);
     }

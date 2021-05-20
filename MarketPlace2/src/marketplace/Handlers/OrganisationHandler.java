@@ -68,6 +68,23 @@ public class OrganisationHandler {
         return false;
     }
 
+    public String newOrganisationID() {
+        Organisation organisation = null;
+        String returnID;
+        try {
+            client.writeToServer("SELECT orgID FROM ORGANISATIONAL_UNIT_INFORMATION ORDER BY orgID DESC;", TableObject.ORGANISATION);
+            organisation = (Organisation) client.readObjectFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        returnID = organisation.getOrgID();
+        returnID = returnID.replace("org", "");
+        returnID = (String.valueOf(Integer.parseInt(returnID) + 1));
+        returnID = "org" + returnID;
+        return (returnID);
+    }
+
     // !!!!!!!!!!!!!!!!!!!!!!!  this needs to get multiple
     public ArrayList<String> getAllOrganisationID() {
         Organisation organisation = null;
