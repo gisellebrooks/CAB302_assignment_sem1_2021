@@ -13,9 +13,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 
-public class UserSignUpGUI extends JFrame implements ActionListener, Runnable {
+public class SignUpUserGUI extends JFrame implements ActionListener, Runnable {
 
-    private static JLabel nameLabel;
+    private static JLabel namePromptLabel;
     private static JTextField nameText;
     private static JLabel passwordPromptLabel;
     private static JLabel organisationLabel;
@@ -46,7 +46,7 @@ public class UserSignUpGUI extends JFrame implements ActionListener, Runnable {
         }
 
         JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new UserSignUpGUI());
+        SwingUtilities.invokeLater(new SignUpUserGUI());
     }
 
     @Override
@@ -63,9 +63,9 @@ public class UserSignUpGUI extends JFrame implements ActionListener, Runnable {
         this.add(panel);
         panel.setLayout(null);
 
-        nameLabel = new JLabel("Full Name:");
-        nameLabel.setBounds(10, 20, 80, 25);
-        panel.add(nameLabel);
+        namePromptLabel = new JLabel("Full Name:");
+        namePromptLabel.setBounds(10, 20, 80, 25);
+        panel.add(namePromptLabel);
 
         nameText = new JTextField(20);
         nameText.setBounds(10, 40, 165, 25);
@@ -94,7 +94,7 @@ public class UserSignUpGUI extends JFrame implements ActionListener, Runnable {
 
         button = new JButton("Signup");
         button.setBounds(10, 200, 80, 25);
-        button.addActionListener(new UserSignUpGUI());
+        button.addActionListener(new SignUpUserGUI());
         panel.add(button);
 
 

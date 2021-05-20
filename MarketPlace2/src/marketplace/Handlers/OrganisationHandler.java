@@ -2,6 +2,7 @@ package marketplace.Handlers;
 
 import marketplace.Client.Client;
 import marketplace.Objects.Organisation;
+import marketplace.Objects.User;
 import marketplace.TableObject;
 
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class OrganisationHandler {
         }
     }
 
-    public boolean orgIDExists(String orgID) {
+    public boolean organisationIDExists(String orgID) {
         Organisation organisation = null;
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
@@ -68,13 +69,29 @@ public class OrganisationHandler {
         return false;
     }
 
+    public boolean organisationNameExists(String organisationName) {
+        Organisation organisation = null;
+        try {
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" + organisationName + "';", TableObject.ORGANISATION);
+            organisation = (Organisation) client.readObjectFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        if (organisation.getOrgName() != null) {
+            return true;
+        }
+        return false;
+    }
+
     public String newOrganisationID() {
         Organisation organisation = null;
         String returnID;
         try {
-            client.writeToServer("SELECT orgID FROM ORGANISATIONAL_UNIT_INFORMATION ORDER BY orgID DESC;", TableObject.ORGANISATION);
-            organisation = (Organisation) client.readObjectFromServer();
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION ORDER BY cast(orgID as SIGNED) ASC;", TableObject.ORGANISATION);
+
+            organisation = (Organisation) client.readObjectFromServer(); // this is the issue
         } catch (Exception exception) {
+
             exception.printStackTrace();
         }
 

@@ -36,7 +36,7 @@ public class UserHandler {
         }
     }
 
-    public void removeUser(String userID, String passwordHash, String accountType, String organisationID, String name) {
+    public void removeUser(String userID) {
 
         try {
             client.writeToServer("DELETE FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER) ;
