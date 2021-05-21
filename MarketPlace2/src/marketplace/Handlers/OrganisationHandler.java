@@ -17,7 +17,7 @@ public class OrganisationHandler {
         Organisation result = null;
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '"+ orgID+"';", TableObject.ORGANISATION);
-            result = (Organisation) client.readFromServer();
+            result = (Organisation) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class OrganisationHandler {
         Organisation organisation = null;
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
-            organisation = (Organisation) client.readFromServer();
+            organisation = (Organisation) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }

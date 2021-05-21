@@ -17,7 +17,7 @@ public class InventoryHandler {
         Inventory result = null;
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE assetID = '" + assetID + "';", TableObject.INVENTORY);
-            result = (Inventory) client.readFromServer();
+            result = (Inventory) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class InventoryHandler {
         Inventory asset = null;
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE assetID = '" + assetID + "';", TableObject.INVENTORY);
-            asset = (Inventory) client.readFromServer();
+            asset = (Inventory) client.readObjectFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
