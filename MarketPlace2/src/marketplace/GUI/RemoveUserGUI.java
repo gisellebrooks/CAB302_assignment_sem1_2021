@@ -2,15 +2,12 @@ package marketplace.GUI;
 
 import marketplace.Client.Client;
 import marketplace.Handlers.UserHandler;
-import marketplace.PasswordFunctions;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 
 
 public class RemoveUserGUI extends JFrame implements ActionListener, Runnable {
@@ -85,6 +82,16 @@ public class RemoveUserGUI extends JFrame implements ActionListener, Runnable {
         invalid.setText("");
 
         String userID = userIDText.getText();
+
+        client = new Client();
+        userHandler= new UserHandler(client);
+
+        try {
+            client.connect();
+
+        } catch (IOException er) {
+            er.printStackTrace();
+        }
 
         if (userHandler.userIDExists(userID)) {
             userHandler.removeUser(userID);

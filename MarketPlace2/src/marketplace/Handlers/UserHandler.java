@@ -27,7 +27,6 @@ public class UserHandler {
     public void addUser(String userID, String passwordHash, String accountType, String organisationID, String name) {
 
         try {
-            System.out.println("issue with adding user");
             client.writeToServer("INSERT INTO USER_INFORMATION VALUES('" + userID + "', '" + passwordHash + "', '" + accountType +
                     "', '" + organisationID + "', '" + name + "' );", TableObject.USER);
         } catch (IOException e) {

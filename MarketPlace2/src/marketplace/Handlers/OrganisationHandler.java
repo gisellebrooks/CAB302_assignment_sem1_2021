@@ -2,7 +2,6 @@ package marketplace.Handlers;
 
 import marketplace.Client.Client;
 import marketplace.Objects.Organisation;
-import marketplace.Objects.User;
 import marketplace.TableObject;
 
 import java.io.IOException;
@@ -60,6 +59,7 @@ public class OrganisationHandler {
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
             organisation = (Organisation) client.readObjectFromServer();
+
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -74,12 +74,14 @@ public class OrganisationHandler {
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" + organisationName + "';", TableObject.ORGANISATION);
             organisation = (Organisation) client.readObjectFromServer();
+
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         if (organisation.getOrgName() != null) {
             return true;
         }
+
         return false;
     }
 
@@ -87,19 +89,27 @@ public class OrganisationHandler {
         Organisation organisation = null;
         String returnID;
         try {
-            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION ORDER BY cast(orgID as SIGNED) ASC;", TableObject.ORGANISATION);
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION ORDER BY LENGTH(orgID) , orgID;", TableObject.ORGANISATION);
 
             organisation = (Organisation) client.readObjectFromServer(); // this is the issue
+
+
         } catch (Exception exception) {
 
             exception.printStackTrace();
         }
 
-        returnID = organisation.getOrgID();
-        returnID = returnID.replace("org", "");
-        returnID = (String.valueOf(Integer.parseInt(returnID) + 1));
-        returnID = "org" + returnID;
-        return (returnID);
+        System.out.println(organisation.getOrgID());
+
+        if (organisation.getOrgID() == null) {
+            return ("org1");
+        } else {
+            returnID = organisation.getOrgID();
+            returnID = returnID.replace("org", "");
+            returnID = (String.valueOf(Integer.parseInt(returnID) + 1));
+            returnID = "org" + returnID;
+            return (returnID);
+        }
     }
 
     // !!!!!!!!!!!!!!!!!!!!!!!  this needs to get multiple

@@ -139,7 +139,16 @@ public class SignUpUserGUI extends JFrame implements ActionListener, Runnable {
         String password;
         String accountType = null;
         String organisationID = null;
-        //User user = null;
+
+        client = new Client();
+        userHandler= new UserHandler(client);
+
+        try {
+            client.connect();
+
+        } catch (IOException er) {
+            er.printStackTrace();
+        }
 
         password = new PasswordFunctions().generatePassword();
         try {
@@ -166,15 +175,10 @@ public class SignUpUserGUI extends JFrame implements ActionListener, Runnable {
 
             // do all checks hear before adding new user values
 
-//            User user = userHandler.getUserInformation("user10");
-//            userHandler.addUser("user10", "12345", "user", "org10", "bob bob");
-//
-//            //userHandler.addUser(userID, passwordHash, accountType, organisationID, name);
-//
-//            valid.setText("signup successful!");
-//            invalid.setText("");
-//            givenPasswordLabel.setText(password);
-//            givenIDLabel.setText(userID);
+            valid.setText("signup successful!");
+            invalid.setText("");
+            givenPasswordLabel.setText(password);
+            givenIDLabel.setText(userID);
 
         }
     }

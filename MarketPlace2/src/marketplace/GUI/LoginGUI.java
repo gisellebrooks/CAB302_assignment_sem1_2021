@@ -112,7 +112,7 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         if (userHandler.userIDExists(userID)) {
 
             if (user.getPasswordHash().equals(passwordHash) && !passwordHash.equals(null)) {
-                valid.setText("user found");
+                new SettingsNavigationAdminGUI().run();
             } else {
                 invalid.setText("Invalid details!");
             }

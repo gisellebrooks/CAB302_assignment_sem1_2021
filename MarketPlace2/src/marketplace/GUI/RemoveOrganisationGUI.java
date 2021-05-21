@@ -53,26 +53,26 @@ public class RemoveOrganisationGUI extends JFrame implements ActionListener, Run
         panel.setLayout(null);
 
         organisationIDPromptLabel = new JLabel("ID of organisation to remove");
-        organisationIDPromptLabel.setBounds(10, 20, 80, 25);
+        organisationIDPromptLabel.setBounds(10, 20, 160, 25);
         panel.add(organisationIDPromptLabel);
 
         organisationIDText = new JTextField(20);
-        organisationIDText.setBounds(10, 40, 165, 25);
+        organisationIDText.setBounds(10, 50, 160, 25);
         panel.add(organisationIDText);
 
-        removeOrganisationButton = new JButton("Remove Organisation");
-        removeOrganisationButton.setBounds(10, 200, 120, 25);
+        removeOrganisationButton = new JButton("Remove");
+        removeOrganisationButton.setBounds(10, 80, 80, 25);
         removeOrganisationButton.addActionListener(new RemoveOrganisationGUI());
         panel.add(removeOrganisationButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
-        valid.setBounds(10, 360, 340, 25);
+        valid.setBounds(10, 120, 340, 25);
         panel.add(valid);
 
         invalid = new JLabel("");
         invalid.setForeground(Color.red);
-        invalid.setBounds(10, 360, 340, 25);
+        invalid.setBounds(10, 120, 340, 25);
         panel.add(invalid);
     }
 
@@ -83,13 +83,21 @@ public class RemoveOrganisationGUI extends JFrame implements ActionListener, Run
 
         String organisationID = organisationIDText.getText();
 
+        client = new Client();
+        organisationHandler= new OrganisationHandler(client);
+
+        try {
+            client.connect();
+
+        } catch (IOException er) {
+            er.printStackTrace();
+        }
+
         if (organisationHandler.organisationIDExists(organisationID)) {
             organisationHandler.removeOrganisation(organisationID);
             valid.setText("Organisation was successfully removed");
-
         } else {
             invalid.setText("Organisation can't be found or can't be removed");
         }
-
     }
 }

@@ -1,7 +1,7 @@
 package marketplace.GUI;
 
 import marketplace.Client.Client;
-import marketplace.Handlers.OrganisationHandler;
+import marketplace.Handlers.UserHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,13 +22,13 @@ public class ModifyUserGUI extends JFrame implements ActionListener, Runnable {
     private static JLabel invalid;
 
     private static Client client;
-    private static OrganisationHandler organisationHandler;
+    private static UserHandler userHandler;
 
 
     public static void main(String[] args){
 
         client = new Client();
-        organisationHandler= new OrganisationHandler(client);
+        userHandler= new UserHandler(client);
 
         try {
             client.connect();
@@ -100,18 +100,28 @@ public class ModifyUserGUI extends JFrame implements ActionListener, Runnable {
         String organisationName = nameText.getText();
         int credits = 0;
 
-        try  {
-            credits = Integer.parseInt(creditsText.getText());
+        client = new Client();
+        userHandler= new UserHandler(client);
 
-            if (organisationHandler.organisationNameExists(organisationName)) {
-                invalid.setText("That organisation name is taken");
-            } else {
-                organisationHandler.addOrganisation(organisationHandler.newOrganisationID(), organisationName, credits);
-                valid.setText("Organisation was successfully created");
-            }
-        } catch (NumberFormatException NumberFormatError) {
-            NumberFormatError.printStackTrace();
+        try {
+            client.connect();
+
+        } catch (IOException er) {
+            er.printStackTrace();
         }
+
+//        try  {
+//            credits = Integer.parseInt(creditsText.getText());
+//
+//            if (userHandler.userIDExists(organisationName)) {
+//                invalid.setText("That organisation name is taken");
+//            } else {
+//                userHandler.userIDExists(userIDExists.newOrganisationID(), organisationName, credits);
+//                valid.setText("Organisation was successfully created");
+//            }
+//        } catch (NumberFormatException NumberFormatError) {
+//            NumberFormatError.printStackTrace();
+//        }
 
 
 

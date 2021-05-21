@@ -17,7 +17,7 @@ public class SignUpOrganisationGUI extends JFrame implements ActionListener, Run
     private static JLabel creditsPromptLabel;
     private static JTextField creditsText;
     private static JButton createOrganisationButton;
-    private static JTextField givenIDLabel;
+    private static JLabel givenIDLabel;
     private static JLabel valid;
     private static JLabel invalid;
 
@@ -56,7 +56,7 @@ public class SignUpOrganisationGUI extends JFrame implements ActionListener, Run
         panel.setLayout(null);
 
         namePromptLabel = new JLabel("Organisation Name:");
-        namePromptLabel.setBounds(10, 20, 80, 25);
+        namePromptLabel.setBounds(10, 20, 160, 25);
         panel.add(namePromptLabel);
 
         nameText = new JTextField(20);
@@ -72,48 +72,62 @@ public class SignUpOrganisationGUI extends JFrame implements ActionListener, Run
         panel.add(creditsText);
 
         createOrganisationButton = new JButton("Create Organisation");
-        createOrganisationButton.setBounds(10, 200, 80, 25);
+        createOrganisationButton.setBounds(10, 140, 160, 25);
         createOrganisationButton.addActionListener(new SignUpOrganisationGUI());
         panel.add(createOrganisationButton);
 
         // where the given password goes
-        givenIDLabel = new JTextField(20);
-        givenIDLabel.setBounds(10, 280, 220, 25);
+        givenIDLabel = new JLabel("");
+        givenIDLabel.setBounds(10, 200, 220, 25);
         panel.add(givenIDLabel);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
-        valid.setBounds(10, 360, 260, 25);
+        valid.setBounds(10, 180, 260, 25);
         panel.add(valid);
 
         invalid = new JLabel("");
         invalid.setForeground(Color.red);
-        invalid.setBounds(10, 260, 340, 25);
+        invalid.setBounds(10, 180, 340, 25);
         panel.add(invalid);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String newID = null;
+        double credits = 0;
+        String organisationName = null;
+
         valid.setText("");
         invalid.setText("Invalid inputs");
 
-        String organisationName = nameText.getText();
-        int credits = 0;
+        client = new Client();
+        organisationHandler= new OrganisationHandler(client);
+
+        try {
+            client.connect();
+
+        } catch (IOException er) {
+            er.printStackTrace();
+        }
 
         try  {
-            credits = Integer.parseInt(creditsText.getText());
+            credits = Double.parseDouble(creditsText.getText());
+            newID = organisationHandler.newOrganisationID();
+            organisationName = nameText.getText();
 
             if (organisationHandler.organisationNameExists(organisationName)) {
                 invalid.setText("That organisation name is taken");
             } else {
-                organisationHandler.addOrganisation(organisationHandler.newOrganisationID(), organisationName, credits);
+                organisationHandler.addOrganisation(newID, organisationName, credits);
                 valid.setText("Organisation was successfully created");
+                invalid.setText("");
+                givenIDLabel.setText("OrganisationID: " + newID);
+
+
             }
         } catch (NumberFormatException NumberFormatError) {
-            NumberFormatError.printStackTrace();
+            invalid.setText("Credits must be a number");
         }
-
-
-
     }
 }
