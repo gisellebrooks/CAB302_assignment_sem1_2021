@@ -1,17 +1,14 @@
 package marketplace.GUI;
 
-import marketplace.Client.Client;
-import marketplace.Handlers.OrganisationHandler;
 import marketplace.Objects.Organisation;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 
-public class ModifyOrganisationGUI extends JFrame implements ActionListener, Runnable {
+public class ModifyOrganisationGUI extends JPanel implements ActionListener, Runnable {
 
     private static JLabel organisationIDPromptLabel;
     private static JTextField organisationIDText;
@@ -25,86 +22,60 @@ public class ModifyOrganisationGUI extends JFrame implements ActionListener, Run
     private static JLabel valid;
     private static JLabel invalid;
 
-    private static Client client;
-    private static OrganisationHandler organisationHandler;
-
-
-    public static void main(String[] args){
-
-        client = new Client();
-        organisationHandler= new OrganisationHandler(client);
-
-        try {
-            client.connect();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new ModifyOrganisationGUI());
-    }
-
     @Override
     public void run() {
         createGui();
-        this.setVisible(true);
     }
 
     public void createGui() {
-        JPanel panel = new JPanel();
-        this.setSize(550,450);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.add(panel);
-        panel.setLayout(null);
-
-
+        setLayout(null);
+        setBounds(0, 0, 600, 600);
 
         organisationIDPromptLabel = new JLabel("Organisation ID:");
         organisationIDPromptLabel.setBounds(10, 20, 80, 25);
-        panel.add(organisationIDPromptLabel);
+        add(organisationIDPromptLabel);
 
         organisationIDText = new JTextField(20);
         organisationIDText.setBounds(10, 40, 165, 25);
-        panel.add(organisationIDText);
+        add(organisationIDText);
 
         findOrganisationButton = new JButton("Find Organisation");
         findOrganisationButton.setBounds(10, 60, 140, 25);
         findOrganisationButton.addActionListener(new ModifyOrganisationGUI());
-        panel.add(findOrganisationButton);
+        add(findOrganisationButton);
 
 
         namePromptLabel = new JLabel("Organisation Name:");
         namePromptLabel.setBounds(10, 80, 80, 25);
-        panel.add(namePromptLabel);
+        add(namePromptLabel);
 
         nameText = new JTextField(20);
         nameText.setBounds(10, 100, 165, 25);
-        panel.add(nameText);
+        add(nameText);
 
         creditsPromptLabel = new JLabel("Credits:");
         creditsPromptLabel.setBounds(10, 140, 180, 25);
-        panel.add(creditsPromptLabel);
+        add(creditsPromptLabel);
 
         creditsText = new JTextField(20);
         creditsText.setBounds(10, 160, 165, 25);
-        panel.add(creditsText);
+        add(creditsText);
 
         modifyOrganisationButton = new JButton("Modify Organisation");
         modifyOrganisationButton.setBounds(10, 200, 80, 25);
         modifyOrganisationButton.addActionListener(new ModifyOrganisationGUI());
-        panel.add(modifyOrganisationButton);
+        add(modifyOrganisationButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
         valid.setBounds(10, 360, 260, 25);
-        panel.add(valid);
+        add(valid);
 
         invalid = new JLabel("");
         invalid.setForeground(Color.red);
         invalid.setBounds(10, 260, 340, 25);
-        panel.add(invalid);
+        add(invalid);
     }
 
     boolean foundOrganisation = false;
@@ -120,9 +91,9 @@ public class ModifyOrganisationGUI extends JFrame implements ActionListener, Run
         if (e.getSource() == findOrganisationButton) {
             organisationID = organisationIDText.getText();
 
-            if (organisationHandler.organisationIDExists(organisationID)) {
+            if (MainGUIHandler.organisationHandler.organisationIDExists(organisationID)) {
                 foundOrganisation = true;
-                organisation = organisationHandler.getOrganisationInformation(organisationID);
+                organisation = MainGUIHandler.organisationHandler.getOrganisationInformation(organisationID);
 
                 nameText.setText(organisation.getOrgName());
                 creditsText.setText(Double.toString((organisation.getCredits())));

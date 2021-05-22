@@ -1,15 +1,14 @@
 package marketplace.GUI;
 
-import marketplace.Client.Client;
-import marketplace.Handlers.OrganisationHandler;
-
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 
-public class SettingsNavigationAdminGUI extends JFrame implements ActionListener, Runnable {
+public class SettingsNavigationAdminGUI extends JPanel implements ActionListener {
 
     private static JButton createUserButton;
     private static JButton removeUserButton;
@@ -18,66 +17,48 @@ public class SettingsNavigationAdminGUI extends JFrame implements ActionListener
     private static JButton removeOrganisationButton;
     private static JButton modifyOrganisationButton;
 
-    private static Client client;
-    private static OrganisationHandler organisationHandler;
-
-
-    public static void main(String[] args){
-
-        client = new Client();
-        organisationHandler= new OrganisationHandler(client);
-
-        try {
-            client.connect();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new SettingsNavigationAdminGUI());
-    }
-
-    @Override
-    public void run() {
+    public SettingsNavigationAdminGUI() {
         createGui();
-        this.setVisible(true);
     }
 
     public void createGui() {
-        JPanel panel = new JPanel();
-        this.setSize(600,600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        this.add(panel);
-        panel.setLayout(null);
+        setLayout(null);
+        setBounds(0, 0, 600, 600);
+        Border border = new LineBorder(Color.ORANGE, 4, true);
+        setBorder(border);
 
         createUserButton = new JButton("Create User");
         createUserButton.setBounds(50, 20, 150, 25);
         createUserButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new SignUpUserGUI().run();
+                removeAll();
+                 add(new SignUpUserGUI());
+                updateUI();
             }
         });
-        panel.add(createUserButton);
+        add(createUserButton);
 
         removeUserButton = new JButton("Remove User");
         removeUserButton.setBounds(50, 60, 150, 25);
         removeUserButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new RemoveUserGUI().run();
+                removeAll();
+                add(new RemoveUserGUI());
+                updateUI();
             }
         });
-        panel.add(removeUserButton);
+        add(removeUserButton);
 
         modifyUserButton = new JButton("Modify User");
         modifyUserButton.setBounds(50, 100, 150, 25);
         modifyUserButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new ModifyUserGUI().run();
+                removeAll();
+                add(new ModifyUserGUI());
+                updateUI();
             }
         });
-        panel.add(modifyUserButton);
+        add(modifyUserButton);
 
 
 
@@ -86,40 +67,38 @@ public class SettingsNavigationAdminGUI extends JFrame implements ActionListener
         createOrganisationButton.setBounds(250, 20, 150, 25);
         createOrganisationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new SignUpOrganisationGUI().run();
+                removeAll();
+                add(new SignUpOrganisationGUI());
+                updateUI();
             }
         });
-        panel.add(createOrganisationButton);
+        add(createOrganisationButton);
 
         removeOrganisationButton = new JButton("Remove Organisation");
         removeOrganisationButton.setBounds(250, 60, 150, 25);
         removeOrganisationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new RemoveOrganisationGUI().run();
+                removeAll();
+                add(new RemoveOrganisationGUI());
+                updateUI();
             }
         });
-        panel.add(removeOrganisationButton);
+        add(removeOrganisationButton);
 
         modifyOrganisationButton = new JButton("Modify Organisation");
         modifyOrganisationButton.setBounds(250, 100, 150, 25);
         modifyOrganisationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new ModifyOrganisationGUI().run();
+                removeAll();
+                add(new ModifyOrganisationGUI());
+                updateUI();
             }
         });
-        panel.add(modifyOrganisationButton);
+        add(modifyOrganisationButton);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        client = new Client();
-        organisationHandler= new OrganisationHandler(client);
 
-        try {
-            client.connect();
-
-        } catch (IOException er) {
-            er.printStackTrace();
-        }
     }
 }

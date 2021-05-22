@@ -1,16 +1,12 @@
 package marketplace.GUI;
 
-import marketplace.Client.Client;
-import marketplace.Handlers.UserHandler;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 
-public class ModifyUserGUI extends JFrame implements ActionListener, Runnable {
+public class ModifyUserGUI extends JPanel implements ActionListener, Runnable {
 
     private static JLabel namePromptLabel;
     private static JTextField nameText;
@@ -21,75 +17,51 @@ public class ModifyUserGUI extends JFrame implements ActionListener, Runnable {
     private static JLabel valid;
     private static JLabel invalid;
 
-    private static Client client;
-    private static UserHandler userHandler;
-
-
-    public static void main(String[] args){
-
-        client = new Client();
-        userHandler= new UserHandler(client);
-
-        try {
-            client.connect();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new ModifyUserGUI());
-    }
-
     @Override
     public void run() {
         createGui();
-        this.setVisible(true);
     }
 
     public void createGui() {
-        JPanel panel = new JPanel();
-        this.setSize(550,450);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.add(panel);
-        panel.setLayout(null);
+        setLayout(null);
+        setBounds(0, 0, 600, 600);
 
         namePromptLabel = new JLabel("Organisation Name:");
         namePromptLabel.setBounds(10, 20, 80, 25);
-        panel.add(namePromptLabel);
+        add(namePromptLabel);
 
         nameText = new JTextField(20);
         nameText.setBounds(10, 40, 165, 25);
-        panel.add(nameText);
+        add(nameText);
 
         creditsPromptLabel = new JLabel("Credits:");
         creditsPromptLabel.setBounds(10, 80, 180, 25);
-        panel.add(creditsPromptLabel);
+        add(creditsPromptLabel);
 
         creditsText = new JTextField(20);
         creditsText.setBounds(10, 100, 165, 25);
-        panel.add(creditsText);
+        add(creditsText);
 
         createOrganisationButton = new JButton("Create Organisation");
         createOrganisationButton.setBounds(10, 200, 80, 25);
         createOrganisationButton.addActionListener(new ModifyUserGUI());
-        panel.add(createOrganisationButton);
+        add(createOrganisationButton);
 
         // where the given password goes
         givenIDLabel = new JTextField(20);
         givenIDLabel.setBounds(10, 280, 220, 25);
-        panel.add(givenIDLabel);
+        add(givenIDLabel);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
         valid.setBounds(10, 360, 260, 25);
-        panel.add(valid);
+        add(valid);
 
         invalid = new JLabel("");
         invalid.setForeground(Color.red);
         invalid.setBounds(10, 260, 340, 25);
-        panel.add(invalid);
+        add(invalid);
     }
 
     @Override
@@ -99,16 +71,6 @@ public class ModifyUserGUI extends JFrame implements ActionListener, Runnable {
 
         String organisationName = nameText.getText();
         int credits = 0;
-
-        client = new Client();
-        userHandler= new UserHandler(client);
-
-        try {
-            client.connect();
-
-        } catch (IOException er) {
-            er.printStackTrace();
-        }
 
 //        try  {
 //            credits = Integer.parseInt(creditsText.getText());

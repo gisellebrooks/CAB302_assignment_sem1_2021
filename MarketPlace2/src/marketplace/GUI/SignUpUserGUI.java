@@ -1,19 +1,18 @@
 package marketplace.GUI;
 
-import marketplace.Client.Client;
-import marketplace.Handlers.UserHandler;
 import marketplace.PasswordFunctions;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 
-public class SignUpUserGUI extends JFrame implements ActionListener, Runnable {
+public class SignUpUserGUI extends JPanel implements ActionListener {
 
     private static JLabel namePromptLabel;
     private static JTextField nameText;
@@ -29,51 +28,28 @@ public class SignUpUserGUI extends JFrame implements ActionListener, Runnable {
     private static JLabel valid;
     private static JLabel invalid;
 
-    private static Client client;
-    private static UserHandler userHandler;
-
-
-    public static void main(String[] args){
-
-        client = new Client();
-        userHandler= new UserHandler(client);
-
-        try {
-            client.connect();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new SignUpUserGUI());
-    }
-
-    @Override
-    public void run() {
+    public SignUpUserGUI() {
         createGui();
-        this.setVisible(true);
     }
 
     public void createGui() {
-        JPanel panel = new JPanel();
-        this.setSize(550,450);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.add(panel);
-        panel.setLayout(null);
+        setLayout(null);
+        setBounds(0, 0, 600, 600);
+        Border border = new LineBorder(Color.ORANGE, 4, true);
+        setBorder(border);
 
         namePromptLabel = new JLabel("Full Name:");
         namePromptLabel.setBounds(10, 20, 80, 25);
-        panel.add(namePromptLabel);
+        add(namePromptLabel);
 
         nameText = new JTextField(20);
         nameText.setBounds(10, 40, 165, 25);
-        panel.add(nameText);
+        add(nameText);
 
         organisationLabel = new JLabel("Select your organisation:");
         organisationLabel.setBounds(10, 80, 180, 25);
-        panel.add(organisationLabel);
+        add(organisationLabel);
 
 //        organisationComboBox = new JComboBox(organisationsList.toArray());
 //        organisationComboBox.setBounds(10, 100, 165, 25);
@@ -81,7 +57,7 @@ public class SignUpUserGUI extends JFrame implements ActionListener, Runnable {
 
         userTypeLabel = new JLabel("Select your user type:");
         userTypeLabel.setBounds(10, 140, 180, 25);
-        panel.add(userTypeLabel);
+        add(userTypeLabel);
 
         ArrayList<String> userTypes = new ArrayList<String>();
         userTypes.add("USER");
@@ -89,44 +65,44 @@ public class SignUpUserGUI extends JFrame implements ActionListener, Runnable {
 
         userTypeComboBox = new JComboBox(userTypes.toArray());
         userTypeComboBox.setBounds(10, 160, 165, 25);
-        panel.add(userTypeComboBox);
+        add(userTypeComboBox);
 
 
         button = new JButton("Signup");
         button.setBounds(10, 200, 80, 25);
-        button.addActionListener(new SignUpUserGUI());
-        panel.add(button);
+        button.addActionListener(this);
+        add(button);
 
 
         IDPromptLabel = new JLabel("Your userID is:");
         IDPromptLabel.setBounds(10, 260, 180, 25);
-        panel.add(IDPromptLabel);
+        add(IDPromptLabel);
 
         // where the given password goes
         givenIDLabel = new JLabel("");
         givenIDLabel.setBounds(10, 280, 180, 25);
-        panel.add(givenIDLabel);
+        add(givenIDLabel);
 
 
         passwordPromptLabel = new JLabel("Your password is:");
         passwordPromptLabel.setBounds(10, 300, 180, 25);
-        panel.add(passwordPromptLabel);
+        add(passwordPromptLabel);
 
         // where the given password goes
         givenPasswordLabel = new JLabel("");
         givenPasswordLabel.setBounds(10, 320, 180, 25);
-        panel.add(givenPasswordLabel);
+        add(givenPasswordLabel);
 
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
         valid.setBounds(10, 360, 340, 25);
-        panel.add(valid);
+        add(valid);
 
         invalid = new JLabel("");
         invalid.setForeground(Color.red);
         invalid.setBounds(10, 360, 340, 25);
-        panel.add(invalid);
+        add(invalid);
     }
 
     @Override
@@ -137,18 +113,7 @@ public class SignUpUserGUI extends JFrame implements ActionListener, Runnable {
         String userID;
         String passwordHash = null;
         String password;
-        String accountType = null;
-        String organisationID = null;
-
-        client = new Client();
-        userHandler= new UserHandler(client);
-
-        try {
-            client.connect();
-
-        } catch (IOException er) {
-            er.printStackTrace();
-        }
+        String accountType;
 
         password = new PasswordFunctions().generatePassword();
         try {
@@ -169,10 +134,9 @@ public class SignUpUserGUI extends JFrame implements ActionListener, Runnable {
 
             accountType = userTypeComboBox.getSelectedItem().toString();
 
-            userID = userHandler.newUserID();
+            userID = MainGUIHandler.userHandler.newUserID();
 
-            userHandler.addUser(userID, passwordHash, accountType, userOrganisation, name);
-
+            MainGUIHandler.userHandler.addUser(userID, passwordHash, accountType, userOrganisation, name);
             // do all checks hear before adding new user values
 
             valid.setText("signup successful!");
