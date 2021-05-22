@@ -15,6 +15,8 @@ public class ServerHandler {
     public ServerHandler(int port, String address){
         try {
             MariaDBDataSource pool = MariaDBDataSource.getInstance();
+            initDb(pool);
+            //loadMockData(pool);
             InetAddress addr = InetAddress.getByName(address);
             listener = new ServerSocket(port, 10, addr);
             while (true){
@@ -108,6 +110,7 @@ public class ServerHandler {
 
     public static void main(String[] args) throws IOException, SQLException {
         Properties props = loadServerConfig();
+
         ServerHandler server = new ServerHandler(Integer.parseInt(props.getProperty("app.port")), props.getProperty("app.hostname"));
 
 

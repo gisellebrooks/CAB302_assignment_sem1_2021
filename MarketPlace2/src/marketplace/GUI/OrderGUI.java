@@ -3,7 +3,7 @@ package marketplace.GUI;
 import marketplace.Client.Client;
 import marketplace.Handlers.OrderHandler;
 import marketplace.Handlers.UserHandler;
-import marketplace.Objects.BuyOrder;
+import marketplace.Objects.Order;
 import marketplace.Objects.User;
 
 import javax.swing.*;
@@ -72,14 +72,28 @@ public class OrderGUI extends JFrame implements ActionListener, Runnable {
         Title.setBounds(210, 20, 80, 50);
         panel.add(Title);
         /// THIS NEEDS TO CHANGE TO GRAB ASSETS FROM INVENTORY INSTEAD OF BUY ORDERS
-        List<BuyOrder> buy = orderHandler.getAllActiveBuyOrders();
+        List<Order> buy = orderHandler.getAllActiveBuyOrders();
         List<String> assets = new ArrayList<String>();
-
-        for (BuyOrder buyOrder : buy) {
+        //System.out.println("got buy orders");
+        for (Order buyOrder : buy) {
             assets.add(buyOrder.getAssetName());
+            //System.out.println(buyOrder.getAssetName());
 
         }
-
+//        List<Order> sell = orderHandler.getAllActiveSellOrders();
+//        System.out.println("got sell orders");
+//        for (Order sellOrder : sell) {
+//            assets.add(sellOrder.getAssetName());
+//            System.out.println(sellOrder.getAssetName());
+//
+//        }
+        try {
+            orderHandler.reconcileOrder();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         assetBox = new JComboBox(assets.toArray(new String[0]));
         assetBox.setBounds(210, 100, 80, 25);
         panel.add(assetBox);

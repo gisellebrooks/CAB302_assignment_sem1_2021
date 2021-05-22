@@ -3,11 +3,9 @@ package marketplace.GUI;
 import marketplace.Client.Client;
 import marketplace.Handlers.OrderHandler;
 import marketplace.Handlers.UserHandler;
-import marketplace.Objects.BuyOrder;
-import marketplace.Objects.User;
+import marketplace.Objects.Order;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -77,7 +75,7 @@ public class BuyOrderGUI extends JFrame implements ActionListener, Runnable {
         graphTitle.setBounds(30, 120, 300, 25);
         panel.add(graphTitle);
 
-        List<BuyOrder> buyHistory = orderHandler.getAllActiveBuyOrders();
+        List<Order> buyHistory = orderHandler.getAllActiveBuyOrders();
         List<String> timestamp = new ArrayList<String>();
         List<String> price = new ArrayList<String>();
 

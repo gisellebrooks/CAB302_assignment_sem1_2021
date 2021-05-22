@@ -144,6 +144,21 @@ public class MariaDBDataSource {
         return rs;
     }
 
+    public void updateResult(String query) {
+
+        try (Connection conn = getConnection()) {
+            try (PreparedStatement statement = conn.prepareStatement(query)) {
+                statement.executeUpdate();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
         private void Close() {
         MDBDS.close();
     }

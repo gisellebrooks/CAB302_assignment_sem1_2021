@@ -4,29 +4,29 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class BuyOrder implements Serializable {
-    String buyId;
+public class Order implements Serializable {
+    String orderID;
     String userID;
     String assetName;
     int quantity;
-    BigDecimal priceUpper;
+    BigDecimal price;
     Timestamp orderDate;
 
-    public BuyOrder(String buyId, String userID, String assetName, int quantity, BigDecimal priceUpper, Timestamp orderDate){
-        this.buyId = buyId;
+    public Order(String orderID, String userID, String assetName, int quantity, BigDecimal price, Timestamp orderDate){
+        this.orderID = orderID;
         this.userID = userID;
         this.assetName = assetName;
         this.quantity = quantity;
-        this.priceUpper = priceUpper;
+        this.price = price;
         this.orderDate = orderDate;
     }
 
-    public BuyOrder(){
+    public Order(){
 
     }
 
-    public void setBuyId(String buyId){
-        this.buyId = buyId;
+    public void setOrderID(String orderID){
+        this.orderID = orderID;
     }
 
     public void setUserID(String userID){
@@ -41,16 +41,16 @@ public class BuyOrder implements Serializable {
             this.quantity = quantity;
     }
 
-    public void setPriceUpper(BigDecimal priceUpper){
-        this.priceUpper = priceUpper;
+    public void setPrice(BigDecimal price){
+        this.price = price;
     }
 
     public void setOrderDate(Timestamp orderDate){
         this.orderDate = orderDate;
     }
 
-    public String getBuyId(){
-        return buyId;
+    public String getOrderID(){
+        return orderID;
     }
 
     public String getUserID() {
@@ -65,8 +65,8 @@ public class BuyOrder implements Serializable {
         return quantity;
     }
 
-    public BigDecimal getPriceUpper(){
-        return priceUpper;
+    public BigDecimal getPrice(){
+        return price;
     }
 
     public Timestamp getOrderDate(){

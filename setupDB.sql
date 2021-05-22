@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS ORGANISATIONAL_UNIT_INFORMATION
 
 CREATE TABLE IF NOT EXISTS ACTIVE_BUY_ORDERS
                 (buyID VARCHAR(255), 
-		        userID VARCHAR(255),
+		         userID VARCHAR(255),
                  assetName VARCHAR(255), 
                  quantity INTEGER, 
                  priceUpper NUMERIC(19,2), 
@@ -36,8 +36,8 @@ CREATE TABLE IF NOT EXISTS BUY_ORDER_HISTORY
                  userID VARCHAR(255),
                  assetID VARCHAR(255), 
                  quantity INTEGER, 
-                 priceUpper NUMERIC(19,2), 
-                 orderDate TIMESTAMP);
+                 reconcilePrice NUMERIC(19,2),
+                 reconcileDate TIMESTAMP);
 
 CREATE TABLE IF NOT EXISTS SELL_ORDER_HISTORY
                 (sellID VARCHAR(255) NOT NULL, 
