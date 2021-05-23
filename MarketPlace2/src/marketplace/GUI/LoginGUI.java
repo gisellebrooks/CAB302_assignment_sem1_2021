@@ -1,18 +1,17 @@
 package marketplace.GUI;
 
-import marketplace.Client.Client;
-import marketplace.Handlers.UserHandler;
 import marketplace.Objects.User;
 import marketplace.PasswordFunctions;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 
-public class LoginGUI extends JFrame implements ActionListener, Runnable {
+public class LoginGUI extends JPanel implements ActionListener {
 
     private static JLabel userLabel;
     private static JTextField userText;
@@ -22,73 +21,49 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
     private static JLabel valid;
     private static JLabel invalid;
 
-    private static Client client;
-    private static UserHandler userHandler;
-
-
-    public static void main(String[] args){
-
-        client = new Client();
-        userHandler= new UserHandler(client);
-
-        try {
-            client.connect();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new LoginGUI());
-    }
-
-    @Override
-    public void run() {
+    public LoginGUI() {
         createGui();
-        this.setVisible(true);
     }
 
     public void createGui() {
-        JPanel panel = new JPanel();
-        this.setSize(350,200);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.add(panel);
-        panel.setLayout(null);
+        setLayout(null);
+        setBounds(0, 0, 600, 600);
+        Border border = new LineBorder(Color.ORANGE, 4, true);
+        setBorder(border);
 
         userLabel = new JLabel("User");
         userLabel.setBounds(10, 20, 80, 25);
-        panel.add(userLabel);
+        add(userLabel);
 
         userText = new JTextField(20);
-        userText.setBounds(100, 20, 165, 25);
-        panel.add(userText);
+        userText.setBounds(100, 20, 160, 25);
+        add(userText);
 
         passwordLabel = new JLabel("Password");
         passwordLabel.setBounds(10, 50, 80, 25);
-        panel.add(passwordLabel);
+        add(passwordLabel);
 
         passwordText = new JPasswordField();
         passwordText.setBounds(100, 50, 160, 25);
-        panel.add(passwordText);
+        add(passwordText);
 
         button = new JButton("Login");
         button.setBounds(10, 80, 80, 25);
-        button.addActionListener(new LoginGUI());
-        panel.add(button);
+        button.addActionListener(this);
+        add(button);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
         valid.setBounds(10, 110, 300, 25);
-        panel.add(valid);
+        add(valid);
 
         invalid = new JLabel("");
         invalid.setForeground(Color.red);
         invalid.setBounds(10, 110, 300, 25);
-        panel.add(invalid);
+        add(invalid);
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         String userID = userText.getText();
         String password = passwordText.getText();
@@ -97,11 +72,21 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         valid.setText("");
         invalid.setText("");
 
+//        client = new Client();
+//        userHandler= new UserHandler(client);
+//
+//        try {
+//            client.connect();
+//
+//        } catch (IOException er) {
+//            er.printStackTrace();
+//        }
+
         User user = null;
 
         // try and get user from server
         try {
-            user = userHandler.getUserInformation(userID);
+            user = MainGUIHandler.userHandler.getUserInformation(userID);
             passwordHash = PasswordFunctions.intoHash(password);
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -109,10 +94,14 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         }
 
         // if user found then test password matches
-        if (userHandler.userIDExists(userID)) {
+        if (MainGUIHandler.userHandler.userIDExists(userID)) {
 
             if (user.getPasswordHash().equals(passwordHash) && !passwordHash.equals(null)) {
-                valid.setText("user found");
+
+                removeAll();
+                add(new SettingsNavigationAdminGUI());
+                updateUI();
+
             } else {
                 invalid.setText("Invalid details!");
             }
@@ -120,5 +109,6 @@ public class LoginGUI extends JFrame implements ActionListener, Runnable {
         } else {
             invalid.setText("Invalid details!");
         }
+
     }
 }

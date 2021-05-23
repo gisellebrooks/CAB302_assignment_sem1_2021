@@ -43,7 +43,7 @@ public class ClientHandler extends Thread {
                     else{
                         result = pool.getResult(query);
                     }
-                    
+
                     switch(type){
                         case USER:
                             User user = new User();
