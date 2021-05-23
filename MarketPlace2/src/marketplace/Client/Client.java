@@ -70,13 +70,6 @@ public class Client {
             System.err.println(e);
             e.printStackTrace();
         }
-    } catch (IOException e) {
-            this.input = null;
-            this.output = null;
-            this.socket = null;
-            System.err.println(e);
-            e.printStackTrace();
-        }
     }
     private PrintWriter getOutputStream() throws IOException {
         return new PrintWriter(this.socket.getOutputStream(), true);
@@ -102,8 +95,8 @@ public class Client {
     public void writeToServer(String query, TableObject type) throws IOException {
 //        LinkedHashMap<String, TableObject> writeMap = new LinkedHashMap<>();
 //        writeMap.put(query, type);
-
-        output.println(query +"-"+ type);
+        output.println(type);
+        output.println(query);
         output.flush();
 //        output.println(query);
 //        output.flush();
