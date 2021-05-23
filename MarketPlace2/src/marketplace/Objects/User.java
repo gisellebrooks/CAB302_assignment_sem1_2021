@@ -1,4 +1,4 @@
-package marketplace;
+package marketplace.Objects;
 
 import java.io.Serializable;
 
@@ -16,11 +16,12 @@ public class User implements Serializable{
         this.orgID = orgID;
         this.name = name;
     }
+
     public User(){
 
     }
 
-    public void setUsername(String userID){
+    public void setUserID(String userID){
 
         this.userID = userID;
     }
@@ -35,7 +36,7 @@ public class User implements Serializable{
         this.accountType = accountType;
     }
 
-    public void setOrganisation(String orgID){
+    public void setOrganisationID(String orgID){
 
         this.orgID = orgID;
     }
@@ -45,7 +46,7 @@ public class User implements Serializable{
         this.name = name;
     }
 
-    public String getUsername(){
+    public String getUserID(){
 
         return userID;
     }
@@ -60,7 +61,7 @@ public class User implements Serializable{
         return accountType;
     }
 
-    public String getOrganisation(){
+    public String getOrganisationID(){
 
         return orgID;
     }

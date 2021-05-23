@@ -1,7 +1,7 @@
 package marketplace.Client;
 
 import marketplace.TableObject;
-import marketplace.User;
+import marketplace.Objects.User;
 
 import java.io.*;
 import java.net.Socket;
@@ -100,17 +100,24 @@ public class Client {
 
     /** Write to the connection socket */
     public void writeToServer(String query, TableObject type) throws IOException {
-        Map<String, TableObject> writeMap = new LinkedHashMap<>();
-        writeMap.put(query, type);
-        out.writeObject(writeMap);
+//        LinkedHashMap<String, TableObject> writeMap = new LinkedHashMap<>();
+//        writeMap.put(query, type);
+
+        output.println(query +"-"+ type);
+        output.flush();
 //        output.println(query);
 //        output.flush();
     }
 
     /** Attempt to read from the connection socket. */
-    public User readFromServer() throws IOException, ClassNotFoundException {
-        User user = (User)inp.readObject();
-        return user;
+    public Object readObjectFromServer() throws IOException, ClassNotFoundException {
+        Object object = inp.readObject();
+        return object;
+    }
+
+    public List readListFromServer() throws IOException, ClassNotFoundException {
+        List objectList = (List) inp.readObject();
+        return objectList;
     }
 
 }
