@@ -37,7 +37,8 @@ public class InventoryHandler {
     public void removeAsset(String assetID, String assetName, String orgID, int quantity) {
 
         try {
-            client.writeToServer("DELETE FROM INVENTORY WHERE assetID = '" + assetID + "' AND orgID = " + orgID + "';", TableObject.INVENTORY);
+            client.writeToServer("D INTO INVENTORY VALUES('" + assetID + "', '" + assetName + "', '" + orgID +
+                    "', '" + quantity + "' );", TableObject.INVENTORY);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,14 +47,14 @@ public class InventoryHandler {
     public void updateUser(String assetID, String assetName, String orgID, int quantity) {
 
         try {
-            client.writeToServer("UPDATE INVENTORY SET assetName = '" + assetName
-                    + "', orgID = '" + orgID + "', quantity = '" + quantity + "' WHERE assetID = '" + assetID + "');", TableObject.INVENTORY);
+            client.writeToServer("INSERT INTO INVENTORY VALUES('" + assetID + "', '" + assetName + "', '" + orgID +
+                    "', '" + quantity + "' );", TableObject.INVENTORY);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean assetExists(String assetID) {
+    public boolean userIDExists(String assetID) {
         Inventory asset = null;
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE assetID = '" + assetID + "';", TableObject.INVENTORY);

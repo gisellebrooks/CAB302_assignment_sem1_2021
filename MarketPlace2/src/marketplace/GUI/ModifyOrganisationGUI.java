@@ -96,7 +96,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener, Run
                 organisation = MainGUIHandler.organisationHandler.getOrganisationInformation(organisationID);
 
                 nameText.setText(organisation.getOrgName());
-                creditsText.setText(Double.toString((organisation.getCredits())));
+                // creditsText.setText(Double.toString((organisation.getCredits())));
 
             } else {
                 invalid.setText("Organisation can't be found");

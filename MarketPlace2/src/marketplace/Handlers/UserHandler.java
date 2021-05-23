@@ -16,6 +16,7 @@ public class UserHandler {
     public User getUserInformation(String userID){
         User result = null;
         try {
+            System.out.println(userID);
             client.writeToServer("SELECT * FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER);
             result = (User) client.readObjectFromServer();
         } catch (Exception exception) {
@@ -56,13 +57,14 @@ public class UserHandler {
     }
 
     public boolean userIDExists(String userID) {
+//        try {
+//            client.writeToServer("SELECT * FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER);
+//            user = (User) client.readObjectFromServer();
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
         User user = null;
-        try {
-            client.writeToServer("SELECT * FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER);
-            user = (User) client.readObjectFromServer();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        user = getUserInformation(userID);
         if (user.getUserID() != null) {
             return true;
         }

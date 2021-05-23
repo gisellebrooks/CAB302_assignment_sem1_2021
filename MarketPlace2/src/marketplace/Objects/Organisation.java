@@ -1,13 +1,14 @@
 package marketplace.Objects;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Organisation implements Serializable{
     private String orgID;
     private String orgName;
-    private Double credits;
+    private BigDecimal credits;
 
-    public Organisation(String orgID, String orgName, Double credits){
+    public Organisation(String orgID, String orgName, BigDecimal credits){
         this.orgID = orgID;
         this.orgName = orgName;
         this.credits = credits;
@@ -27,7 +28,7 @@ public class Organisation implements Serializable{
         this.orgName = orgName;
     }
 
-    public void setCredits(double credits){
+    public void setCredits(BigDecimal credits){
 
         this.credits = credits;
     }
@@ -42,7 +43,7 @@ public class Organisation implements Serializable{
         return orgName;
     }
 
-    public double getCredits(){
+    public BigDecimal getCredits(){
 
         return credits;
     }

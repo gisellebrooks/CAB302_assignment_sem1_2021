@@ -1,12 +1,11 @@
 package marketplace.Server;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class ServerHandler {
@@ -16,6 +15,8 @@ public class ServerHandler {
     public ServerHandler(int port, String address){
         try {
             MariaDBDataSource pool = MariaDBDataSource.getInstance();
+            initDb(pool);
+            //loadMockData(pool);
             InetAddress addr = InetAddress.getByName(address);
             listener = new ServerSocket(port, 10, addr);
             while (true){
@@ -79,7 +80,7 @@ public class ServerHandler {
             }
         }
     }
-    public static void loadMockData(MariaDBDataSource pool) throws SQLException {
+    private static void loadMockData(MariaDBDataSource pool) throws SQLException {
         String string;
         StringBuffer buffer = new StringBuffer();
 
@@ -103,11 +104,13 @@ public class ServerHandler {
                 statement.execute();
             }
         }
+
     }
 
 
     public static void main(String[] args) throws IOException, SQLException {
         Properties props = loadServerConfig();
+
         ServerHandler server = new ServerHandler(Integer.parseInt(props.getProperty("app.port")), props.getProperty("app.hostname"));
 
 

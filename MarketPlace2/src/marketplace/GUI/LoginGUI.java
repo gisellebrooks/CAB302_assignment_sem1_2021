@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-class LoginGUI extends JPanel implements ActionListener {
+public class LoginGUI extends JPanel implements ActionListener {
 
     private static JLabel userLabel;
     private static JTextField userText;
