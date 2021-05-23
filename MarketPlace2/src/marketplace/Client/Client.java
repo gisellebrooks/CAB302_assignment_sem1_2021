@@ -47,17 +47,30 @@ public class Client {
 
         try {
             Properties props = loadServerConfig();
-            address = props.getProperty("app.address");
+            address = props.getProperty("app.hostname");
             port = Integer.parseInt(props.getProperty("app.port"));
-
+            System.out.println("here");
+            System.out.println(address);
+            System.out.println(port);
             socket = new Socket(address, port);
 
-            //this.input = getInputStream();
-            inp = new ObjectInputStream(socket.getInputStream());
-            output = getOutputStream();
-            out = new ObjectOutputStream(socket.getOutputStream());
+            try {
+                inp = new ObjectInputStream(socket.getInputStream());
 
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            output = getOutputStream();
+
+            System.out.println("setup streams");
         } catch (IOException e) {
+            this.input = null;
+            this.output = null;
+            this.socket = null;
+            System.err.println(e);
+            e.printStackTrace();
+        }
+    } catch (IOException e) {
             this.input = null;
             this.output = null;
             this.socket = null;
