@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BuyOrderGUI extends JFrame implements ActionListener, Runnable {
+public class BuyOrderGUI extends JPanel implements ActionListener {
 
     private static JLabel Title;
     private static JLabel graphTitle;
@@ -27,57 +27,30 @@ public class BuyOrderGUI extends JFrame implements ActionListener, Runnable {
     private static JTextField quantityText;
     private static JTextField priceText;
 
-    private static Client client;
-    private static UserHandler userHandler;
-    private static OrderHandler orderHandler;
-
     private static JButton buyButton;
 
     private static JTextField userText;
 
-
-    public static void main(String[] args){
-
-        client = new Client();
-        userHandler= new UserHandler(client);
-        orderHandler = new OrderHandler(client);
-
-        try {
-            client.connect();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new BuyOrderGUI());
-    }
-
-    @Override
-    public void run() {
+    public BuyOrderGUI() {
         createGui();
-        this.setVisible(true);
     }
 
     public void createGui() {
-        JPanel panel = new JPanel();
-        this.setSize(800,650);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.add(panel);
-        panel.setLayout(null);
+        setLayout(null);
+        setBounds(0, 0, 600, 600);
 
 
         Title = new JLabel("Buy {asset name}");  /////// NEED LOGIC TO GET SELECTION FROM COMBO BOX FROM ORDERGUI AND ADD THE ASSET NAME HERE
         Title.setBounds(300, 20, 200, 25);
         Title.setFont (Title.getFont ().deriveFont (20.0f));
-        panel.add(Title);
+        add(Title);
 
         graphTitle = new JLabel("Price History for {asset name} (graph goes here)");
         graphTitle.setBounds(30, 120, 300, 25);
-        panel.add(graphTitle);
+        add(graphTitle);
 
-        List<BuyOrder> buyHistory = orderHandler.getAllActiveBuyOrders();
+        List<BuyOrder> buyHistory = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
         List<String> timestamp = new ArrayList<String>();
         List<String> price = new ArrayList<String>();
 
@@ -87,30 +60,30 @@ public class BuyOrderGUI extends JFrame implements ActionListener, Runnable {
         placeOrderTitle = new JLabel("Place Order");
         placeOrderTitle.setBounds(500, 120, 150, 25);
         placeOrderTitle.setFont (placeOrderTitle.getFont ().deriveFont (16.0f));
-        panel.add(placeOrderTitle);
+        add(placeOrderTitle);
 
 
         buyQuantityTitle = new JLabel("Buy Quantity");
         buyQuantityTitle.setBounds(450, 160, 100, 25);
-        panel.add(buyQuantityTitle);
+        add(buyQuantityTitle);
 
         buyPriceTitle = new JLabel("Buy Price");
         buyPriceTitle.setBounds(560, 160, 100, 25);
-        panel.add(buyPriceTitle);
+        add(buyPriceTitle);
 
 
         quantityText = new JTextField(20);
         quantityText.setBounds(450, 200, 100, 25);
-        panel.add(quantityText);
+        add(quantityText);
 
         priceText = new JTextField(20);
         priceText.setBounds(550, 200, 100, 25);
-        panel.add(priceText);
+        add(priceText);
 
         buyButton = new JButton("Calculate");
         buyButton.setBounds(660, 200, 100, 25);
-        buyButton.addActionListener(new LoginGUI());
-        panel.add(buyButton);
+        buyButton.addActionListener(this);
+        add(buyButton);
 
     }
 

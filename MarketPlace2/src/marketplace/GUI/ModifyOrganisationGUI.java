@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class ModifyOrganisationGUI extends JPanel implements ActionListener, Runnable {
+public class ModifyOrganisationGUI extends JPanel implements ActionListener {
 
     private static JLabel organisationIDPromptLabel;
     private static JTextField organisationIDText;
@@ -22,8 +22,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener, Run
     private static JLabel valid;
     private static JLabel invalid;
 
-    @Override
-    public void run() {
+    public ModifyOrganisationGUI() {
         createGui();
     }
 
@@ -42,7 +41,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener, Run
 
         findOrganisationButton = new JButton("Find Organisation");
         findOrganisationButton.setBounds(10, 60, 140, 25);
-        findOrganisationButton.addActionListener(new ModifyOrganisationGUI());
+        findOrganisationButton.addActionListener(this);
         add(findOrganisationButton);
 
 
@@ -64,7 +63,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener, Run
 
         modifyOrganisationButton = new JButton("Modify Organisation");
         modifyOrganisationButton.setBounds(10, 200, 80, 25);
-        modifyOrganisationButton.addActionListener(new ModifyOrganisationGUI());
+        modifyOrganisationButton.addActionListener(this);
         add(modifyOrganisationButton);
 
         valid = new JLabel("");

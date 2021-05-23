@@ -32,7 +32,7 @@ public class SettingsNavigationAdminGUI extends JPanel implements ActionListener
         createUserButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 removeAll();
-                 add(new SignUpUserGUI());
+                add(new SignUpUserGUI());
                 updateUI();
             }
         });

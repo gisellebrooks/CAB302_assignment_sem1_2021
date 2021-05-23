@@ -29,8 +29,6 @@ public class LoginGUI extends JPanel implements ActionListener {
 
         setLayout(null);
         setBounds(0, 0, 600, 600);
-        Border border = new LineBorder(Color.ORANGE, 4, true);
-        setBorder(border);
 
         userLabel = new JLabel("User");
         userLabel.setBounds(10, 20, 80, 25);

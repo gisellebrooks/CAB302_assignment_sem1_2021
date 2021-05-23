@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class OrderGUI extends JPanel implements ActionListener, Runnable {
+public class OrderGUI extends JPanel implements ActionListener {
 
     private static JLabel Title;
     private static JComboBox assetBox;
@@ -24,10 +24,8 @@ public class OrderGUI extends JPanel implements ActionListener, Runnable {
     private static JLabel valid;
     private static JLabel invalid;
 
-    @Override
-    public void run() {
+    public OrderGUI() {
         createGui();
-        this.setVisible(true);
     }
 
     public void createGui() {

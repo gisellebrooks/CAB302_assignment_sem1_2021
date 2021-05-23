@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SignUpOrganisationGUI extends JPanel implements ActionListener, Runnable {
+public class SignUpOrganisationGUI extends JPanel implements ActionListener {
 
     private static JLabel namePromptLabel;
     private static JTextField nameText;
@@ -16,8 +16,7 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener, Run
     private static JLabel valid;
     private static JLabel invalid;
 
-    @Override
-    public void run() {
+    public SignUpOrganisationGUI() {
         createGui();
     }
 
@@ -44,7 +43,7 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener, Run
 
         createOrganisationButton = new JButton("Create Organisation");
         createOrganisationButton.setBounds(10, 140, 160, 25);
-        createOrganisationButton.addActionListener(new SignUpOrganisationGUI());
+        createOrganisationButton.addActionListener(this);
         add(createOrganisationButton);
 
         // where the given password goes

@@ -3,8 +3,6 @@ package marketplace.GUI;
 import marketplace.PasswordFunctions;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,8 +34,6 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
 
         setLayout(null);
         setBounds(0, 0, 600, 600);
-        Border border = new LineBorder(Color.ORANGE, 4, true);
-        setBorder(border);
 
         namePromptLabel = new JLabel("Full Name:");
         namePromptLabel.setBounds(10, 20, 80, 25);
