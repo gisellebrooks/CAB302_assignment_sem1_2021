@@ -44,7 +44,7 @@ public class EditOrganisationCreditsGUI extends JFrame implements ActionListener
 
     public void createGui() {
         JPanel panel = new JPanel();
-        this.setSize(550,450);
+        this.setSize(1181,718);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.add(panel);
@@ -70,7 +70,7 @@ public class EditOrganisationCreditsGUI extends JFrame implements ActionListener
         }
 
 
-        organisationLabel = new JLabel("organisation:");
+        organisationLabel = new JLabel("Organisation:");
         organisationLabel.setBounds(10, 40, 180, 25);
         panel.add(organisationLabel);
 
@@ -78,7 +78,7 @@ public class EditOrganisationCreditsGUI extends JFrame implements ActionListener
         organisationComboBox.setBounds(10, 60, 165, 25);
         panel.add(organisationComboBox);
 
-        currentCreditsPromptLabel = new JLabel("Organisations Current credits:");
+        currentCreditsPromptLabel = new JLabel("Organisation's current credits:");
         currentCreditsPromptLabel.setBounds(10, 100, 180, 25);
         panel.add(currentCreditsPromptLabel);
 
@@ -87,7 +87,7 @@ public class EditOrganisationCreditsGUI extends JFrame implements ActionListener
         panel.add(currentCreditsText);
 
 
-        addCreditsPromptLabel = new JLabel("Add Credits:");
+        addCreditsPromptLabel = new JLabel("Add credits:");
         addCreditsPromptLabel.setBounds(10, 150, 180, 25);
         panel.add(addCreditsPromptLabel);
 
@@ -96,12 +96,12 @@ public class EditOrganisationCreditsGUI extends JFrame implements ActionListener
         panel.add(addCreditsText);
 
         addCreditsButton = new JButton("+");
-        addCreditsButton.setBounds(10, 190, 80, 25);
+        addCreditsButton.setBounds(10, 190, 20, 25);
         addCreditsButton.addActionListener(new EditOrganisationCreditsGUI());
         panel.add(addCreditsButton);
 
 
-        removeCreditsPromptLabel = new JLabel("Remove Credits:");
+        removeCreditsPromptLabel = new JLabel("Remove credits:");
         removeCreditsPromptLabel.setBounds(10, 220, 180, 25);
         panel.add(removeCreditsPromptLabel);
 
@@ -110,7 +110,7 @@ public class EditOrganisationCreditsGUI extends JFrame implements ActionListener
         panel.add(removeCreditsText);
 
         removeCreditsButton = new JButton("-");
-        removeCreditsButton.setBounds(10, 260, 80, 25);
+        removeCreditsButton.setBounds(10, 260, 20, 25);
         removeCreditsButton.addActionListener(new EditOrganisationCreditsGUI());
         panel.add(removeCreditsButton);
 

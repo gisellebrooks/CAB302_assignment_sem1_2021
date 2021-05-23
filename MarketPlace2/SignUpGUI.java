@@ -106,7 +106,7 @@ public class SignUpGUI extends JFrame implements ActionListener, Runnable {
 
     public void createGui() {
         JPanel panel = new JPanel();
-        this.setSize(550,450);
+        this.setSize(1181,718);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.add(panel);

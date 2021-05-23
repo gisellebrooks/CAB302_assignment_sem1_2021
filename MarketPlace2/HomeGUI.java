@@ -10,7 +10,7 @@ public class HomeGUI extends JFrame implements Runnable {
     private static JLabel invalid;
 
 
-    public static void main(String[] args) throws SQLException {
+    public void main(String[] args) throws SQLException {
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
         new InitDatabase().initDb(pool);
 
@@ -18,7 +18,7 @@ public class HomeGUI extends JFrame implements Runnable {
         JFrame frame = new JFrame();
         frame.setDefaultLookAndFeelDecorated(true);
         JPanel panel = new JPanel();
-        frame.setSize(350,200);
+        this.setSize(1181,718);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 
         frame.add(panel);

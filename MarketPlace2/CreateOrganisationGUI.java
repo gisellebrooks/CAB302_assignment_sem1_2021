@@ -15,13 +15,13 @@ public class CreateOrganisationGUI extends JFrame implements ActionListener, Run
     private static JLabel creditsPromptLabel;
     private static JTextField creditsText;
 
-    private static JLabel givenOrgananisationID;
+    private static JLabel givenOrganisationID;
 
     private static JButton createButton;
     private static JLabel valid;
     private static JLabel invalid;
 
-    public static void main(String[] args) throws SQLException {
+    public void main(String[] args) throws SQLException {
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
         new InitDatabase().initDb(pool);
 
@@ -29,7 +29,7 @@ public class CreateOrganisationGUI extends JFrame implements ActionListener, Run
         JFrame frame = new JFrame();
         frame.setDefaultLookAndFeelDecorated(true);
         JPanel panel = new JPanel();
-        frame.setSize(550,200);
+        this.setSize(1181,718);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 
         frame.add(panel);
@@ -77,10 +77,10 @@ public class CreateOrganisationGUI extends JFrame implements ActionListener, Run
         createButton.addActionListener(new CreateOrganisationGUI());
         panel.add(createButton);
 
-        givenOrgananisationID = new JLabel("Your organisations ID is");
-        givenOrgananisationID.setBounds(10, 180, 165, 25);
-        panel.add(givenOrgananisationID);
-        givenOrgananisationID.setText("");
+        givenOrganisationID = new JLabel("Your organisations ID is");
+        givenOrganisationID.setBounds(10, 180, 165, 25);
+        panel.add(givenOrganisationID);
+        givenOrganisationID.setText("");
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
@@ -133,7 +133,7 @@ public class CreateOrganisationGUI extends JFrame implements ActionListener, Run
 
                 valid.setText("creation of " + orgName + " successful!");
                 invalid.setText("");
-                givenOrgananisationID.setText("Your organisation ID: " + neworgID);
+                givenOrganisationID.setText("Your organisation ID: " + neworgID);
 
                 rs.close();
                 addNewOrganisation.close();

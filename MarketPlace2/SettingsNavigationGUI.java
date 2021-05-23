@@ -17,7 +17,6 @@ public class SettingsNavigationGUI extends JFrame implements ActionListener, Run
 
 
 
-
     public static void main(String[] args) throws SQLException {
         MariaDBDataSource pool = MariaDBDataSource.getInstance();
         new InitDatabase().initDb(pool);
@@ -36,7 +35,7 @@ public class SettingsNavigationGUI extends JFrame implements ActionListener, Run
 
     public void createGui() {
         JPanel panel = new JPanel();
-        this.setSize(400,300);
+        this.setSize(1181,718);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.add(panel);
