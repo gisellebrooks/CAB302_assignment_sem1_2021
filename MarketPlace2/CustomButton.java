@@ -10,13 +10,14 @@ public class CustomButton extends JButton {
 
     public CustomButton(String text) {
         super(text);
-        Border thickBorder = new LineBorder(Color.BLACK, 12);
-        setBorder(thickBorder);
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(2,2,2,2, new Color(0,0,0)),
+                BorderFactory.createLineBorder(Color.WHITE, 4)
+        ));
         setOpaque(true);
         setBackground(Color.WHITE);
         setForeground(Color.BLACK);
         setContentAreaFilled(true);
-        setBorderPainted(false);
         setFocusPainted(false);
     }
 
