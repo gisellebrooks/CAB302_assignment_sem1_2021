@@ -5,6 +5,7 @@ import marketplace.Objects.User;
 import marketplace.TableObject;
 
 import java.io.IOException;
+import java.util.List;
 
 public class UserHandler {
     private final Client client;
@@ -72,21 +73,27 @@ public class UserHandler {
     }
 
     public String newUserID() {
+        List<User> userList = null;
         User user = null;
         String returnID;
         try {
-            client.writeToServer("SELECT * FROM USER_INFORMATION ORDER BY cast(userID as SIGNED) ASC;", TableObject.USER);
+            client.writeToServer("SELECT userID FROM USER_INFORMATION ORDER BY cast(userID as SIGNED) DESC LIMIT 1;", TableObject.USER);
 
-            user = (User) client.readObjectFromServer(); // this is the issue
+            userList = (List<User>) client.readListFromServer();
+            if (userList != null){
+                user = userList.get(0);
+            }
+
         } catch (Exception exception) {
 
             exception.printStackTrace();
         }
 
-        returnID = user.getUserID();
-        returnID = returnID.replace("user", "");
-        returnID = (String.valueOf(Integer.parseInt(returnID) + 1));
-        returnID = "user" + returnID;
+        String lastID = user.getUserID();
+        String[] part = lastID.split("(?<=\\D)(?=\\d)");
+        int IDNumber = Integer.parseInt(part[1]) + 1;
+
+        returnID = "user" + IDNumber;
         return (returnID);
     }
 }

@@ -80,12 +80,67 @@ public class OrderHandler implements Serializable {
         return result;
     }
 
-    public void addSellOrder(String sellID, String userID, String assetName, int quantity, BigDecimal priceLower){
+    public String newOrderID(String orderType) {
+        Object orderID = null;
+        String lastID = null;
+        if (orderType.equals("Buy")){
+            List<Order> buyList = null;
+            try {
+                client.writeToServer("SELECT buyID FROM ACTIVE_BUY_ORDERS ORDER BY cast(buyID as SIGNED) DESC LIMIT 1;", TableObject.USER);
+
+                buyList = (List<Order>) client.readListFromServer();
+                if (buyList != null){
+                    orderID = buyList.get(0);
+                    lastID = ((Order) orderID).getOrderID();
+                }
+
+            } catch (Exception exception) {
+
+                exception.printStackTrace();
+            }
+
+        } else if (orderType.equals("Sell")) {
+            List<SellOrder> sellList = null;
+            try {
+                client.writeToServer("SELECT sellID FROM ACTIVE_BUY_ORDERS ORDER BY cast(sellID as SIGNED) DESC LIMIT 1;", TableObject.USER);
+
+                sellList = (List<SellOrder>) client.readListFromServer();
+                if (sellList != null){
+                    orderID = sellList.get(0);
+                    lastID = ((SellOrder) orderID).getOrderID();
+                }
+
+            } catch (Exception exception) {
+
+                exception.printStackTrace();
+            }
+
+        }
+
+        String[] part = lastID.split("(?<=\\D)(?=\\d)");
+        int IDNumber = Integer.parseInt(part[1]) + 1;
+        return ("user" + IDNumber);
+    }
+
+    public void addNewBuyOrder(String userID, int quantity, BigDecimal price){
         Timestamp orderDate = new Timestamp(System.currentTimeMillis());
+        String id = newOrderID("Buy");
 
         try {
-            client.writeToServer("INSERT INTO ACTIVE_SELL_ORDERS VALUES('"+sellID+"', '"+userID+"', '"+ assetName +
-                    "', '"+ quantity + "', '" + priceLower +"', '" +orderDate+ "' );", TableObject.SELL_ORDER);
+            client.writeToServer("INSERT INTO ACTIVE_BUY_ORDERS VALUES('"+id+"', '"+userID+"', '"+ quantity +
+                    "', '" + price +"', '" +orderDate+ "' );", TableObject.SELL_ORDER);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addNewSellOrder(String userID, String assetID, int quantity, BigDecimal price){
+        Timestamp orderDate = new Timestamp(System.currentTimeMillis());
+        String sellID = newOrderID("Sell");
+
+        try {
+            client.writeToServer("INSERT INTO ACTIVE_SELL_ORDERS VALUES('"+sellID+"', '"+userID+"', '"+ assetID +
+                    "', '"+ quantity + "', '" + price +"', '" +orderDate+ "' );", TableObject.SELL_ORDER);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -77,7 +77,7 @@ public class BuyOrderGUI extends JFrame implements ActionListener, Runnable {
         graphTitle.setBounds(30, 120, 300, 25);
         panel.add(graphTitle);
 
-        List<BuyOrder> buyHistory = orderHandler.getAllActiveBuyOrders();
+        List<Order> buyHistory = orderHandler.getAllActiveBuyOrders();
         List<String> timestamp = new ArrayList<String>();
         List<String> price = new ArrayList<String>();
 

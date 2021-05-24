@@ -93,13 +93,10 @@ public class Client {
 
     /** Write to the connection socket */
     public void writeToServer(String query, TableObject type) throws IOException {
-//        LinkedHashMap<String, TableObject> writeMap = new LinkedHashMap<>();
-//        writeMap.put(query, type);
+
         output.println(type);
         output.println(query);
         output.flush();
-//        output.println(query);
-//        output.flush();
     }
 
     /** Attempt to read from the connection socket. */
