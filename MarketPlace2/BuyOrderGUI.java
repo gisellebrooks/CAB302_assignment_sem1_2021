@@ -26,6 +26,7 @@ public class BuyOrderGUI extends JPanel {
 //            add(new TextPanel());
             add(new PlaceOrderPanel());
 
+
         }
     }
 
@@ -35,17 +36,36 @@ public class BuyOrderGUI extends JPanel {
     }
 
 
-        static class PlaceOrderPanel extends DefaultPanel
-    {
+    static class PlaceOrderPanel extends DefaultPanel {
+        CustomTextField buyQuantityText;
+        CustomTextField buyPriceText;
+        float quantity;
+        float price;
+        OrderSummaryPanel orderSummaryPanel;
+
+        public void setQuantity(float quantity) {
+            this.quantity = quantity;
+        }
+
+        public void setPrice(float price) {
+            this.price = price;
+        }
+
+        public void calculateOrder() {
+            setQuantity(Float.parseFloat(buyQuantityText.getText()));
+            setPrice(Float.parseFloat(buyPriceText.getText()));
+            orderSummaryPanel.updateSummary(this.quantity, this.price);
+        }
+
         public PlaceOrderPanel(){
             Fonts fonts = new Fonts();
             setPreferredSize(new Dimension(590, 580));
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
             JLabel buyQuantityLabel;
-            CustomTextField buyQuantityText;
+
             JLabel buyPriceLabel;
-            CustomTextField buyPriceText;
+
             CustomButton calculateButton;
             JLabel valid;
             JLabel invalid;
@@ -99,7 +119,13 @@ public class BuyOrderGUI extends JPanel {
             add(inputsPanel);
             calculateButton = new CustomButton("Calculate");
             calculateButton.setBounds(10, 150, 80, 25);
-//            calculateButton.addActionListener(new CreateOrganisationGUI());
+            calculateButton.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    calculateOrder();
+                }
+            });
             inputsPanel.add(calculateButton);
 
             valid = new JLabel("");
@@ -111,19 +137,27 @@ public class BuyOrderGUI extends JPanel {
             invalid.setForeground(Color.red);
             invalid.setBounds(10, 220, 340, 25);
             add(invalid);
-            add(new OrderSummaryPanel());
+            orderSummaryPanel = new OrderSummaryPanel();
+            add(orderSummaryPanel);
         }
     }
     static class OrderSummaryPanel extends JPanel {
+        JLabel priceLabel;
+        JLabel quantityLabel;
+        JLabel totalLabel;
+
+        public void updateSummary(float quantity, float price) {
+            priceLabel.setText(String.format("at $%.2f per unit", price));
+            quantityLabel.setText(String.format("%.1f units", quantity));
+            totalLabel.setText(String.format("Total: $%.2f", price * quantity));
+        }
+
         public OrderSummaryPanel() {
             setPreferredSize(new Dimension(200, 200));
             setBackground(new Color(255,246,246));
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BorderFactory.createMatteBorder(2,2,2,2, new Color(255,185,175)));
             JButton placeOrderButton;
-            JLabel price;
-            JLabel quantity;
-            JLabel total;
             Fonts fonts = new Fonts();
 
             JLabel placeOrder = new JLabel("Order Summary");
@@ -132,21 +166,21 @@ public class BuyOrderGUI extends JPanel {
             placeOrder.setFont(fonts.smallHeading);
             add(placeOrder);
 
-            quantity = new JLabel("x units");
-            quantity.setFont(fonts.body);
-            quantity.setBounds(50, 300, 180, 25);
-            add(quantity);
+            quantityLabel = new JLabel("x units");
+            quantityLabel.setFont(fonts.body);
+            quantityLabel.setBounds(50, 300, 180, 25);
+            add(quantityLabel);
 
-            price = new JLabel("at $x per unit");
-            price.setFont(fonts.body);
-            price.setBounds(50, 300, 180, 25);
-            add(price);
+            priceLabel = new JLabel("at $x per unit");
+            priceLabel.setFont(fonts.body);
+            priceLabel.setBounds(50, 300, 180, 25);
+            add(priceLabel);
 
-            total = new JLabel("Total: $x");
-            total.setAlignmentX( Component.LEFT_ALIGNMENT );
-            total.setBounds(0, 20, 165, 25);
-            total.setFont(fonts.smallHeading);
-            add(total);
+            totalLabel = new JLabel("Total: $x");
+            totalLabel.setAlignmentX( Component.LEFT_ALIGNMENT );
+            totalLabel.setBounds(0, 20, 165, 25);
+            totalLabel.setFont(fonts.smallHeading);
+            add(totalLabel);
 
             placeOrderButton = new CustomButton("Place order");
             placeOrderButton.setBounds(50, 300, 80, 25);
