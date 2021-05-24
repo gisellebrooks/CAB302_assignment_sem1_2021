@@ -8,6 +8,7 @@ import marketplace.Objects.Order;
 // import marketplace.Objects.Order;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -26,10 +27,12 @@ public class BuyOrderGUI extends JPanel implements ActionListener {
 
     private static JTextField quantityText;
     private static JTextField priceText;
-
-    private static JButton buyButton;
-
     private static JTextField userText;
+    private static JButton buyButton;
+    private static JButton toSettingsButton;
+    private static JLabel valid;
+    private static JLabel invalid;
+
 
     public BuyOrderGUI() {
         createGui();
@@ -51,6 +54,7 @@ public class BuyOrderGUI extends JPanel implements ActionListener {
         add(graphTitle);
 
         List<BuyOrder> buyHistory = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
+        System.out.println(buyHistory);
         List<String> timestamp = new ArrayList<String>();
         List<String> price = new ArrayList<String>();
 
@@ -85,6 +89,24 @@ public class BuyOrderGUI extends JPanel implements ActionListener {
         buyButton.addActionListener(this);
         add(buyButton);
 
+        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton.setBounds(300, 50, 120, 25);
+        toSettingsButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
+        });
+        add(toSettingsButton);
+
+        valid = new JLabel("");
+        valid.setForeground(Color.green);
+        valid.setBounds(10, 120, 340, 25);
+        add(valid);
+
+        invalid = new JLabel("");
+        invalid.setForeground(Color.red);
+        invalid.setBounds(10, 120, 340, 25);
+        add(invalid);
     }
 
     @Override

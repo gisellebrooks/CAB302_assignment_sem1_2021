@@ -14,6 +14,7 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
     private static JTextField creditsText;
     private static JButton createOrganisationButton;
     private static JTextField givenIDLabel;
+    private static JButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
 
@@ -51,6 +52,15 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         givenIDLabel = new JTextField(20);
         givenIDLabel.setBounds(10, 280, 220, 25);
         add(givenIDLabel);
+
+        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton.setBounds(300, 50, 120, 25);
+        toSettingsButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
+        });
+        add(toSettingsButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);

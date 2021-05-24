@@ -1,8 +1,7 @@
 package marketplace.GUI;
 
-import marketplace.Objects.Order;
-
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ public class OrderGUI extends JPanel implements ActionListener {
     private static JLabel passwordLabel;
     private static JTextField passwordText;
     private static JButton button;
+    private static JButton toSettingButton;
     private static JLabel valid;
     private static JLabel invalid;
 
@@ -73,6 +73,24 @@ public class OrderGUI extends JPanel implements ActionListener {
 //        sellButton.setBounds(260, 250, 150, 25);
 //        add(sellButton);
 
+        toSettingButton = new JButton("SETTINGS");
+        toSettingButton.setBounds(300, 50, 120, 25);
+        toSettingButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
+        });
+        add(toSettingButton);
+
+        valid = new JLabel("");
+        valid.setForeground(Color.green);
+        valid.setBounds(10, 120, 340, 25);
+        add(valid);
+
+        invalid = new JLabel("");
+        invalid.setForeground(Color.red);
+        invalid.setBounds(10, 120, 340, 25);
+        add(invalid);
 
     }
 

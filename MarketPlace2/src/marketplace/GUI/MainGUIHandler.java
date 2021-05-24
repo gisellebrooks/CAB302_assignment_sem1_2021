@@ -31,8 +31,8 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
         }
 
         userHandler = new UserHandler(client);
-        organisationHandler = new OrganisationHandler(client);
         orderHandler = new OrderHandler(client);
+        organisationHandler = new OrganisationHandler(client);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new MainGUIHandler());
@@ -55,7 +55,11 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
         panel.setLayout(null);
         panel.setBounds(0, 0, 600, 600);
 
-        panel.add(new LoginGUI());
+//        panel.add(new LoginGUI());
+//        panel.add(new SettingsNavigationAdminGUI());
+        panel.add(new BuyOrderGUI());
+//        panel.add(new SignUpUserGUI());
+//        panel.add(new SignUpOrganisationGUI());
         add(panel);
     }
 

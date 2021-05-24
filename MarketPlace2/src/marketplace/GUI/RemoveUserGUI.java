@@ -10,7 +10,7 @@ public class RemoveUserGUI extends JPanel implements ActionListener {
     private static JLabel userIDPromptLabel;
     private static JTextField userIDText;
     private static JButton removeUserButton;
-    private static JButton backToSettingsButton;
+    private static JButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
 
@@ -36,16 +36,14 @@ public class RemoveUserGUI extends JPanel implements ActionListener {
         removeUserButton.addActionListener(this);
         add(removeUserButton);
 
-        backToSettingsButton = new JButton("SETTINGS");
-        backToSettingsButton.setBounds(300, 20, 120, 25);
-        backToSettingsButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                removeAll();
-                add(new SettingsNavigationAdminGUI());
-                updateUI();
-            }
+        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton.setBounds(300, 20, 120, 25);
+        toSettingsButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
         });
-        add(backToSettingsButton);
+        add(toSettingsButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);

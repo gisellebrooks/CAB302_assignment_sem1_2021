@@ -5,13 +5,26 @@ import marketplace.Objects.Organisation;
 import marketplace.TableObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-public class OrganisationHandler {
+public class OrganisationHandler implements Serializable {
     private final Client client;
 
     public OrganisationHandler(Client client){
         this.client = client;
+    }
+
+    public List<Organisation> getAllOrganisations(){
+        List<Organisation> result = null;
+        try {
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION;", TableObject.ORGANISATION);
+            result = (List) client.readListFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return result;
     }
 
     public Organisation getOrganisationInformation(String orgID){
@@ -24,6 +37,8 @@ public class OrganisationHandler {
         }
         return result;
     }
+
+
 
     public void addOrganisation(String orgID, String orgName, double credits) {
 
@@ -112,16 +127,29 @@ public class OrganisationHandler {
         }
     }
 
-    // !!!!!!!!!!!!!!!!!!!!!!!  this needs to get multiple
-    public ArrayList<String> getAllOrganisationID() {
-        Organisation organisation = null;
-        ArrayList<String> organisationsIDList = new ArrayList<String>();
+    public List<String> getAllOrganisationsNames() {
+        List<Organisation> allOrganisations = getAllOrganisations();
+        List<String> allOrganisationsNames = new ArrayList<String>();
+
+        for (int i = 0; i < allOrganisations.size(); i++) {
+            allOrganisationsNames.add(allOrganisations.get(i).getOrgName());
+        }
+        return allOrganisationsNames;
+    }
+
+    public String getOrganisationID(String organisationName) {
+        Organisation result = null;
         try {
-            client.writeToServer("SELECT ordID FROM ORGANISATIONAL_UNIT_INFORMATION;", TableObject.ORGANISATION);
-            organisation = (Organisation) client.readObjectFromServer();
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" +
+                    organisationName + "';", TableObject.ORGANISATION);
+            result = (Organisation) client.readObjectFromServer();
+
+            return result.getOrgID();
+
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        return organisationsIDList;
+
+        return null;
     }
 }

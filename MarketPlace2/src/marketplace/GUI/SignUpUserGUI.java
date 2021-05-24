@@ -1,5 +1,9 @@
 package marketplace.GUI;
 
+import com.sun.tools.javac.Main;
+import marketplace.Objects.BuyOrder;
+import marketplace.Objects.Organisation;
+import marketplace.Objects.User;
 import marketplace.PasswordFunctions;
 
 import javax.swing.*;
@@ -8,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class SignUpUserGUI extends JPanel implements ActionListener {
@@ -22,7 +27,8 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
     private static JLabel givenPasswordLabel;
     private static JLabel IDPromptLabel;
     private static JLabel givenIDLabel;
-    private static JButton button;
+    private static JButton signUpButton;
+    private static JButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
 
@@ -47,15 +53,36 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
         organisationLabel.setBounds(10, 80, 180, 25);
         add(organisationLabel);
 
-//        organisationComboBox = new JComboBox(organisationsList.toArray());
+
+
+
+        // List<String> organisationsNames = new ArrayList<>();
+//        List<Organisation> allOrganisations = MainGUIHandler.organisationHandler.getAllOrganisations();
+
+//        System.out.println(allOrganisations);
+
+//        for (int i = 0; i < allOrganisations.size(); i++) {
+//            organisationsNames.add(allOrganisations.get(i).getOrgName());
+//        }
+//        organisationComboBox = new JComboBox(organisationsNames.toArray());
+
+//        List<Organisation> allOrganisations = MainGUIHandler.organisationHandler.getAllOrganisations();
+//        // User users = MainGUIHandler.userHandler.getUserInformation("user10");
+//        Organisation organisation = MainGUIHandler.organisationHandler.getOrganisationInformation("org15");
+//        // List<User> allUsers = MainGUIHandler.userHandler.getAllUsers();
+//        List<BuyOrder> buyHistory = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
+//
+//        organisationComboBox = new JComboBox(MainGUIHandler.organisationHandler.getAllOrganisations().toArray());
 //        organisationComboBox.setBounds(10, 100, 165, 25);
-//        panel.add(organisationComboBox);
+//        add(organisationComboBox);
+
+
 
         userTypeLabel = new JLabel("Select your user type:");
         userTypeLabel.setBounds(10, 140, 180, 25);
         add(userTypeLabel);
 
-        ArrayList<String> userTypes = new ArrayList<String>();
+        ArrayList<String> userTypes = new ArrayList<>();
         userTypes.add("USER");
         userTypes.add("ADMIN");
 
@@ -64,10 +91,10 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
         add(userTypeComboBox);
 
 
-        button = new JButton("Signup");
-        button.setBounds(10, 200, 80, 25);
-        button.addActionListener(this);
-        add(button);
+        signUpButton = new JButton("Signup");
+        signUpButton.setBounds(10, 200, 80, 25);
+        signUpButton.addActionListener(this);
+        add(signUpButton);
 
 
         IDPromptLabel = new JLabel("Your userID is:");
@@ -89,6 +116,14 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
         givenPasswordLabel.setBounds(10, 320, 180, 25);
         add(givenPasswordLabel);
 
+        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton.setBounds(300, 50, 120, 25);
+        toSettingsButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
+        });
+        add(toSettingsButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
@@ -125,21 +160,20 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
             invalid.setText("can't signup");
 
             // get organisation ID with org name
-            // String userOrganisation = organisationComboBox.getSelectedItem().toString();
-            String userOrganisation = "org3";
+//            String organisationName = organisationComboBox.getSelectedItem().toString();
+//            String organisationID = MainGUIHandler.organisationHandler.getOrganisationID(organisationName);
+            String organisationID = "org3";
 
             accountType = userTypeComboBox.getSelectedItem().toString();
 
             userID = MainGUIHandler.userHandler.newUserID();
 
-            MainGUIHandler.userHandler.addUser(userID, passwordHash, accountType, userOrganisation, name);
-            // do all checks hear before adding new user values
+            MainGUIHandler.userHandler.addUser(userID, passwordHash, accountType, organisationID, name);
 
             valid.setText("signup successful!");
             invalid.setText("");
             givenPasswordLabel.setText(password);
             givenIDLabel.setText(userID);
-
         }
     }
 }

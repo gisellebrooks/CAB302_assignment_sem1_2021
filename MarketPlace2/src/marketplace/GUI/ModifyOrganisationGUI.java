@@ -1,7 +1,6 @@
 package marketplace.GUI;
 
 import marketplace.Objects.Organisation;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,6 +18,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
     private static JLabel creditsPromptLabel;
     private static JTextField creditsText;
     private static JButton modifyOrganisationButton;
+    private static JButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
 
@@ -65,6 +65,15 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
         modifyOrganisationButton.setBounds(10, 200, 80, 25);
         modifyOrganisationButton.addActionListener(this);
         add(modifyOrganisationButton);
+
+        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton.setBounds(300, 50, 120, 25);
+        toSettingsButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
+        });
+        add(toSettingsButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);

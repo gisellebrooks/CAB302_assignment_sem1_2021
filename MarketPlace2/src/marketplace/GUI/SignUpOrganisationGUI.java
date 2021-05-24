@@ -13,6 +13,7 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener {
     private static JTextField creditsText;
     private static JButton createOrganisationButton;
     private static JLabel givenIDLabel;
+    private static JButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
 
@@ -50,6 +51,15 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener {
         givenIDLabel = new JLabel("");
         givenIDLabel.setBounds(10, 200, 220, 25);
         add(givenIDLabel);
+
+        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton.setBounds(300, 50, 120, 25);
+        toSettingsButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
+        });
+        add(toSettingsButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);

@@ -11,7 +11,7 @@ public class RemoveOrganisationGUI extends JPanel implements ActionListener {
     private static JLabel organisationIDPromptLabel;
     private static JTextField organisationIDText;
     private static JButton removeOrganisationButton;
-    private static JButton backToSettingsButton;
+    private static JButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
 
@@ -37,16 +37,14 @@ public class RemoveOrganisationGUI extends JPanel implements ActionListener {
         removeOrganisationButton.addActionListener(this);
         add(removeOrganisationButton);
 
-        backToSettingsButton = new JButton("SETTINGS");
-        backToSettingsButton.setBounds(300, 50, 120, 25);
-        backToSettingsButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                removeAll();
-                add(new SettingsNavigationAdminGUI());
-                updateUI();
-            }
+        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton.setBounds(300, 50, 120, 25);
+        toSettingsButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
         });
-        add(backToSettingsButton);
+        add(toSettingsButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);

@@ -5,12 +5,24 @@ import marketplace.Objects.User;
 import marketplace.TableObject;
 
 import java.io.IOException;
+import java.util.List;
 
 public class UserHandler {
     private final Client client;
 
     public UserHandler(Client client){
         this.client = client;
+    }
+
+    public List<User> getAllUsers(){
+        List<User> result = null;
+        try {
+            client.writeToServer("SELECT * FROM USER_INFORMATION;", TableObject.USER);
+            result = (List) client.readListFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return result;
     }
 
     public User getUserInformation(String userID){
