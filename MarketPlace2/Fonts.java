@@ -7,16 +7,29 @@ import java.io.File;
 import java.io.IOException;
 
 public class Fonts {
+    Font body;
+    Font heading;
+    Font smallHeading;
+    Font inputLabel;
+
 
     public Fonts() {
         try {
-            Font heading;
-            // load custom font in project folder
-            heading = Font.createFont(Font.TRUETYPE_FONT, new File("DelaGothicOne-Regular.ttf")).deriveFont(30f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(heading);
-        } catch (IOException | FontFormatException e) {
+            java.io.InputStream openSansStream = getClass().getClassLoader().getResourceAsStream("OpenSans-Bold.ttf");
+            java.io.InputStream delaGothicStream = getClass().getClassLoader().getResourceAsStream("DelaGothicOne-Regular.ttf");
+            Font openSans = Font.createFont(Font.TRUETYPE_FONT, openSansStream);
+            Font delaGothic = Font.createFont(Font.TRUETYPE_FONT, delaGothicStream);
+            body = openSans.deriveFont(16f);
+            inputLabel = openSans.deriveFont(10f);
+            smallHeading = delaGothic.deriveFont(20f);
+            heading = delaGothic.deriveFont(28f);
 
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(openSans);
+            ge.registerFont(delaGothic);
+        } catch (IOException | FontFormatException e) {
+            System.out.println("Caught an error setting fonts");
+            System.out.println(e.getMessage());
         }
     }
 }
