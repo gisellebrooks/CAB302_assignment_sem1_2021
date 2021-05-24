@@ -8,7 +8,12 @@ public class CustomTextField extends JTextField {
 
     private String placeholder;
 
+    public void addStyles() {
+        setBorder(BorderFactory.createMatteBorder(0,0,4,0, new Color(0,0,0)));
+    }
+
     public CustomTextField() {
+        addStyles();
     }
 
     public CustomTextField(
@@ -17,18 +22,22 @@ public class CustomTextField extends JTextField {
             final int pColumns)
     {
         super(pDoc, pText, pColumns);
+        addStyles();
     }
 
     public CustomTextField(final int pColumns) {
         super(pColumns);
+        addStyles();
     }
 
     public CustomTextField(final String pText) {
         super(pText);
+        addStyles();
     }
 
     public CustomTextField(final String pText, final int pColumns) {
         super(pText, pColumns);
+        addStyles();
     }
 
     public String getPlaceholder() {
