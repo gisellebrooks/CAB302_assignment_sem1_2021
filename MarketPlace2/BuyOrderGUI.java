@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class BuyOrderGUI extends JPanel {
+    Font heading;
 
     static class MainPanel extends JPanel
     {
@@ -28,54 +29,78 @@ public class BuyOrderGUI extends JPanel {
         }
     }
 
-    static class PlaceOrderPanel extends JPanel
+    static class DefaultPanel extends JPanel {
+        Font body;
+        Font bodyFont;
+    }
+
+
+        static class PlaceOrderPanel extends DefaultPanel
     {
-        Font heading;
-
-
         public PlaceOrderPanel(){
-            try {
-                // load custom font in project folder
-                heading = Font.createFont(Font.TRUETYPE_FONT, new File("DelaGothicOne-Regular.ttf")).deriveFont(30f);
-                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                ge.registerFont(heading);
-            } catch (IOException | FontFormatException e) {
-
-            }
+            Fonts fonts = new Fonts();
             setPreferredSize(new Dimension(590, 580));
-//            setLayout(new BoxLayout(BoxLayout.Y_AXIS));
-            setBackground(Color.ORANGE);
-            add(new OrderSummaryPanel());
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
             JLabel buyQuantityLabel;
-            JTextField buyQuantityText;
+            CustomTextField buyQuantityText;
             JLabel buyPriceLabel;
-            JTextField buyPriceText;
+            CustomTextField buyPriceText;
             CustomButton calculateButton;
             JLabel valid;
             JLabel invalid;
+            JPanel quantityPanel;
+            JPanel inputsPanel;
+            JPanel pricePanel;
+
+            quantityPanel = new JPanel();
+            quantityPanel.setLayout(new BoxLayout(quantityPanel, BoxLayout.Y_AXIS));
+
+            pricePanel = new JPanel();
+            pricePanel.setLayout(new BoxLayout(pricePanel, BoxLayout.Y_AXIS));
+
+            inputsPanel = new JPanel();
+            JLabel placeOrder = new JLabel("Place Order");
+            placeOrder.setAlignmentX( Component.LEFT_ALIGNMENT );
+            placeOrder.setBounds(0, 20, 165, 25);
+            placeOrder.setFont(fonts.smallHeading);
+            add(placeOrder);
 
             buyQuantityLabel = new JLabel("Buy quantity");
-            buyQuantityLabel.setBounds(10, 20, 160, 25);
-            buyQuantityLabel.setFont(heading);
-            add(buyQuantityLabel);
+            buyQuantityLabel.setBounds(0, 20, 165, 25);
+            buyQuantityLabel.setFont(fonts.inputLabel);
+            buyQuantityLabel.setAlignmentX( Component.LEFT_ALIGNMENT );
+            quantityPanel.add(buyQuantityLabel);
 
-            buyQuantityText = new JTextField(20);
-            buyQuantityText.setBounds(10, 40, 165, 25);
-            add(buyQuantityText);
+            buyQuantityText = new CustomTextField(10);
+            buyQuantityText.setPlaceholder("17");
+            buyQuantityText.setBounds(0, 20, 165, 25);
+            buyQuantityText.setAlignmentX( Component.LEFT_ALIGNMENT );
+            quantityPanel.add(buyQuantityText);
+
+            inputsPanel.add(quantityPanel);
+
+            JPanel order;
 
             buyPriceLabel = new JLabel("Buy price");
             buyPriceLabel.setBounds(10, 80, 180, 25);
-            add(buyPriceLabel);
+            buyPriceLabel.setFont(fonts.inputLabel);
+            buyPriceLabel.setAlignmentX( Component.LEFT_ALIGNMENT );
+            pricePanel.add(buyPriceLabel);
 
-            buyPriceText = new JTextField(20);
+            buyPriceText = new CustomTextField(20);
+            buyPriceText.setPlaceholder("$5");
             buyPriceText.setBounds(10, 100, 165, 25);
-            add(buyPriceText);
+            buyPriceText.setAlignmentX( Component.LEFT_ALIGNMENT );
+            pricePanel.add(buyPriceText);
 
+            inputsPanel.add(pricePanel);
+
+            add(inputsPanel);
             calculateButton = new CustomButton("Calculate");
             calculateButton.setBounds(10, 150, 80, 25);
 //            calculateButton.addActionListener(new CreateOrganisationGUI());
-            add(calculateButton);
+            inputsPanel.add(calculateButton);
 
             valid = new JLabel("");
             valid.setForeground(Color.green);
@@ -86,25 +111,42 @@ public class BuyOrderGUI extends JPanel {
             invalid.setForeground(Color.red);
             invalid.setBounds(10, 220, 340, 25);
             add(invalid);
+            add(new OrderSummaryPanel());
         }
     }
     static class OrderSummaryPanel extends JPanel {
         public OrderSummaryPanel() {
             setPreferredSize(new Dimension(200, 200));
-            setBackground(Color.WHITE);
-
+            setBackground(new Color(255,246,246));
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            setBorder(BorderFactory.createMatteBorder(2,2,2,2, new Color(255,185,175)));
             JButton placeOrderButton;
             JLabel price;
             JLabel quantity;
             JLabel total;
+            Fonts fonts = new Fonts();
 
-            quantity = new JLabel("quantity");
+            JLabel placeOrder = new JLabel("Order Summary");
+            placeOrder.setAlignmentX( Component.LEFT_ALIGNMENT );
+            placeOrder.setBounds(0, 20, 165, 25);
+            placeOrder.setFont(fonts.smallHeading);
+            add(placeOrder);
+
+            quantity = new JLabel("x units");
+            quantity.setFont(fonts.body);
             quantity.setBounds(50, 300, 180, 25);
             add(quantity);
 
-            price = new JLabel("price");
+            price = new JLabel("at $x per unit");
+            price.setFont(fonts.body);
             price.setBounds(50, 300, 180, 25);
             add(price);
+
+            total = new JLabel("Total: $x");
+            total.setAlignmentX( Component.LEFT_ALIGNMENT );
+            total.setBounds(0, 20, 165, 25);
+            total.setFont(fonts.smallHeading);
+            add(total);
 
             placeOrderButton = new CustomButton("Place order");
             placeOrderButton.setBounds(50, 300, 80, 25);
