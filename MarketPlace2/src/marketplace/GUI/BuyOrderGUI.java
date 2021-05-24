@@ -53,7 +53,7 @@ public class BuyOrderGUI extends JPanel implements ActionListener {
         graphTitle.setBounds(30, 120, 300, 25);
         add(graphTitle);
 
-        List<BuyOrder> buyHistory = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
+        List<Order> buyHistory = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
         System.out.println(buyHistory);
         List<String> timestamp = new ArrayList<String>();
         List<String> price = new ArrayList<String>();

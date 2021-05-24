@@ -2,6 +2,7 @@ package marketplace.Server;
 
 import marketplace.Objects.*;
 import marketplace.TableObject;
+
 import java.io.*;
 import java.net.Socket;
 import java.sql.ResultSet;
@@ -24,7 +25,7 @@ public class ClientHandler extends Thread {
 
     public void run(){
         try {
-            ResultSet result;
+            ResultSet result = null;
             outputToClient = new ObjectOutputStream(socket.getOutputStream());
 
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -33,15 +34,15 @@ public class ClientHandler extends Thread {
             {
                 if (!socket.isClosed())
                 {
-                    String line = in.readLine();
-                    String[] parts = line.split("-");
-                    String query = parts[0];
-                    TableObject type = TableObject.valueOf(parts[1]);
+                    TableObject type = TableObject.valueOf(in.readLine());
+                    String query = in.readLine();
 
-                    System.out.println(query);
-                    System.out.println(type);
-
-                    result = pool.getResult( query);
+                    if (type == TableObject.DELETE){
+                        pool.updateResult(query);
+                    }
+                    else{
+                        result = pool.getResult(query);
+                    }
 
                     switch(type){
 

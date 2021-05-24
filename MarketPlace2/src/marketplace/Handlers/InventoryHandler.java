@@ -5,6 +5,7 @@ import marketplace.Objects.Inventory;
 import marketplace.TableObject;
 
 import java.io.IOException;
+import java.util.List;
 
 public class InventoryHandler {
     private final Client client;
@@ -44,14 +45,31 @@ public class InventoryHandler {
         }
     }
 
-    public void updateUser(String assetID, String assetName, String orgID, int quantity) {
+    public void updateAssetQuantity(String assetID, int quantity) {
 
         try {
-            client.writeToServer("INSERT INTO INVENTORY VALUES('" + assetID + "', '" + assetName + "', '" + orgID +
-                    "', '" + quantity + "' );", TableObject.INVENTORY);
+            client.writeToServer("UPDATE INVENTORY SET quantity= '"+ quantity +"' WHERE assetID= '"+ assetID +"';", TableObject.INVENTORY);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getAssetQuantity(String assetID){
+        List<Inventory> inventory = null;
+        int assetQuantity = 0;
+        try {
+            client.writeToServer("SELECT * FROM INVENTORY WHERE assetID= '"+ assetID +"';", TableObject.INVENTORY);
+            inventory = (List<Inventory>) client.readObjectFromServer();
+
+            for (Inventory inv: inventory){
+                assetQuantity = inv.getQuantity();
+            }
+
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return assetQuantity;
     }
 
     public boolean userIDExists(String assetID) {

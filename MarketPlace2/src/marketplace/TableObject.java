@@ -7,5 +7,6 @@ public enum TableObject {
     SELL_ORDER,
     BUY_HISTORY,
     SELL_HISTORY,
-    INVENTORY
+    INVENTORY,
+    DELETE
 }
