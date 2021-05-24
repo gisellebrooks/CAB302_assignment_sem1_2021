@@ -37,7 +37,7 @@ public class ClientHandler extends Thread {
                     TableObject type = TableObject.valueOf(in.readLine());
                     String query = in.readLine();
 
-                    if (type == TableObject.DELETE){
+                    if (type == TableObject.DELETE || type == TableObject.UPDATE){
                         pool.updateResult(query);
                     }
                     else{
