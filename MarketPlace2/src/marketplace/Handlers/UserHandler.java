@@ -25,31 +25,31 @@ public class UserHandler {
         return result;
     }
 
-    public User getUserInformation(String userID){
+    public User getUser(String userID){
+        List<User> users = getAllUsers();
         User result = null;
-        try {
-            System.out.println(userID);
-            client.writeToServer("SELECT * FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER);
-            result = (User) client.readObjectFromServer();
-        } catch (Exception exception) {
-            exception.printStackTrace();
+
+        if (users != null) {
+            for (int i = 0; i < users.size(); i++) {
+                if (users.get(i).getUserID().equals(userID)) {
+                    result =  users.get(i);
+                }
+            }
         }
+
         return result;
     }
 
     public void addUser(String userID, String passwordHash, String accountType, String organisationID, String name) {
-
         try {
             client.writeToServer("INSERT INTO USER_INFORMATION VALUES('" + userID + "', '" + passwordHash + "', '" + accountType +
                     "', '" + organisationID + "', '" + name + "' );", TableObject.USER);
         } catch (IOException e) {
-
             e.printStackTrace();
         }
     }
 
     public void removeUser(String userID) {
-
         try {
             client.writeToServer("DELETE FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER) ;
         } catch (IOException e) {
@@ -69,36 +69,33 @@ public class UserHandler {
     }
 
     public boolean userIDExists(String userID) {
-//        try {
-//            client.writeToServer("SELECT * FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER);
-//            user = (User) client.readObjectFromServer();
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
         User user = null;
-        user = getUserInformation(userID);
-        if (user.getUserID() != null) {
+        user = getUser(userID);
+        if (user != null && user.getUserID() != null) {
             return true;
         }
         return false;
     }
 
     public String newUserID() {
-        User user = null;
-        String returnID;
-        try {
-            client.writeToServer("SELECT * FROM USER_INFORMATION ORDER BY cast(userID as SIGNED) ASC;", TableObject.USER);
+        List<User> users = getAllUsers();
+        int currentID = 0;
+        int maxID = 0;
+        String holder;
+        String newID;
 
-            user = (User) client.readObjectFromServer(); // this is the issue
-        } catch (Exception exception) {
+        for (User user : users) {
+            holder = (user.getUserID());
+            holder = holder.replace("user", "");
+            currentID = (Integer.parseInt((holder)));
 
-            exception.printStackTrace();
+            if (currentID > maxID) {
+                maxID = currentID;
+            }
         }
 
-        returnID = user.getUserID();
-        returnID = returnID.replace("user", "");
-        returnID = (String.valueOf(Integer.parseInt(returnID) + 1));
-        returnID = "user" + returnID;
-        return (returnID);
+        newID = "user" + (maxID + 1);
+
+        return newID;
     }
 }

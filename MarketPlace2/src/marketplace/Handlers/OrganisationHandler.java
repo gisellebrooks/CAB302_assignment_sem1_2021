@@ -2,6 +2,7 @@ package marketplace.Handlers;
 
 import marketplace.Client.Client;
 import marketplace.Objects.Organisation;
+import marketplace.Objects.User;
 import marketplace.TableObject;
 
 import java.io.IOException;
@@ -18,28 +19,30 @@ public class OrganisationHandler implements Serializable {
     }
 
     public List<Organisation> getAllOrganisations(){
-        List<Organisation> result = null;
+        List result = null;
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION;", TableObject.ORGANISATION);
-            result = (List) client.readListFromServer();
+            result = client.readListFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         return result;
     }
 
-    public Organisation getOrganisationInformation(String orgID){
+    public Organisation getOrganisation(String orgID){
+        List<Organisation> organisations = getAllOrganisations();
         Organisation result = null;
-        try {
-            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '"+ orgID+"';", TableObject.ORGANISATION);
-            result = (Organisation) client.readObjectFromServer();
-        } catch (Exception exception) {
-            exception.printStackTrace();
+
+        if (organisations != null) {
+            for (Organisation organisation : organisations) {
+                if (organisation.getOrgID().equals(orgID)) {
+                    result = organisation;
+                }
+            }
         }
+
         return result;
     }
-
-
 
     public void addOrganisation(String orgID, String orgName, double credits) {
 
@@ -71,86 +74,89 @@ public class OrganisationHandler implements Serializable {
     }
 
     public boolean organisationIDExists(String orgID) {
-        Organisation organisation = null;
-        try {
-            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
-            organisation = (Organisation) client.readObjectFromServer();
+        Organisation organisation = getOrganisation(orgID);
 
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        if (organisation.getOrgID() != null) {
+        if (organisation != null && organisation.getOrgID() != null) {
             return true;
         }
         return false;
     }
 
     public boolean organisationNameExists(String organisationName) {
-        Organisation organisation = null;
-        try {
-            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" + organisationName + "';", TableObject.ORGANISATION);
-            organisation = (Organisation) client.readObjectFromServer();
+        List<String> allOrganisationsNames = getAllOrganisationsNames();
 
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        if (organisation.getOrgName() != null) {
-            return true;
+        if (allOrganisationsNames != null) {
+            for (String allOrganisationsName : allOrganisationsNames) {
+                if (allOrganisationsName.equals(organisationName)) {
+                    return true;
+                }
+            }
         }
 
         return false;
     }
 
     public String newOrganisationID() {
-        Organisation organisation = null;
-        String returnID;
-        try {
-            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION ORDER BY LENGTH(orgID) , orgID;", TableObject.ORGANISATION);
+        List<Organisation> organisations = getAllOrganisations();
+        int currentID = 0;
+        int maxID = 0;
+        String holder;
+        String newID = null;
 
-            organisation = (Organisation) client.readObjectFromServer(); // this is the issue
+        if (organisations != null) {
+            for (Organisation organisation : organisations) {
+                holder = (organisation.getOrgID());
+                holder = holder.replace("org", "");
+                currentID = (Integer.parseInt((holder)));
 
+                if (currentID > maxID) {
+                    maxID = currentID;
+                }
+            }
 
-        } catch (Exception exception) {
-
-            exception.printStackTrace();
+            newID = "org" + (maxID + 1);
         }
 
-        System.out.println(organisation.getOrgID());
-
-        if (organisation.getOrgID() == null) {
-            return ("org1");
-        } else {
-            returnID = organisation.getOrgID();
-            returnID = returnID.replace("org", "");
-            returnID = (String.valueOf(Integer.parseInt(returnID) + 1));
-            returnID = "org" + returnID;
-            return (returnID);
-        }
+        return newID;
     }
 
     public List<String> getAllOrganisationsNames() {
         List<Organisation> allOrganisations = getAllOrganisations();
-        List<String> allOrganisationsNames = new ArrayList<String>();
+        List<String> allOrganisationsNames = new ArrayList<>();
 
-        for (int i = 0; i < allOrganisations.size(); i++) {
-            allOrganisationsNames.add(allOrganisations.get(i).getOrgName());
+        if (allOrganisations != null) {
+            for (Organisation allOrganisation : allOrganisations) {
+                allOrganisationsNames.add(allOrganisation.getOrgName());
+            }
+
+            return allOrganisationsNames;
         }
-        return allOrganisationsNames;
+
+        return new ArrayList<>();
     }
 
     public String getOrganisationID(String organisationName) {
-        Organisation result = null;
-        try {
-            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" +
-                    organisationName + "';", TableObject.ORGANISATION);
-            result = (Organisation) client.readObjectFromServer();
+//        Organisation result = null;
+//        try {
+//            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" +
+//                    organisationName + "';", TableObject.ORGANISATION);
+//            result = (Organisation) client.readObjectFromServer();
+//
+//            return result.getOrgID();
+//
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
+//
+//        return null;
+        List<Organisation> allOrganisations = getAllOrganisations();
 
-            return result.getOrgID();
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        for (Organisation allOrganisation : allOrganisations) {
+            System.out.println(allOrganisation.getOrgName().equals(organisationName));
+            if (allOrganisation.getOrgName().equals(organisationName)) {
+                return allOrganisation.getOrgID();
+            }
         }
-
         return null;
     }
 
