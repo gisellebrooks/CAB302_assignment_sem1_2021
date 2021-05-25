@@ -60,43 +60,36 @@ public class LoginGUI extends JPanel implements ActionListener {
         String userID = userText.getText();
         String password = passwordText.getText();
         String passwordHash = null;
+        User user;
 
         valid.setText("");
-        invalid.setText("");
-
-        User user = null;
-
-        // try and get user from server
-        try {
-            user = MainGUIHandler.userHandler.getUser(userID);
-            passwordHash = PasswordFunctions.intoHash(password);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            invalid.setText("Invalid details!");
-        }
-
-        if (userID.length() < 249 && userID != null) {
-
-        } else {
-
-        }
+        invalid.setText("Invalid details!");
 
         // if user found then test password matches
-        if (MainGUIHandler.userHandler.userIDExists(userID)) {
+        if (userID.length() < 249 && userID != null  && password. length() < 249 && password != null &&
+                MainGUIHandler.userHandler.userIDExists(userID)) {
 
-            if (user.getPasswordHash().equals(passwordHash) && !passwordHash.equals(null)) {
+            user = MainGUIHandler.userHandler.getUser(userID);
 
-                removeAll();
-                add(new SettingsNavigationAdminGUI());
-                updateUI();
+            try {
+                passwordHash = PasswordFunctions.intoHash(password);
 
-            } else {
+                if (user.getPasswordHash().equals(passwordHash) && !passwordHash.equals(null)) {
+                    removeAll();
+                    MainGUIHandler.userType = user.getAccountType();
+
+                    if (MainGUIHandler.userType.equals("ADMIN")) {
+                        add(new SettingsNavigationAdminGUI());
+                    } else {
+                        add(new SettingsNavigationUserGUI());
+                    }
+
+                    updateUI();
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
                 invalid.setText("Invalid details!");
             }
-
-        } else {
-            invalid.setText("Invalid details!");
         }
-
     }
 }

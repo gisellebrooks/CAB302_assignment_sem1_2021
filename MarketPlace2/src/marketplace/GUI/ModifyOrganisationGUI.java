@@ -85,7 +85,6 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
     boolean foundOrganisation = false;
     Organisation organisation = null;
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         valid.setText("");
         invalid.setText("Invalid inputs");

@@ -1,26 +1,35 @@
 package marketplace.GUI;
 
+import marketplace.Objects.Organisation;
+import marketplace.Objects.User;
+import marketplace.PasswordFunctions;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 
 public class ModifyUserGUI extends JPanel implements ActionListener {
 
-    private static JButton createOrganisationButton;
+    private static JButton modifyUserButton;
     private static JButton toSettingsButton;
     private static JButton findUserButton;
     private static JLabel userIDPromptLabel;
     private static JTextField userIDText;
     private static JLabel organisationLabel;
-    private static JComboBox organisationComboBox;
+    private static JComboBox userOrganisationComboBox;
     private static JLabel userTypeLabel;
     private static JComboBox userTypeComboBox;
 
     private static JButton resetPasswordButton;
+    private static JLabel newPasswordPromptLabel;
     private static JTextField newPasswordText;
+
+    boolean userValid;
+    User user = null;
 
     private static JLabel valid;
     private static JLabel invalid;
@@ -37,8 +46,12 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         resetPasswordButton.addActionListener(this);
         add(resetPasswordButton);
 
+        newPasswordPromptLabel = new JLabel("New password:");
+        newPasswordPromptLabel.setBounds(300, 70, 160, 25);
+        add(newPasswordPromptLabel);
+
         newPasswordText = new JTextField(30);
-        newPasswordText.setBounds(300, 80, 180, 25);
+        newPasswordText.setBounds(300, 100, 180, 25);
         add(newPasswordText);
 
 
@@ -71,9 +84,9 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         organisationLabel.setBounds(10, 120, 180, 25);
         add(organisationLabel);
 
-        organisationComboBox = new JComboBox(MainGUIHandler.organisationHandler.getAllOrganisationsNames().toArray());
-        organisationComboBox.setBounds(10, 150, 165, 25);
-        add(organisationComboBox);
+        userOrganisationComboBox = new JComboBox(MainGUIHandler.organisationHandler.getAllOrganisationsNames().toArray());
+        userOrganisationComboBox.setBounds(10, 150, 165, 25);
+        add(userOrganisationComboBox);
 
         userTypeLabel = new JLabel("Select your user type:");
         userTypeLabel.setBounds(10, 190, 180, 25);
@@ -87,10 +100,10 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         userTypeComboBox.setBounds(10, 220, 165, 25);
         add(userTypeComboBox);
 
-        createOrganisationButton = new JButton("Modify");
-        createOrganisationButton.setBounds(10, 260, 80, 25);
-        createOrganisationButton.addActionListener(this);
-        add(createOrganisationButton);
+        modifyUserButton = new JButton("Modify");
+        modifyUserButton.setBounds(10, 260, 80, 25);
+        modifyUserButton.addActionListener(this);
+        add(modifyUserButton);
 
         toSettingsButton = new JButton("SETTINGS");
         toSettingsButton.setBounds(200, 400, 120, 25);
@@ -103,44 +116,81 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
 
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
 
-        String userID = null;
+        String userID;
         String newPassword;
-        String userOrganisation;
+        String userOrganisationName;
+        String userOrganisationID;
+        Organisation userOrganisation;
         String userType;
 
-//        valid.setText("");
-//        invalid.setText("");
-//
-//        if (e.getSource() == findUserButton) {
-//
-//        }
-//
-//        if (e.getSource() == resetPasswordButton) {
-//            if (userID ) {
-//
-//            }
-//        }
-//
-//        String organisationName = nameText.getText();
-//        int credits = 0;
+        PasswordFunctions passwordFunctions = new PasswordFunctions();
 
-//        try  {
-//            credits = Integer.parseInt(creditsText.getText());
-//
-//            if (userHandler.userIDExists(organisationName)) {
-//                invalid.setText("That organisation name is taken");
-//            } else {
-//                userHandler.userIDExists(userIDExists.newOrganisationID(), organisationName, credits);
-//                valid.setText("Organisation was successfully created");
-//            }
-//        } catch (NumberFormatException NumberFormatError) {
-//            NumberFormatError.printStackTrace();
-//        }
+        valid.setText("");
+        invalid.setText("invalid");
 
+        if (e.getSource() == findUserButton) {
 
+            newPasswordText.setText("");
+            userID = userIDText.getText();
 
+            if (!userID.isEmpty() && userID.length() < 250 && MainGUIHandler.userHandler.userIDExists(userID)) {
+                userValid = true;
+                userID = userIDText.getText();
+                user = MainGUIHandler.userHandler.getUser(userID);
+
+                userOrganisationID = user.getOrganisationID();
+
+                userOrganisation = MainGUIHandler.organisationHandler.getOrganisation(userOrganisationID);
+                System.out.println(userOrganisation);
+                userOrganisationName = userOrganisation.getOrgName();
+                userType = user.getAccountType();
+                userTypeComboBox.setSelectedItem(userType);
+                userOrganisationComboBox.setSelectedItem(userOrganisationName);
+
+                invalid.setText("");
+                valid.setText(user.getUserID() + " selected");
+
+            } else {
+                user = null;
+                userValid = false;
+                valid.setText("");
+                invalid.setText("That userID is invalid");
+            }
+        }
+
+        if (e.getSource() == resetPasswordButton) {
+            if (userValid) {
+                try {
+                    newPassword = passwordFunctions.generatePassword();
+                    user.setPasswordHash(passwordFunctions.intoHash(newPassword));
+                    MainGUIHandler.userHandler.updateUserPassword(user);
+                    newPasswordText.setText(newPassword);
+                    invalid.setText("");
+                } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+                    noSuchAlgorithmException.printStackTrace();
+                }
+            } else {
+                invalid.setText("invalid user");
+            }
+        }
+
+        if (e.getSource() == modifyUserButton) {
+            if (userValid) {
+
+                userOrganisationName = userOrganisationComboBox.getSelectedItem().toString();
+                userOrganisationID = MainGUIHandler.organisationHandler.getOrganisationID(userOrganisationName);
+                user.setOrganisationID(userOrganisationID);
+                user.setAccountType(userTypeComboBox.getSelectedItem().toString());
+
+                MainGUIHandler.userHandler.updateUser(user);
+
+                invalid.setText("");
+                valid.setText("user information updated");
+            } else {
+                invalid.setText("invalid user");
+            }
+        }
     }
 }

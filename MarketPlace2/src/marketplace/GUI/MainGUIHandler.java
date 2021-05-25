@@ -18,6 +18,7 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
     public static OrganisationHandler organisationHandler;
     public static OrderHandler orderHandler;
     public static JPanel panel;
+    public static String userType;
 
     public static void main(String[] args){
 
@@ -53,10 +54,14 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
         panel.setBounds(0, 0, 600, 600);
 
 //        panel.add(new LoginGUI());
-        panel.add(new SettingsNavigationAdminGUI());
+//        panel.add(new SettingsNavigationAdminGUI());
+//        panel.add(new SettingsNavigationUserGUI());
 //        panel.add(new BuyOrderGUI());
 //        panel.add(new SignUpUserGUI());
 //        panel.add(new SignUpOrganisationGUI());
+//        panel.add(new ModifyUserGUI());
+//        panel.add(new ModifyOrganisationGUI());
+
         add(panel);
     }
 

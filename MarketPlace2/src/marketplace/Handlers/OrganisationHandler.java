@@ -30,18 +30,20 @@ public class OrganisationHandler implements Serializable {
     }
 
     public Organisation getOrganisation(String orgID){
-        List<Organisation> organisations = getAllOrganisations();
-        Organisation result = null;
+        List<Organisation> result;
+        try {
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" +
+                    orgID + "';", TableObject.ORGANISATION);
+            result = (List<Organisation> ) client.readListFromServer();
 
-        if (organisations != null) {
-            for (Organisation organisation : organisations) {
-                if (organisation.getOrgID().equals(orgID)) {
-                    result = organisation;
-                }
+            if (result.size() > 0) {
+                return result.get(0);
             }
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
 
-        return result;
+        return null;
     }
 
     public void addOrganisation(String orgID, String orgName, double credits) {
@@ -56,9 +58,6 @@ public class OrganisationHandler implements Serializable {
     }
 
     public void removeOrganisation(String orgID) {
-
-
-
         try {
             client.writeToServer("DELETE FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
             client.readListFromServer();

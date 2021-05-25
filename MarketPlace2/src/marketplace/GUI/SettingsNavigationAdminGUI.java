@@ -76,7 +76,6 @@ public class SettingsNavigationAdminGUI extends JPanel implements ActionListener
         add(modifyOrganisationButton);
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
 
     }

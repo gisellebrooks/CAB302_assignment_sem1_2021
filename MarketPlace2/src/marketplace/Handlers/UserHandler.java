@@ -59,12 +59,23 @@ public class UserHandler {
         }
     }
 
-    public void updateUser(String userID, String passwordHash, String accountType, String organisationID, String name) {
+    public void updateUser(User user) {
 
         try {
-            client.writeToServer("UPDATE USER_INFORMATION SET passwordHash = '" + passwordHash + "', accountType = '" +
-                    accountType + "', or orgID = '" + organisationID + "', name = '" + name + "' WHERE userID = '" +
-                    userID + "';", TableObject.USER);
+            client.writeToServer("UPDATE USER_INFORMATION SET accountType = '" +
+                    user.getAccountType() + "', orgID = '" + user.getOrganisationID() + "' WHERE userID = '" +
+                    user.getUserID() + "';", TableObject.USER);
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateUserPassword(User user) {
+
+        try {
+            client.writeToServer("UPDATE USER_INFORMATION SET passwordHash = '" +
+                    user.getPasswordHash() + "' WHERE userID = '" + user.getUserID() + "';", TableObject.USER);
             client.readListFromServer();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
