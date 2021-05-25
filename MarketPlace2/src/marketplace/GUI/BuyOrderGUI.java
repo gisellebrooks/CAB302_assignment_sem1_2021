@@ -8,7 +8,6 @@ import marketplace.Objects.Order;
 // import marketplace.Objects.Order;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -98,15 +97,6 @@ public class BuyOrderGUI extends JPanel implements ActionListener {
         });
         add(toSettingsButton);
 
-        valid = new JLabel("");
-        valid.setForeground(Color.green);
-        valid.setBounds(10, 120, 340, 25);
-        add(valid);
-
-        invalid = new JLabel("");
-        invalid.setForeground(Color.red);
-        invalid.setBounds(10, 120, 340, 25);
-        add(invalid);
     }
 
     @Override

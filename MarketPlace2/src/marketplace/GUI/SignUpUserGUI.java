@@ -1,10 +1,6 @@
 package marketplace.GUI;
 
-import com.sun.tools.javac.Main;
-import marketplace.Objects.BuyOrder;
-import marketplace.Objects.Organisation;
-import marketplace.Objects.User;
-import marketplace.PasswordFunctions;
+import marketplace.Handlers.PasswordFunctions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class SignUpUserGUI extends JPanel implements ActionListener {

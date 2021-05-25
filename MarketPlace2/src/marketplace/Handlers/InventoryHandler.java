@@ -2,7 +2,7 @@ package marketplace.Handlers;
 
 import marketplace.Client.Client;
 import marketplace.Objects.Inventory;
-import marketplace.TableObject;
+import marketplace.Objects.TableObject;
 
 import java.io.IOException;
 import java.util.List;
