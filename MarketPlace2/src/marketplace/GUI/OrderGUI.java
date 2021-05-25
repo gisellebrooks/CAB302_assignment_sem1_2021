@@ -1,7 +1,5 @@
 package marketplace.GUI;
 
-import marketplace.Objects.Order;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -1,9 +1,11 @@
 package marketplace.GUI;
 
 import marketplace.Objects.User;
-import marketplace.Handlers.PasswordFunctions;
+import marketplace.PasswordFunctions;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

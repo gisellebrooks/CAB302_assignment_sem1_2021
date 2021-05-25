@@ -22,7 +22,7 @@ public class ServerHandler {
             while (true){
                 Socket socket = null;
                 try {
-                    System.out.println("Waiting for client connection...");
+                    System.out.println("inb4 client connects");
                     // socket object to receive incoming client requests
                     socket = listener.accept();
                     System.out.println("A new client is connected : " + socket);
@@ -112,6 +112,7 @@ public class ServerHandler {
         Properties props = loadServerConfig();
 
         ServerHandler server = new ServerHandler(Integer.parseInt(props.getProperty("app.port")), props.getProperty("app.hostname"));
+
 
     }
 }

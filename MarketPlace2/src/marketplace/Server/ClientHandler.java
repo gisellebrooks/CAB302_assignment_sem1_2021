@@ -1,7 +1,7 @@
 package marketplace.Server;
 
 import marketplace.Objects.*;
-import marketplace.Objects.TableObject;
+import marketplace.TableObject;
 
 import java.io.*;
 import java.net.Socket;
@@ -37,7 +37,7 @@ public class ClientHandler extends Thread {
                     TableObject type = TableObject.valueOf(in.readLine());
                     String query = in.readLine();
 
-                    if (type == TableObject.DELETE || type == TableObject.UPDATE){
+                    if (type == TableObject.DELETE){
                         pool.updateResult(query);
                     }
                     else{
@@ -45,6 +45,7 @@ public class ClientHandler extends Thread {
                     }
 
                     switch(type){
+
                         case USER:
 
                             List<User> userList = new ArrayList<>();
