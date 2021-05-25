@@ -101,7 +101,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
 
             if (MainGUIHandler.organisationHandler.organisationIDExists(organisationID)) {
                 foundOrganisation = true;
-                organisation = MainGUIHandler.organisationHandler.getOrganisationInformation(organisationID);
+                organisation = MainGUIHandler.organisationHandler.getOrganisation(organisationID);
 
                 nameText.setText(organisation.getOrgName());
                 // creditsText.setText(Double.toString((organisation.getCredits())));

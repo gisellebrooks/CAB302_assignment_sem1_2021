@@ -1,6 +1,10 @@
 package marketplace.GUI;
 
-import marketplace.Handlers.PasswordFunctions;
+import com.sun.tools.javac.Main;
+import marketplace.Objects.BuyOrder;
+import marketplace.Objects.Organisation;
+import marketplace.Objects.User;
+import marketplace.PasswordFunctions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class SignUpUserGUI extends JPanel implements ActionListener {
@@ -48,30 +53,9 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
         organisationLabel.setBounds(10, 80, 180, 25);
         add(organisationLabel);
 
-
-
-
-        // List<String> organisationsNames = new ArrayList<>();
-//        List<Organisation> allOrganisations = MainGUIHandler.organisationHandler.getAllOrganisations();
-
-//        System.out.println(allOrganisations);
-
-//        for (int i = 0; i < allOrganisations.size(); i++) {
-//            organisationsNames.add(allOrganisations.get(i).getOrgName());
-//        }
-//        organisationComboBox = new JComboBox(organisationsNames.toArray());
-
-//        List<Organisation> allOrganisations = MainGUIHandler.organisationHandler.getAllOrganisations();
-//        // User users = MainGUIHandler.userHandler.getUserInformation("user10");
-//        Organisation organisation = MainGUIHandler.organisationHandler.getOrganisationInformation("org15");
-//        // List<User> allUsers = MainGUIHandler.userHandler.getAllUsers();
-//        List<BuyOrder> buyHistory = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
-//
-//        organisationComboBox = new JComboBox(MainGUIHandler.organisationHandler.getAllOrganisations().toArray());
-//        organisationComboBox.setBounds(10, 100, 165, 25);
-//        add(organisationComboBox);
-
-
+        organisationComboBox = new JComboBox(MainGUIHandler.organisationHandler.getAllOrganisationsNames().toArray());
+        organisationComboBox.setBounds(10, 100, 165, 25);
+        add(organisationComboBox);
 
         userTypeLabel = new JLabel("Select your user type:");
         userTypeLabel.setBounds(10, 140, 180, 25);
@@ -148,16 +132,14 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
             noSuchAlgorithmException.printStackTrace();
         }
 
-        if (nameText.isValid() && nameText.getText().length() > 2 && nameText.getText().length() < 250) {
-            System.out.println(nameText.getText());
+        // get organisation ID with org name
+        String organisationName = organisationComboBox.getSelectedItem().toString();
+        String organisationID = MainGUIHandler.organisationHandler.getOrganisationID(organisationName);
+
+        if (nameText.isValid() && nameText.getText().length() > 2 && nameText.getText().length() < 250 && organisationID != null) {
             String name = nameText.getText();
 
             invalid.setText("can't signup");
-
-            // get organisation ID with org name
-//            String organisationName = organisationComboBox.getSelectedItem().toString();
-//            String organisationID = MainGUIHandler.organisationHandler.getOrganisationID(organisationName);
-            String organisationID = "org3";
 
             accountType = userTypeComboBox.getSelectedItem().toString();
 

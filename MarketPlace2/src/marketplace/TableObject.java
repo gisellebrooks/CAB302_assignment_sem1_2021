@@ -1,4 +1,4 @@
-package marketplace.Objects;
+package marketplace;
 
 public enum TableObject {
     USER,
@@ -8,6 +8,5 @@ public enum TableObject {
     BUY_HISTORY,
     SELL_HISTORY,
     INVENTORY,
-    DELETE,
-    UPDATE
+    DELETE
 }

@@ -5,11 +5,12 @@ import marketplace.Objects.Order;
 import marketplace.Objects.Organisation;
 import marketplace.Objects.SellOrder;
 import marketplace.Objects.User;
-import marketplace.Objects.TableObject;
+import marketplace.TableObject;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -35,6 +36,27 @@ public class OrderHandler implements Serializable {
         return result;
     }
 
+    public Order getBuyOrder(String buyID){
+        Order result = null;
+        try {
+            client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS WHERE buyID = '" +buyID+ "' ;", TableObject.BUY_ORDER);
+            result = (Order) client.readObjectFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return result;
+    }
+
+    public void addBuyOrder(String buyID, String userID, String assetName, int quantity, BigDecimal priceUpper){
+        Timestamp orderDate = new Timestamp(System.currentTimeMillis());
+
+        try {
+            client.writeToServer("INSERT INTO ACTIVE_BUY_ORDERS VALUES('"+buyID+"', '"+userID+"', '"+ assetName +
+                    "', '"+ quantity + "', '" + priceUpper +"', '" +orderDate+ "' );", TableObject.BUY_ORDER);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<SellOrder> getAllActiveSellOrders(){
         List<SellOrder> result = null;
@@ -58,85 +80,14 @@ public class OrderHandler implements Serializable {
         return result;
     }
 
-    public String newOrderID(String orderType) {
-        Object orderID = null;
-        String lastID = null;
-        if (orderType.equals("buy")){
-            List<Order> buyList = null;
-            try {
-                client.writeToServer("SELECT buyID FROM ACTIVE_BUY_ORDERS ORDER BY cast(buyID as SIGNED) DESC LIMIT 1;", TableObject.USER);
-
-                buyList = (List<Order>) client.readListFromServer();
-                if (buyList != null){
-                    orderID = buyList.get(0);
-                    lastID = ((Order) orderID).getOrderID();
-                }
-
-            } catch (Exception exception) {
-
-                exception.printStackTrace();
-            }
-
-        } else if (orderType.equals("sell")) {
-            List<SellOrder> sellList = null;
-            try {
-                client.writeToServer("SELECT sellID FROM ACTIVE_BUY_ORDERS ORDER BY cast(sellID as SIGNED) DESC LIMIT 1;", TableObject.USER);
-
-                sellList = (List<SellOrder>) client.readListFromServer();
-                if (sellList != null){
-                    orderID = sellList.get(0);
-                    lastID = ((SellOrder) orderID).getOrderID();
-                }
-
-            } catch (Exception exception) {
-
-                exception.printStackTrace();
-            }
-
-        }
-
-        String[] part = lastID.split("(?<=\\D)(?=\\d)");
-        int IDNumber = Integer.parseInt(part[1]) + 1;
-        return (orderType + IDNumber);
-    }
-
-    public void addNewBuyOrder(String userID, int quantity, BigDecimal price){
+    public void addSellOrder(String sellID, String userID, String assetName, int quantity, BigDecimal priceLower){
         Timestamp orderDate = new Timestamp(System.currentTimeMillis());
-        String id = newOrderID("buy");
 
         try {
-            client.writeToServer("INSERT INTO ACTIVE_BUY_ORDERS VALUES('"+id+"', '"+userID+"', '"+ quantity +
-                    "', '" + price +"', '" +orderDate+ "' );", TableObject.SELL_ORDER);
+            client.writeToServer("INSERT INTO ACTIVE_SELL_ORDERS VALUES('"+sellID+"', '"+userID+"', '"+ assetName +
+                    "', '"+ quantity + "', '" + priceLower +"', '" +orderDate+ "' );", TableObject.SELL_ORDER);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void addNewSellOrder(String userID, String assetID, int quantity, BigDecimal price){
-        Timestamp orderDate = new Timestamp(System.currentTimeMillis());
-        String sellID = newOrderID("sell");
-
-        try {
-            client.writeToServer("INSERT INTO ACTIVE_SELL_ORDERS VALUES('"+sellID+"', '"+userID+"', '"+ assetID +
-                    "', '"+ quantity + "', '" + price +"', '" +orderDate+ "' );", TableObject.SELL_ORDER);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void ammendOrder(String orderType, String orderID, int quantity, BigDecimal price){
-        if (orderType == "buy"){
-            try {
-                client.writeToServer("UPDATE ACTIVE_BUY_ORDERS SET quantity= '" + quantity + "', priceUpper= '"+ price +"' WHERE buyID= '"+ orderID +"' ;", TableObject.UPDATE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (orderType == "sell"){
-            try {
-                client.writeToServer("UPDATE ACTIVE_SELL_ORDERS SET quantity= '" + quantity + "', priceLower= '"+ price +"' WHERE sellID= '"+ orderID +"' ;", TableObject.UPDATE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 

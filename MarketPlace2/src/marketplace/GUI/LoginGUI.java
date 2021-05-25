@@ -1,7 +1,7 @@
 package marketplace.GUI;
 
 import marketplace.Objects.User;
-import marketplace.Handlers.PasswordFunctions;
+import marketplace.PasswordFunctions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -82,7 +82,7 @@ public class LoginGUI extends JPanel implements ActionListener {
 
         // try and get user from server
         try {
-            user = MainGUIHandler.userHandler.getUserInformation(userID);
+            user = MainGUIHandler.userHandler.getUser(userID);
             passwordHash = PasswordFunctions.intoHash(password);
         } catch (Exception exception) {
             exception.printStackTrace();
