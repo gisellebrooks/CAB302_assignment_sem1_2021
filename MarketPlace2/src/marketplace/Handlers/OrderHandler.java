@@ -213,5 +213,3 @@ public class OrderHandler implements Serializable {
     }
 
 }
-
-

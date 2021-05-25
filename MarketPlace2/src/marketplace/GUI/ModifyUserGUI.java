@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class ModifyUserGUI extends JPanel implements ActionListener, Runnable {
+public class ModifyUserGUI extends JPanel implements ActionListener {
 
     private static JLabel namePromptLabel;
     private static JTextField nameText;
@@ -14,11 +14,11 @@ public class ModifyUserGUI extends JPanel implements ActionListener, Runnable {
     private static JTextField creditsText;
     private static JButton createOrganisationButton;
     private static JTextField givenIDLabel;
+    private static JButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
 
-    @Override
-    public void run() {
+    public ModifyUserGUI() {
         createGui();
     }
 
@@ -45,13 +45,22 @@ public class ModifyUserGUI extends JPanel implements ActionListener, Runnable {
 
         createOrganisationButton = new JButton("Create Organisation");
         createOrganisationButton.setBounds(10, 200, 80, 25);
-        createOrganisationButton.addActionListener(new ModifyUserGUI());
+        createOrganisationButton.addActionListener(this);
         add(createOrganisationButton);
 
         // where the given password goes
         givenIDLabel = new JTextField(20);
         givenIDLabel.setBounds(10, 280, 220, 25);
         add(givenIDLabel);
+
+        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton.setBounds(300, 50, 120, 25);
+        toSettingsButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
+        });
+        add(toSettingsButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);

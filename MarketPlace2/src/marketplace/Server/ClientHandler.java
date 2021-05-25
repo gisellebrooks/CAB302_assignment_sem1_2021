@@ -45,34 +45,42 @@ public class ClientHandler extends Thread {
                     }
 
                     switch(type){
+
                         case USER:
-                            User user = new User();
+
+                            List<User> userList = new ArrayList<>();
                             while (result.next()) {
+                                User user = new User();
                                 user.setUserID(result.getString("userID"));
                                 user.setPasswordHash(result.getString("passwordHash"));
                                 user.setAccountType(result.getString("accountType"));
                                 user.setOrganisationID(result.getString("orgID"));
                                 user.setName(result.getString("name"));
+                                userList.add(user);
                             }
-                            outputToClient.writeObject(user);
+                            outputToClient.writeObject(userList);
+                            outputToClient.flush();
 
                             break;
 
                         case ORGANISATION:
 
-                            Organisation organisation = new Organisation();
+                            List<Organisation> organisationList = new ArrayList<>();
                             while (result.next()) {
+                                Organisation organisation = new Organisation();
                                 organisation.setOrgID(result.getString("orgID"));
                                 organisation.setOrgName(result.getString("orgName"));
                                 organisation.setCredits(result.getBigDecimal("credits"));
+                                organisationList.add(organisation);
                             }
-                            outputToClient.writeObject(organisation);
+                            outputToClient.writeObject(organisationList);
+                            outputToClient.flush();
                             break;
 
                         case BUY_ORDER:
 
                             List<Order> objectList = new ArrayList<>();
-                            while (result.next()){
+                            while (result.next()) {
                                 Order buy = new Order();
                                 buy.setOrderID(result.getString("buyID"));
                                 buy.setUserID(result.getString("userID"));

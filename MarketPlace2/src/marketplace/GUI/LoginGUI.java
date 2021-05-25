@@ -4,8 +4,6 @@ import marketplace.Objects.User;
 import marketplace.PasswordFunctions;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,8 +27,6 @@ public class LoginGUI extends JPanel implements ActionListener {
 
         setLayout(null);
         setBounds(0, 0, 600, 600);
-        Border border = new LineBorder(Color.ORANGE, 4, true);
-        setBorder(border);
 
         userLabel = new JLabel("User");
         userLabel.setBounds(10, 20, 80, 25);
@@ -86,7 +82,7 @@ public class LoginGUI extends JPanel implements ActionListener {
 
         // try and get user from server
         try {
-            user = MainGUIHandler.userHandler.getUserInformation(userID);
+            user = MainGUIHandler.userHandler.getUser(userID);
             passwordHash = PasswordFunctions.intoHash(password);
         } catch (Exception exception) {
             exception.printStackTrace();

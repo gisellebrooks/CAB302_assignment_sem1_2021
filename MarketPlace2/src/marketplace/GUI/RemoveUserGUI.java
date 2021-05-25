@@ -5,16 +5,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RemoveUserGUI extends JPanel implements ActionListener, Runnable {
+public class RemoveUserGUI extends JPanel implements ActionListener {
 
     private static JLabel userIDPromptLabel;
     private static JTextField userIDText;
     private static JButton removeUserButton;
+    private static JButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
 
-    @Override
-    public void run() {
+    public RemoveUserGUI() {
         createGui();
     }
 
@@ -33,8 +33,17 @@ public class RemoveUserGUI extends JPanel implements ActionListener, Runnable {
 
         removeUserButton = new JButton("Remove User");
         removeUserButton.setBounds(10, 200, 120, 25);
-        removeUserButton.addActionListener(new RemoveUserGUI());
+        removeUserButton.addActionListener(this);
         add(removeUserButton);
+
+        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton.setBounds(300, 20, 120, 25);
+        toSettingsButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
+        });
+        add(toSettingsButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);

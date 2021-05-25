@@ -1,14 +1,13 @@
 package marketplace.GUI;
 
 import marketplace.Objects.Organisation;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class ModifyOrganisationGUI extends JPanel implements ActionListener, Runnable {
+public class ModifyOrganisationGUI extends JPanel implements ActionListener {
 
     private static JLabel organisationIDPromptLabel;
     private static JTextField organisationIDText;
@@ -19,11 +18,11 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener, Run
     private static JLabel creditsPromptLabel;
     private static JTextField creditsText;
     private static JButton modifyOrganisationButton;
+    private static JButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
 
-    @Override
-    public void run() {
+    public ModifyOrganisationGUI() {
         createGui();
     }
 
@@ -42,7 +41,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener, Run
 
         findOrganisationButton = new JButton("Find Organisation");
         findOrganisationButton.setBounds(10, 60, 140, 25);
-        findOrganisationButton.addActionListener(new ModifyOrganisationGUI());
+        findOrganisationButton.addActionListener(this);
         add(findOrganisationButton);
 
 
@@ -64,8 +63,17 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener, Run
 
         modifyOrganisationButton = new JButton("Modify Organisation");
         modifyOrganisationButton.setBounds(10, 200, 80, 25);
-        modifyOrganisationButton.addActionListener(new ModifyOrganisationGUI());
+        modifyOrganisationButton.addActionListener(this);
         add(modifyOrganisationButton);
+
+        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton.setBounds(300, 50, 120, 25);
+        toSettingsButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
+        });
+        add(toSettingsButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
@@ -93,7 +101,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener, Run
 
             if (MainGUIHandler.organisationHandler.organisationIDExists(organisationID)) {
                 foundOrganisation = true;
-                organisation = MainGUIHandler.organisationHandler.getOrganisationInformation(organisationID);
+                organisation = MainGUIHandler.organisationHandler.getOrganisation(organisationID);
 
                 nameText.setText(organisation.getOrgName());
                 // creditsText.setText(Double.toString((organisation.getCredits())));

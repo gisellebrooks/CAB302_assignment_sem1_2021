@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SignUpOrganisationGUI extends JPanel implements ActionListener, Runnable {
+public class SignUpOrganisationGUI extends JPanel implements ActionListener {
 
     private static JLabel namePromptLabel;
     private static JTextField nameText;
@@ -13,11 +13,11 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener, Run
     private static JTextField creditsText;
     private static JButton createOrganisationButton;
     private static JLabel givenIDLabel;
+    private static JButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
 
-    @Override
-    public void run() {
+    public SignUpOrganisationGUI() {
         createGui();
     }
 
@@ -44,13 +44,22 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener, Run
 
         createOrganisationButton = new JButton("Create Organisation");
         createOrganisationButton.setBounds(10, 140, 160, 25);
-        createOrganisationButton.addActionListener(new SignUpOrganisationGUI());
+        createOrganisationButton.addActionListener(this);
         add(createOrganisationButton);
 
         // where the given password goes
         givenIDLabel = new JLabel("");
         givenIDLabel.setBounds(10, 200, 220, 25);
         add(givenIDLabel);
+
+        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton.setBounds(300, 50, 120, 25);
+        toSettingsButton.addActionListener(e -> {
+            removeAll();
+            add(new SettingsNavigationAdminGUI());
+            updateUI();
+        });
+        add(toSettingsButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
