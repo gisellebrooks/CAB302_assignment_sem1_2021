@@ -44,15 +44,17 @@ public class UserHandler {
         try {
             client.writeToServer("INSERT INTO USER_INFORMATION VALUES('" + userID + "', '" + passwordHash + "', '" + accountType +
                     "', '" + organisationID + "', '" + name + "' );", TableObject.USER);
-        } catch (IOException e) {
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public void removeUser(String userID) {
         try {
-            client.writeToServer("DELETE FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER) ;
-        } catch (IOException e) {
+            client.writeToServer("DELETE FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER);
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -63,7 +65,8 @@ public class UserHandler {
             client.writeToServer("UPDATE USER_INFORMATION SET passwordHash = '" + passwordHash + "', accountType = '" +
                     accountType + "', or orgID = '" + organisationID + "', name = '" + name + "' WHERE userID = '" +
                     userID + "';", TableObject.USER);
-        } catch (IOException e) {
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

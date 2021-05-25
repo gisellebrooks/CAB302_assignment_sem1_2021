@@ -114,19 +114,4 @@ public class PasswordFunctions {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         return toHexidecimalString(md.digest(message.getBytes(StandardCharsets.UTF_8)));
     }
-
-//    // for testing purposes ---- remove before submission
-//    public static void main(String [] args) throws NoSuchAlgorithmException {
-//        String one = "password123";
-//        String two = "password123";
-//        String three = "123ps";
-//        String four = "123";
-//
-//        PasswordFunctions ps = new PasswordFunctions();
-//
-//        System.out.println(ps.intoHash(one));
-//        System.out.println(ps.intoHash(two));
-//        System.out.println(ps.intoHash(three));
-//        System.out.println(ps.intoHash(four));
-//    }
 }

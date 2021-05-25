@@ -49,7 +49,6 @@ public class Client {
             Properties props = loadServerConfig();
             address = props.getProperty("app.hostname");
             port = Integer.parseInt(props.getProperty("app.port"));
-            System.out.println("here");
             System.out.println(address);
             System.out.println(port);
             socket = new Socket(address, port);

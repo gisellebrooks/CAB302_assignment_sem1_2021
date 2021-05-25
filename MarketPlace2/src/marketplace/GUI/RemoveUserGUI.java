@@ -15,16 +15,12 @@ public class RemoveUserGUI extends JPanel implements ActionListener {
     private static JLabel invalid;
 
     public RemoveUserGUI() {
-        createGui();
-    }
-
-    public void createGui() {
 
         setLayout(null);
         setBounds(0, 0, 600, 600);
 
         userIDPromptLabel = new JLabel("ID of user to remove");
-        userIDPromptLabel.setBounds(10, 20, 80, 25);
+        userIDPromptLabel.setBounds(10, 20, 180, 25);
         add(userIDPromptLabel);
 
         userIDText = new JTextField(20);
@@ -32,12 +28,12 @@ public class RemoveUserGUI extends JPanel implements ActionListener {
         add(userIDText);
 
         removeUserButton = new JButton("Remove User");
-        removeUserButton.setBounds(10, 200, 120, 25);
+        removeUserButton.setBounds(10, 70, 120, 25);
         removeUserButton.addActionListener(this);
         add(removeUserButton);
 
         toSettingsButton = new JButton("SETTINGS");
-        toSettingsButton.setBounds(300, 20, 120, 25);
+        toSettingsButton.setBounds(200, 150, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
             add(new SettingsNavigationAdminGUI());
@@ -47,29 +43,31 @@ public class RemoveUserGUI extends JPanel implements ActionListener {
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
-        valid.setBounds(10, 360, 340, 25);
+        valid.setBounds(10, 100, 340, 25);
         add(valid);
 
         invalid = new JLabel("");
         invalid.setForeground(Color.red);
-        invalid.setBounds(10, 360, 340, 25);
+        invalid.setBounds(10, 100, 340, 25);
         add(invalid);
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         valid.setText("");
         invalid.setText("");
 
         String userID = userIDText.getText();
-        
-        if (MainGUIHandler.userHandler.userIDExists(userID)) {
-            MainGUIHandler.userHandler.removeUser(userID);
-            valid.setText("User was successfully removed");
+        userIDText.setText("");
 
+        if (userID.length() < 249 && userID != null) {
+            if (MainGUIHandler.userHandler.userIDExists(userID)) {
+                MainGUIHandler.userHandler.removeUser(userID);
+                valid.setText("User was successfully removed");
+            } else {
+                invalid.setText("User can't be found or can't be removed");
+            }
         } else {
-            invalid.setText("User can't be found or can't be removed");
+            invalid.setText("Provided userID is invalid");
         }
-
     }
 }

@@ -20,10 +20,6 @@ public class LoginGUI extends JPanel implements ActionListener {
     private static JLabel invalid;
 
     public LoginGUI() {
-        createGui();
-    }
-
-    public void createGui() {
 
         setLayout(null);
         setBounds(0, 0, 600, 600);
@@ -68,16 +64,6 @@ public class LoginGUI extends JPanel implements ActionListener {
         valid.setText("");
         invalid.setText("");
 
-//        client = new Client();
-//        userHandler= new UserHandler(client);
-//
-//        try {
-//            client.connect();
-//
-//        } catch (IOException er) {
-//            er.printStackTrace();
-//        }
-
         User user = null;
 
         // try and get user from server
@@ -87,6 +73,12 @@ public class LoginGUI extends JPanel implements ActionListener {
         } catch (Exception exception) {
             exception.printStackTrace();
             invalid.setText("Invalid details!");
+        }
+
+        if (userID.length() < 249 && userID != null) {
+
+        } else {
+
         }
 
         // if user found then test password matches

@@ -23,10 +23,6 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
     private static JLabel invalid;
 
     public ModifyOrganisationGUI() {
-        createGui();
-    }
-
-    public void createGui() {
 
         setLayout(null);
         setBounds(0, 0, 600, 600);

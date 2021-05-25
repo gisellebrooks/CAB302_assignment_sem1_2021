@@ -10,7 +10,6 @@ import marketplace.TableObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -152,12 +151,12 @@ public class OrderHandler implements Serializable {
                     client.writeToServer("DELETE FROM active_buy_orders WHERE buyID='"+ buyID +"';", TableObject.DELETE);
                     client.writeToServer("INSERT INTO buy_order_history VALUES('"+ buyID +"', '"+ buyUserID +"', '"+ sellAssetID +"', '"+ buyQuantity +"', '"+ pricePerUnit +"', '"+ reconcileDate +"') ;", TableObject.BUY_HISTORY);
                     inventoryHandler.updateAssetQuantity(sellAssetID, buyQuantity);
-                    organisationHandler.updateOrganisationCredits(buyOrgID, updatedBuyOrgCredits);
+                    organisationHandler.updateOrganisationsCredits(buyOrgID, updatedBuyOrgCredits);
 
                     client.writeToServer("DELETE FROM active_sell_orders WHERE sellID='"+ sellID +"';", TableObject.DELETE);
                     client.writeToServer("INSERT INTO sell_order_history VALUES('"+ sellID +"', '"+ sellUserID +"', '"+ sellAssetID +"', '"+ sellQuantity +"', '"+ pricePerUnit +"', '"+ reconcileDate +"') ;", TableObject.SELL_HISTORY);
                     inventoryHandler.updateAssetQuantity(sellAssetID, sellQuantity);
-                    organisationHandler.updateOrganisationCredits(buyOrgID, updatedBuyOrgCredits);
+                    organisationHandler.updateOrganisationsCredits(buyOrgID, updatedBuyOrgCredits);
                 }
             }
         }

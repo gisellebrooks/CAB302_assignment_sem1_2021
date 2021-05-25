@@ -40,11 +40,8 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
 
     @Override
     public void run() {
-        startProgram();
-        this.setVisible(true);
-    }
 
-    public void startProgram() {
+        this.setVisible(true);
 
         setTitle("Market");
         setSize(600,600);

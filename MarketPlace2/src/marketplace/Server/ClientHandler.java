@@ -155,6 +155,7 @@ public class ClientHandler extends Thread {
                                 inventoryList.add(inventory);
                             }
                             outputToClient.writeObject(inventoryList);
+                            outputToClient.flush();
                             break;
                     }
                 }

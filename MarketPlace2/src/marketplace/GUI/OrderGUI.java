@@ -106,7 +106,6 @@ public class OrderGUI extends JPanel implements ActionListener {
 //        userHandler.addUser("user10", "12345", "user", "org10", "bob bob");
 //
 //        if (user.getUserID().equals(userID)){
-//            System.out.println("successful bitch");
 //            if (user.getPasswordHash().equals(password)) {
 //                invalid.setText("");
 //                valid.setText("Login successful!");
