@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  */
 public class PasswordFunctions {
 
-    // added to password before it's hashed
     private static final String salt = "4@#ndssa213";
 
     // reference: https://stackoverflow.com/questions/3802192/regexp-java-for-password-validation
