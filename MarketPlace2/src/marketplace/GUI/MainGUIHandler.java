@@ -4,6 +4,7 @@ import marketplace.Client.Client;
 import marketplace.Handlers.OrderHandler;
 import marketplace.Handlers.OrganisationHandler;
 import marketplace.Handlers.UserHandler;
+import marketplace.Objects.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -19,6 +20,7 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
     public static OrderHandler orderHandler;
     public static JPanel panel;
     public static String userType;
+    public static User user;
 
     public static void main(String[] args){
 
@@ -53,7 +55,7 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
         panel.setLayout(null);
         panel.setBounds(0, 0, 600, 600);
 
-//        panel.add(new LoginGUI());
+        panel.add(new LoginGUI());
 //        panel.add(new SettingsNavigationAdminGUI());
 //        panel.add(new SettingsNavigationUserGUI());
 //        panel.add(new BuyOrderGUI());
@@ -61,6 +63,7 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
 //        panel.add(new SignUpOrganisationGUI());
 //        panel.add(new ModifyUserGUI());
 //        panel.add(new ModifyOrganisationGUI());
+//        panel.add(new ChangeUsersPasswordGUI());
 
         add(panel);
     }

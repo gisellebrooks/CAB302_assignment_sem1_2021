@@ -1,6 +1,6 @@
 package marketplace.GUI;
 
-import marketplace.PasswordFunctions;
+import marketplace.PasswordHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -120,9 +120,9 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
         givenIDLabel.setText("");
         givenPasswordText.setText("");
 
-        password = new PasswordFunctions().generatePassword();
+        password = new PasswordHandler().generatePassword();
         try {
-            passwordHash = new PasswordFunctions().intoHash(password);
+            passwordHash = new PasswordHandler().intoHash(password);
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
             noSuchAlgorithmException.printStackTrace();
         }

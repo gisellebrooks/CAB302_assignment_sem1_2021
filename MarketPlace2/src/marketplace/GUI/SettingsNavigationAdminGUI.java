@@ -10,9 +10,11 @@ public class SettingsNavigationAdminGUI extends JPanel implements ActionListener
     private static JButton createUserButton;
     private static JButton removeUserButton;
     private static JButton modifyUserButton;
+    private static JButton changePasswordButton;
     private static JButton createOrganisationButton;
     private static JButton removeOrganisationButton;
     private static JButton modifyOrganisationButton;
+    private static JButton logOutButton;
 
     public SettingsNavigationAdminGUI() {
         setLayout(null);
@@ -45,8 +47,25 @@ public class SettingsNavigationAdminGUI extends JPanel implements ActionListener
         });
         add(modifyUserButton);
 
+        changePasswordButton = new JButton("Change Password");
+        changePasswordButton.setBounds(50, 140, 160, 25);
+        changePasswordButton.addActionListener(e -> {
+            removeAll();
+            add(new ChangeUsersPasswordGUI());
+            updateUI();
+        });
+        add(changePasswordButton);
 
-
+        logOutButton = new JButton("Logout");
+        logOutButton.setBounds(150, 200, 160, 25);
+        logOutButton.addActionListener(e -> {
+            removeAll();
+            MainGUIHandler.user = null;
+            MainGUIHandler.userType = "USER";
+            add(new LoginGUI());
+            updateUI();
+        });
+        add(logOutButton);
 
         createOrganisationButton = new JButton("Create Organisation");
         createOrganisationButton.setBounds(250, 20, 160, 25);

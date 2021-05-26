@@ -2,7 +2,7 @@ package marketplace.GUI;
 
 import marketplace.Objects.Organisation;
 import marketplace.Objects.User;
-import marketplace.PasswordFunctions;
+import marketplace.PasswordHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -109,7 +109,12 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         toSettingsButton.setBounds(200, 400, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            add(new SettingsNavigationAdminGUI());
+            if (MainGUIHandler.user.getAccountType().equals("ADMIN")) {
+                add(new SettingsNavigationAdminGUI());
+            } else {
+                add(new SettingsNavigationUserGUI());
+            }
+
             updateUI();
         });
         add(toSettingsButton);
@@ -125,7 +130,7 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         Organisation userOrganisation;
         String userType;
 
-        PasswordFunctions passwordFunctions = new PasswordFunctions();
+        PasswordHandler passwordHandler = new PasswordHandler();
 
         valid.setText("");
         invalid.setText("invalid");
@@ -143,7 +148,6 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
                 userOrganisationID = user.getOrganisationID();
 
                 userOrganisation = MainGUIHandler.organisationHandler.getOrganisation(userOrganisationID);
-                System.out.println(userOrganisation);
                 userOrganisationName = userOrganisation.getOrgName();
                 userType = user.getAccountType();
                 userTypeComboBox.setSelectedItem(userType);
@@ -163,8 +167,8 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         if (e.getSource() == resetPasswordButton) {
             if (userValid) {
                 try {
-                    newPassword = passwordFunctions.generatePassword();
-                    user.setPasswordHash(passwordFunctions.intoHash(newPassword));
+                    newPassword = passwordHandler.generatePassword();
+                    user.setPasswordHash(passwordHandler.intoHash(newPassword));
                     MainGUIHandler.userHandler.updateUserPassword(user);
                     newPasswordText.setText(newPassword);
                     invalid.setText("");
@@ -191,6 +195,8 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
             } else {
                 invalid.setText("invalid user");
             }
+
+            MainGUIHandler.user = MainGUIHandler.userHandler.getUser(MainGUIHandler.user.getUserID());
         }
     }
 }
