@@ -1,6 +1,6 @@
 package marketplace.GUI;
 
-import src.marketplace.Util.Fonts;
+import marketplace.Util.Fonts;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class BuyOrderGUI extends JPanel {
-    Font heading;
     JPanel mainPanel;
     String assetName;
     Fonts fonts;

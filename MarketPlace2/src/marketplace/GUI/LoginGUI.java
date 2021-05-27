@@ -83,7 +83,7 @@ public class LoginGUI extends JPanel implements ActionListener {
         // try and get user from server
         try {
             user = MainGUIHandler.userHandler.getUser(userID);
-            passwordHash = PasswordFunctions.intoHash(password);
+            passwordHash = PasswordFunctions.IntoHash(password);
         } catch (Exception exception) {
             exception.printStackTrace();
             invalid.setText("Invalid details!");

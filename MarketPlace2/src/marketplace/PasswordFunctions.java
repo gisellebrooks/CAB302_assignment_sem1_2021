@@ -20,6 +20,7 @@ public class PasswordFunctions {
 
     // reference: https://stackoverflow.com/questions/3802192/regexp-java-for-password-validation
     private final String passwordRegex = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{12,20}$";
+
 //
 //    /**
 //     * constructor

@@ -127,7 +127,7 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
 
         password = new PasswordFunctions().generatePassword();
         try {
-            passwordHash = new PasswordFunctions().intoHash(password);
+            passwordHash = new PasswordFunctions().IntoHash(password);
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
             noSuchAlgorithmException.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package src.marketplace.Util;
+package marketplace.Util;
 
 import javax.swing.*;
 import java.awt.*;
