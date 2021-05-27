@@ -13,6 +13,8 @@ public class Fonts {
     public Font heading;
     public Font smallHeading;
     public Font inputLabel;
+    public Font small;
+
 
 
     public Fonts() {
@@ -23,6 +25,7 @@ public class Fonts {
             Font delaGothic = Font.createFont(Font.TRUETYPE_FONT, delaGothicStream);
             body = openSans.deriveFont(16f);
             inputLabel = openSans.deriveFont(10f);
+            small = openSans.deriveFont(14f);
             smallHeading = delaGothic.deriveFont(20f);
             heading = delaGothic.deriveFont(28f);
 

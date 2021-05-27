@@ -1,10 +1,17 @@
 package marketplace.GUI;
 
+import marketplace.Objects.Order;
 import marketplace.Util.Fonts;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -16,8 +23,24 @@ public class BuyOrderGUI extends JPanel {
     JPanel mainPanel;
     String assetName;
     Fonts fonts;
+    List<Order> buyHistory;
 
     public BuyOrderGUI (String assetName) {
+        /*
+        List<Order> buyHistory = orderHandler.getAllActiveBuyOrders();
+
+        System.out.println(buyHistory);
+        List<String> timestamp = new ArrayList<String>();
+        List<String> price = new ArrayList<String>();
+        */
+        java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0");
+        this.buyHistory =  new ArrayList<>();
+        this.buyHistory.add(new Order(
+                "123", "456", "Doge Coine", 100, new BigDecimal(100), java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0")
+        ));
+        this.buyHistory.add(new Order(
+                "123", "456", "Doge Coin", 25, new BigDecimal(200), java.sql.Timestamp.valueOf("2017-09-23 10:10:10.0")
+        ));
         this.assetName = assetName;
         this.fonts = new Fonts();
         mainPanel = new MainPanel();
@@ -208,7 +231,7 @@ public class BuyOrderGUI extends JPanel {
             updateSummary(0,0);
         }
     }
-    class DataPanel extends JPanel {
+    class DataPanel extends DefaultJPanel {
         GraphView graph;
 
         public DataPanel(){
@@ -219,7 +242,8 @@ public class BuyOrderGUI extends JPanel {
 
             scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
             scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
+            JLabel buyHistoryLabel = new CustomLabel(String.format("Price History for %s", assetName), fonts.smallHeading, true);
+            container.add(buyHistoryLabel);
             add(scroll);
             graph = new GraphView();
             container.add(graph);
@@ -230,18 +254,67 @@ public class BuyOrderGUI extends JPanel {
                 intList.add(i);
             }
             graph.setValues(intList);
+            container.add(new BuyHistory());
 
 //            add(new BuyOrderTable());
         }
     }
 
-//    static class TextPanel extends JPanel
-//    {
-//        public TextPanel(){
-//            setPreferredSize(new Dimension(100, 600));
-//            setBackground(Color.CYAN);
-//        }
-//    }
+    class BuyHistory extends DefaultJPanel {
+
+        public BuyHistory(){
+            this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            setPreferredSize(new Dimension(480, 200));
+//            container.setBackground(Color.YELLOW);
+            JLabel buyHistoryLabel = new CustomLabel("Recent Buy Orders", fonts.smallHeading, true);
+            add(buyHistoryLabel);
+            add(new TableRow(
+                    "Status",
+                    "Organisational Unit",
+                    "Quantity",
+                    "Price per unit",
+                    "Order Date"
+            ));
+            for (Order order: buyHistory) {
+                add(new OrderRow(order));
+            }
+//            add(new BuyOrderTable());
+        }
+    }
+    class OrderRow extends DefaultJPanel {
+
+        public OrderRow(Order order){
+            add(new TableRow(
+                "Pending",
+                "Computer Hardware",
+                String.format("%d", order.getQuantity()),
+                String.format("$%d", order.getPrice().divide(new BigDecimal(order.getQuantity())).intValue()),
+                new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(order.getOrderDate())
+            ));
+        }
+    }
+
+    class TableRow extends DefaultJPanel {
+        public TableRow(String status, String organisationalUnit, String quantity, String pricePerUnit, String orderDate){
+            JPanel container = new DefaultJPanel();
+            JLabel statusLabel = new CustomLabel(status, fonts.small, true);
+            statusLabel.setPreferredSize(new Dimension(70, 20));
+            JLabel organisationalUnitLabel = new CustomLabel(organisationalUnit, fonts.small, true);
+            organisationalUnitLabel.setPreferredSize(new Dimension(120, 20));
+            JLabel quantityLabel =  new CustomLabel(quantity, fonts.small, true);
+            quantityLabel.setPreferredSize(new Dimension(75, 20));
+            JLabel pricePerUnitLabel =  new CustomLabel(pricePerUnit, fonts.small, true);
+            pricePerUnitLabel.setPreferredSize(new Dimension(70, 20));
+            JLabel orderDateLabel = new CustomLabel(orderDate, fonts.small, true);
+            orderDateLabel.setPreferredSize(new Dimension(110, 20));
+            container.add(statusLabel);
+            container.add(organisationalUnitLabel);
+            container.add(quantityLabel);
+            container.add(pricePerUnitLabel);
+            container.add(orderDateLabel);
+            add(container);
+        }
+    }
 
     public static void main(String[] args) throws SQLException {
         /*
