@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static marketplace.GUI.MainGUIHandler.orderHandler;
+
 
 public class BuyOrderGUI extends JPanel implements ActionListener {
 
@@ -53,12 +55,8 @@ public class BuyOrderGUI extends JPanel implements ActionListener {
         graphTitle.setBounds(30, 120, 300, 25);
         add(graphTitle);
 
-<<<<<<< HEAD
         List<Order> buyHistory = orderHandler.getAllActiveBuyOrders();
-=======
-        List<Order> buyHistory = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
         System.out.println(buyHistory);
->>>>>>> 4627248f4dccde4fdc3227ac64bc07c84a6babce
         List<String> timestamp = new ArrayList<String>();
         List<String> price = new ArrayList<String>();
 
