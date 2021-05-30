@@ -24,7 +24,7 @@ public class Client {
     private ObjectInputStream inp;
     private ObjectOutputStream out;
 
-    public Client(){
+    public Client() {
 
     }
 
@@ -49,6 +49,7 @@ public class Client {
             Properties props = loadServerConfig();
             address = props.getProperty("app.hostname");
             port = Integer.parseInt(props.getProperty("app.port"));
+            System.out.println("here");
             System.out.println(address);
             System.out.println(port);
             socket = new Socket(address, port);
@@ -70,6 +71,7 @@ public class Client {
             e.printStackTrace();
         }
     }
+
     private PrintWriter getOutputStream() throws IOException {
         return new PrintWriter(this.socket.getOutputStream(), true);
     }
@@ -78,30 +80,33 @@ public class Client {
         return new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
     }
 
-    /** Attempt to close the connection, including input/output streams. */
+    /**
+     * Attempt to close the connection, including input/output streams.
+     */
     public void disconnect() {
         try {
             socket.close();
             input.close();
             output.close();
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.err.println(e);
             e.printStackTrace();
         }
     }
 
-    /** Write to the connection socket */
+    /**
+     * Write to the connection socket
+     */
     public void writeToServer(String query, TableObject type) throws IOException {
-//        LinkedHashMap<String, TableObject> writeMap = new LinkedHashMap<>();
-//        writeMap.put(query, type);
+
         output.println(type);
         output.println(query);
         output.flush();
-//        output.println(query);
-//        output.flush();
     }
 
-    /** Attempt to read from the connection socket. */
+    /**
+     * Attempt to read from the connection socket.
+     */
     public Object readObjectFromServer() throws IOException, ClassNotFoundException {
         Object object = inp.readObject();
         return object;

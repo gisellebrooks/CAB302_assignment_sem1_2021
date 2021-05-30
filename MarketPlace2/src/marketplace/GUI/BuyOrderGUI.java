@@ -1,6 +1,10 @@
 package marketplace.GUI;
 
+import marketplace.Client.Client;
 import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
+import marketplace.Handlers.OrderHandler;
+import marketplace.Handlers.UserHandler;
+import marketplace.Objects.BuyOrder;
 import marketplace.Objects.Order;
 // import marketplace.Objects.Order;
 
@@ -8,8 +12,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static marketplace.GUI.MainGUIHandler.orderHandler;
 
 
 public class BuyOrderGUI extends JPanel implements ActionListener {
@@ -49,7 +56,7 @@ public class BuyOrderGUI extends JPanel implements ActionListener {
         graphTitle.setBounds(30, 120, 300, 25);
         add(graphTitle);
 
-        List<Order> buyHistory = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
+        List<Order> buyHistory = orderHandler.getAllActiveBuyOrders();
         System.out.println(buyHistory);
         List<String> timestamp = new ArrayList<String>();
         List<String> price = new ArrayList<String>();
