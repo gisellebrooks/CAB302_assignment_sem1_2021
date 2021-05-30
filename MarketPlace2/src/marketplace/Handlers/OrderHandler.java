@@ -20,8 +20,8 @@ public class OrderHandler implements Serializable {
 
     public OrderHandler(Client client){
         this.client = client;
-        inventoryHandler = new InventoryHandler(client);
-        organisationHandler = new OrganisationHandler(client);
+         inventoryHandler = new InventoryHandler(client);
+         organisationHandler = new OrganisationHandler(client);
     }
 
     public List<Order> getAllActiveBuyOrders(){
