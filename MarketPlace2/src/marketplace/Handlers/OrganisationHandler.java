@@ -170,7 +170,7 @@ public class OrganisationHandler implements Serializable {
 
     }
 
-    public void updateOrganisationsCredits(String orgID, BigDecimal credits) {
+    public void updateOrganisationCredits(String orgID, BigDecimal credits) {
         try {
             client.writeToServer("UPDATE ORGANISATIONAL_UNIT_INFORMATION SET credits = '" + credits + "' WHERE orgID = '" + orgID + "');", TableObject.ORGANISATION);
             client.readListFromServer();
