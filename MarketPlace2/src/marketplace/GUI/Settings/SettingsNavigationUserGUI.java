@@ -1,6 +1,7 @@
-package marketplace.GUI;
+package marketplace.GUI.Settings;
 
-import com.sun.tools.javac.Main;
+import marketplace.GUI.LoginGUI;
+import marketplace.GUI.MainGUIHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

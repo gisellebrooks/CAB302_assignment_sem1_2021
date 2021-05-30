@@ -1,4 +1,6 @@
-package marketplace.GUI;
+package marketplace.GUI.Settings;
+
+import marketplace.GUI.MainGUIHandler;
 
 import javax.swing.*;
 import java.awt.*;

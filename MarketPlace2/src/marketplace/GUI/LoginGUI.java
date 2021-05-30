@@ -1,5 +1,7 @@
 package marketplace.GUI;
 
+import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
+import marketplace.GUI.Settings.SettingsNavigationUserGUI;
 import marketplace.Objects.User;
 import marketplace.PasswordHandler;
 
