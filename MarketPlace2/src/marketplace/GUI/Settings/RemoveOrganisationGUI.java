@@ -1,4 +1,6 @@
-package marketplace.GUI;
+package marketplace.GUI.Settings;
+
+import marketplace.GUI.MainGUIHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,15 +13,12 @@ public class RemoveOrganisationGUI extends JPanel implements ActionListener {
     private static JLabel organisationIDPromptLabel;
     private static JTextField organisationIDText;
     private static JButton removeOrganisationButton;
+    private static JComboBox organisationComboBox;
     private static JButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
 
     public RemoveOrganisationGUI() {
-        createGui();
-    }
-
-    public void createGui() {
 
         setLayout(null);
         setBounds(0, 0, 600, 600);
@@ -28,12 +27,16 @@ public class RemoveOrganisationGUI extends JPanel implements ActionListener {
         organisationIDPromptLabel.setBounds(10, 20, 160, 25);
         add(organisationIDPromptLabel);
 
-        organisationIDText = new JTextField(20);
-        organisationIDText.setBounds(10, 50, 160, 25);
-        add(organisationIDText);
+//        organisationIDText = new JTextField(20);
+//        organisationIDText.setBounds(10, 50, 160, 25);
+//        add(organisationIDText);
+
+        organisationComboBox = new JComboBox(MainGUIHandler.organisationHandler.getAllOrganisationsNames().toArray());
+        organisationComboBox.setBounds(10, 50, 200, 25);
+        add(organisationComboBox);
 
         removeOrganisationButton = new JButton("Remove");
-        removeOrganisationButton.setBounds(10, 80, 80, 25);
+        removeOrganisationButton.setBounds(10, 90, 80, 25);
         removeOrganisationButton.addActionListener(this);
         add(removeOrganisationButton);
 
@@ -57,14 +60,16 @@ public class RemoveOrganisationGUI extends JPanel implements ActionListener {
         add(invalid);
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         valid.setText("");
         invalid.setText("");
 
-        String organisationID = organisationIDText.getText();
-//
-//        organisationHandler= new OrganisationHandler(client);
+        String organisationID;
+        String organisationName;
+
+        // get organisation ID with org name
+        organisationName = organisationComboBox.getSelectedItem().toString();
+        organisationID = MainGUIHandler.organisationHandler.getOrganisationID(organisationName);
 
         if (MainGUIHandler.organisationHandler.organisationIDExists(organisationID)) {
             MainGUIHandler.organisationHandler.removeOrganisation(organisationID);

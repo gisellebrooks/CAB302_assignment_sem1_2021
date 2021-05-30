@@ -14,21 +14,12 @@ import java.util.regex.Pattern;
  * @param
  * @return
  */
-public class PasswordFunctions {
+public class PasswordHandler {
 
     private static final String salt = "4@#ndssa213";
 
     // reference: https://stackoverflow.com/questions/3802192/regexp-java-for-password-validation
-    private final String passwordRegex = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{12,20}$";
-//
-//    /**
-//     * constructor
-//     * @param
-//     * @return
-//     */
-//    public PasswordFunctions() {
-//
-//    }
+    private static final String passwordRegex = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{12,20}$";
 
     /**
      * Generates a strong random password with 13-19 characters, picked from digits, letters and characters
@@ -61,7 +52,7 @@ public class PasswordFunctions {
      * @param password , the password to be checked
      * @return boolean of whether the input was a storng password or not
      */
-    public boolean IsPasswordStrong(String password) {
+    public static boolean IsPasswordStrong(String password) {
 
         // is password null
         if (password == null || password == "") {
@@ -114,19 +105,4 @@ public class PasswordFunctions {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         return toHexidecimalString(md.digest(message.getBytes(StandardCharsets.UTF_8)));
     }
-
-//    // for testing purposes ---- remove before submission
-//    public static void main(String [] args) throws NoSuchAlgorithmException {
-//        String one = "password123";
-//        String two = "password123";
-//        String three = "123ps";
-//        String four = "123";
-//
-//        PasswordFunctions ps = new PasswordFunctions();
-//
-//        System.out.println(ps.intoHash(one));
-//        System.out.println(ps.intoHash(two));
-//        System.out.println(ps.intoHash(three));
-//        System.out.println(ps.intoHash(four));
-//    }
 }

@@ -1,6 +1,7 @@
 package marketplace.GUI;
 
 import marketplace.Client.Client;
+import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
 import marketplace.Handlers.OrderHandler;
 import marketplace.Handlers.UserHandler;
 import marketplace.Objects.BuyOrder;

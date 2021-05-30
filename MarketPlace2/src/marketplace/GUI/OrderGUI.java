@@ -1,5 +1,7 @@
 package marketplace.GUI;
 
+import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

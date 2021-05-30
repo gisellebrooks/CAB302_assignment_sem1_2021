@@ -1,4 +1,6 @@
-package marketplace.GUI;
+package marketplace.GUI.Settings;
+
+import marketplace.GUI.MainGUIHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +20,6 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener {
     private static JLabel invalid;
 
     public SignUpOrganisationGUI() {
-        createGui();
-    }
-
-    public void createGui() {
 
         setLayout(null);
         setBounds(0, 0, 600, 600);
@@ -72,30 +70,36 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener {
         add(invalid);
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         String newID = null;
         double credits = 0;
         String organisationName = null;
 
         valid.setText("");
-        invalid.setText("Invalid inputs");
+        invalid.setText("");
 
         try  {
             credits = Double.parseDouble(creditsText.getText());
             newID = MainGUIHandler.organisationHandler.newOrganisationID();
             organisationName = nameText.getText();
 
-            if (MainGUIHandler.organisationHandler.organisationNameExists(organisationName)) {
+            if (organisationName.length() > 200) {
+                invalid.setText("That organisation name is too long");
+            } else if (organisationName.length() < 2) {
+                invalid.setText("That organisation name is too short");
+            } else if (credits > 1000000000) {
+                invalid.setText("That credit amount is too large");
+            } else if (MainGUIHandler.organisationHandler.organisationNameExists(organisationName)) {
                 invalid.setText("That organisation name is taken");
-            } else {
-                MainGUIHandler.organisationHandler.addOrganisation(newID, organisationName, credits);
-                valid.setText("Organisation was successfully created");
-                invalid.setText("");
-                givenIDLabel.setText("OrganisationID: " + newID);
-
-
+            }else {
+                    MainGUIHandler.organisationHandler.addOrganisation(newID, organisationName, credits);
+                    nameText.setText("");
+                    creditsText.setText("");
+                    valid.setText("Organisation was successfully created");
+                    invalid.setText("");
+                    givenIDLabel.setText("OrganisationID: " + newID);
             }
+
         } catch (NumberFormatException NumberFormatError) {
             invalid.setText("Credits must be a number");
         }
