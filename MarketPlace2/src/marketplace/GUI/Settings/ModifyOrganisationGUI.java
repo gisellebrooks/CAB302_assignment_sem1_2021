@@ -1,5 +1,6 @@
-package marketplace.GUI;
+package marketplace.GUI.Settings;
 
+import marketplace.GUI.MainGUIHandler;
 import marketplace.Objects.Organisation;
 import javax.swing.*;
 import java.awt.*;
@@ -23,10 +24,6 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
     private static JLabel invalid;
 
     public ModifyOrganisationGUI() {
-        createGui();
-    }
-
-    public void createGui() {
 
         setLayout(null);
         setBounds(0, 0, 600, 600);
@@ -70,7 +67,11 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
         toSettingsButton.setBounds(300, 50, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            add(new SettingsNavigationAdminGUI());
+            if (MainGUIHandler.userType.equals("ADMIN")) {
+                add(new SettingsNavigationAdminGUI());
+            } else {
+                add(new SettingsNavigationUserGUI());
+            }
             updateUI();
         });
         add(toSettingsButton);
@@ -89,7 +90,6 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
     boolean foundOrganisation = false;
     Organisation organisation = null;
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         valid.setText("");
         invalid.setText("Invalid inputs");

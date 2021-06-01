@@ -19,10 +19,10 @@ public class OrganisationHandler implements Serializable {
     }
 
     public List<Organisation> getAllOrganisations(){
-        List result = null;
+        List<Organisation> result = null;
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION;", TableObject.ORGANISATION);
-            result = client.readListFromServer();
+            result = (List<Organisation>) client.readListFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -30,18 +30,20 @@ public class OrganisationHandler implements Serializable {
     }
 
     public Organisation getOrganisation(String orgID){
-        List<Organisation> organisations = getAllOrganisations();
-        Organisation result = null;
+        List<Organisation> result;
+        try {
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" +
+                    orgID + "';", TableObject.ORGANISATION);
+            result = (List<Organisation> ) client.readListFromServer();
 
-        if (organisations != null) {
-            for (Organisation organisation : organisations) {
-                if (organisation.getOrgID().equals(orgID)) {
-                    result = organisation;
-                }
+            if (result.size() > 0) {
+                return result.get(0);
             }
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
 
-        return result;
+        return null;
     }
 
     public void addOrganisation(String orgID, String orgName, double credits) {
@@ -49,16 +51,17 @@ public class OrganisationHandler implements Serializable {
         try {
             client.writeToServer("INSERT INTO ORGANISATIONAL_UNIT_INFORMATION VALUES('" + orgID + "', '" + orgName
                     + "', '" + credits + "');", TableObject.ORGANISATION);
-        } catch (IOException e) {
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public void removeOrganisation(String orgID) {
-
         try {
             client.writeToServer("DELETE FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
-        } catch (IOException e) {
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -68,29 +71,43 @@ public class OrganisationHandler implements Serializable {
         try {
             client.writeToServer("UPDATE ORGANISATIONAL_UNIT_INFORMATION SET orgName = '" + orgName
                     + "', credits = '" + credits + "' WHERE orgID = '" + orgID + "');", TableObject.ORGANISATION);
-        } catch (IOException e) {
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public boolean organisationIDExists(String orgID) {
-        Organisation organisation = getOrganisation(orgID);
+        List<Organisation> result;
+        try {
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" +
+                    orgID + "';", TableObject.ORGANISATION);
+            result = (List<Organisation>) client.readListFromServer();
 
-        if (organisation != null && organisation.getOrgID() != null) {
-            return true;
+            if (result.size() > 0 && result.get(0).getOrgID().equals(orgID)) {
+                return true;
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
+
         return false;
     }
 
     public boolean organisationNameExists(String organisationName) {
-        List<String> allOrganisationsNames = getAllOrganisationsNames();
+        List<Organisation> result;
+        try {
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" +
+                    organisationName + "';", TableObject.ORGANISATION);
+            result = (List<Organisation>) client.readListFromServer();
 
-        if (allOrganisationsNames != null) {
-            for (String allOrganisationsName : allOrganisationsNames) {
-                if (allOrganisationsName.equals(organisationName)) {
-                    return true;
-                }
+            if (result.size() > 0 && result.get(0).getOrgName().equals(organisationName)) {
+                return true;
             }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
 
         return false;
@@ -101,12 +118,12 @@ public class OrganisationHandler implements Serializable {
         int currentID = 0;
         int maxID = 0;
         String holder;
-        String newID = null;
+        String newID;
 
-        if (organisations != null) {
+        if (organisations.size() > 0) {
             for (Organisation organisation : organisations) {
                 holder = (organisation.getOrgID());
-                holder = holder.replace("org", "");
+                holder = holder.replace("org", ""); // remove org from eg "org5"
                 currentID = (Integer.parseInt((holder)));
 
                 if (currentID > maxID) {
@@ -115,9 +132,10 @@ public class OrganisationHandler implements Serializable {
             }
 
             newID = "org" + (maxID + 1);
+            return newID;
         }
 
-        return newID;
+        return "org1"; // 1 if no organisations found
     }
 
     public List<String> getAllOrganisationsNames() {
@@ -125,8 +143,8 @@ public class OrganisationHandler implements Serializable {
         List<String> allOrganisationsNames = new ArrayList<>();
 
         if (allOrganisations != null) {
-            for (Organisation allOrganisation : allOrganisations) {
-                allOrganisationsNames.add(allOrganisation.getOrgName());
+            for (Organisation organisation : allOrganisations) {
+                allOrganisationsNames.add(organisation.getOrgName());
             }
 
             return allOrganisationsNames;
@@ -136,32 +154,28 @@ public class OrganisationHandler implements Serializable {
     }
 
     public String getOrganisationID(String organisationName) {
-//        Organisation result = null;
-//        try {
-//            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" +
-//                    organisationName + "';", TableObject.ORGANISATION);
-//            result = (Organisation) client.readObjectFromServer();
-//
-//            return result.getOrgID();
-//
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
-//
-//        return null;
-        List<Organisation> allOrganisations = getAllOrganisations();
+        List<Organisation> result;
+        try {
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" +
+                    organisationName + "';", TableObject.ORGANISATION);
+            result = (List) client.readListFromServer();
 
-        for (Organisation allOrganisation : allOrganisations) {
-            System.out.println(allOrganisation.getOrgName().equals(organisationName));
-            if (allOrganisation.getOrgName().equals(organisationName)) {
-                return allOrganisation.getOrgID();
-            }
+            return result.get(0).getOrgID();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
+
         return null;
+
     }
 
-    public void updateOrganisationCredits(String buyOrgID, BigDecimal newCredits) {
-
-
+    public void updateOrganisationCredits(String orgID, BigDecimal credits) {
+        try {
+            client.writeToServer("UPDATE ORGANISATIONAL_UNIT_INFORMATION SET credits = '" + credits + "' WHERE orgID = '" + orgID + "');", TableObject.ORGANISATION);
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

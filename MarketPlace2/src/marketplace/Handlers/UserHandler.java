@@ -44,26 +44,40 @@ public class UserHandler {
         try {
             client.writeToServer("INSERT INTO USER_INFORMATION VALUES('" + userID + "', '" + passwordHash + "', '" + accountType +
                     "', '" + organisationID + "', '" + name + "' );", TableObject.USER);
-        } catch (IOException e) {
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public void removeUser(String userID) {
         try {
-            client.writeToServer("DELETE FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER) ;
-        } catch (IOException e) {
+            client.writeToServer("DELETE FROM USER_INFORMATION WHERE userID = '" + userID + "';", TableObject.USER);
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void updateUser(String userID, String passwordHash, String accountType, String organisationID, String name) {
+    public void updateUser(User user) {
 
         try {
-            client.writeToServer("UPDATE USER_INFORMATION SET passwordHash = '" + passwordHash + "', accountType = '" +
-                    accountType + "', or orgID = '" + organisationID + "', name = '" + name + "' WHERE userID = '" +
-                    userID + "';", TableObject.USER);
-        } catch (IOException e) {
+            client.writeToServer("UPDATE USER_INFORMATION SET accountType = '" +
+                    user.getAccountType() + "', orgID = '" + user.getOrganisationID() + "' WHERE userID = '" +
+                    user.getUserID() + "';", TableObject.USER);
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateUserPassword(User user) {
+
+        try {
+            client.writeToServer("UPDATE USER_INFORMATION SET passwordHash = '" +
+                    user.getPasswordHash() + "' WHERE userID = '" + user.getUserID() + "';", TableObject.USER);
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

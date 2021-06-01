@@ -16,6 +16,8 @@ import java.util.*;
  * @version October 22, 2012
  */
 public class Client {
+    private static String rootDir;
+    private static Properties props;
     private Socket socket;
     private String address;
     private int port;
@@ -29,11 +31,12 @@ public class Client {
     }
 
     private static Properties loadServerConfig() {
-        Properties props = new Properties();
+        rootDir = System.getProperty("user.dir");
+        props = new Properties();
         FileInputStream in = null;
 
         try {
-            in = new FileInputStream("server.props");
+            in = new FileInputStream("MarketPlace2/src/marketplace/util/server.props");
             props.load(in);
             in.close();
 
@@ -49,9 +52,7 @@ public class Client {
             Properties props = loadServerConfig();
             address = props.getProperty("app.hostname");
             port = Integer.parseInt(props.getProperty("app.port"));
-            System.out.println("here");
-            System.out.println(address);
-            System.out.println(port);
+            System.out.println("Client has connected to the server with the address "+address+" on port "+port+".");
             socket = new Socket(address, port);
 
             try {

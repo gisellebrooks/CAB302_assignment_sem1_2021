@@ -5,47 +5,61 @@ import java.net.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Properties;
 
 public class ServerHandler {
 
+    private static String rootDir;
+    private static Properties props;
+    private static MariaDBDataSource pooledDataSource;
     private ServerSocket listener;
+    int port;
+    int backlog;
+    InetAddress address;
+    Socket clientSocket;
 
-    public ServerHandler(int port, String address){
+    public ServerHandler(Properties props){
         try {
-            MariaDBDataSource pool = MariaDBDataSource.getInstance();
-            initDb(pool);
-            //loadMockData(pool);
-            InetAddress addr = InetAddress.getByName(address);
-            listener = new ServerSocket(port, 10, addr);
+            listener = newServerSocket(props);
+
             while (true){
-                Socket socket = null;
+                clientSocket = newClientConnection();
                 try {
                     System.out.println("Waiting for client connection...");
-                    // socket object to receive incoming client requests
-                    socket = listener.accept();
-                    System.out.println("A new client is connected : " + socket);
 
-                    Thread thread = new ClientHandler(socket, pool);
+                    clientSocket = listener.accept();
+                    System.out.println("A new client is connected : " + clientSocket);
+
+                    Thread thread = new ClientHandler(clientSocket, pooledDataSource);
                     thread.start();
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        } catch (IOException | SQLException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    private static Properties loadServerConfig() {
-        Properties props = new Properties();
+    private ServerSocket newServerSocket(Properties props) throws IOException {
+        port = Integer.parseInt(props.getProperty("app.port"));
+        backlog = 10;
+        address = InetAddress.getByName(props.getProperty("app.hostname"));
+        return new ServerSocket(port, backlog, address);
+    }
+
+    public Socket newClientConnection(){
+        return new Socket();
+    }
+
+    public static Properties loadServerConfig() {
+        rootDir = System.getProperty("user.dir");
+        props = new Properties();
         FileInputStream in = null;
 
         try {
-            in = new FileInputStream("server.props");
+            in = new FileInputStream(rootDir + "/MarketPlace2/src/marketplace/util/server.props");
             props.load(in);
             in.close();
 
@@ -60,7 +74,7 @@ public class ServerHandler {
         StringBuffer buffer = new StringBuffer();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("./setupDB.sql"));
+            BufferedReader reader = new BufferedReader(new FileReader("MarketPlace2/src/marketplace/util/setupDB.sql"));
             while ((string = reader.readLine()) != null) {
                 buffer.append(string + "\n");
             }
@@ -80,12 +94,12 @@ public class ServerHandler {
             }
         }
     }
-    private static void loadMockData(MariaDBDataSource pool) throws SQLException {
+    public static void loadMockData(MariaDBDataSource pool) throws SQLException {
         String string;
         StringBuffer buffer = new StringBuffer();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("./mockupData.sql"));
+            BufferedReader reader = new BufferedReader(new FileReader("MarketPlace2/src/marketplace/util/mockupData.sql"));
             while ((string = reader.readLine()) != null) {
                 buffer.append(string + "\n");
             }
@@ -107,11 +121,14 @@ public class ServerHandler {
 
     }
 
+    public static void main(String[] args) throws SQLException {
+        pooledDataSource = MariaDBDataSource.getInstance();
 
-    public static void main(String[] args) throws IOException, SQLException {
+        initDb(pooledDataSource);
+
         Properties props = loadServerConfig();
 
-        ServerHandler server = new ServerHandler(Integer.parseInt(props.getProperty("app.port")), props.getProperty("app.hostname"));
+        ServerHandler server = new ServerHandler(props);
 
     }
 }

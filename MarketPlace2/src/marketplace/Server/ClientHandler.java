@@ -25,6 +25,7 @@ public class ClientHandler extends Thread {
 
     public void run(){
         try {
+            System.out.println("new thread");
             ResultSet result = null;
             outputToClient = new ObjectOutputStream(socket.getOutputStream());
 
