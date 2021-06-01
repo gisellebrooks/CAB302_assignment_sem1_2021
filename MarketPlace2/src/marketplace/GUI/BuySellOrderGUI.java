@@ -1,5 +1,7 @@
 package marketplace.GUI;
 
+import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
+import marketplace.GUI.Settings.SettingsNavigationUserGUI;
 import marketplace.Objects.Order;
 import marketplace.Util.Fonts;
 
@@ -74,6 +76,19 @@ public class BuySellOrderGUI extends JPanel {
             updateUI();
         });
         add(backToAssets);
+
+        JButton toSettingButton = new JButton("SETTINGS");
+        toSettingButton.setBounds(800, 50, 120, 25);
+        toSettingButton.addActionListener(e -> {
+            removeAll();
+            if (MainGUIHandler.userType.equals("ADMIN")) {
+                add(new SettingsNavigationAdminGUI());
+            } else {
+                add(new SettingsNavigationUserGUI());
+            }
+            updateUI();
+        });
+        add(toSettingButton);
         add(mainPanel);
     }
 
@@ -220,6 +235,7 @@ public class BuySellOrderGUI extends JPanel {
         JLabel priceLabel;
         JLabel quantityLabel;
         JLabel totalLabel;
+        boolean toggleOrdered;
 
         public void updateSummary(float quantity, float price) {
             priceLabel.setText(String.format("at $%.2f per unit", price));
@@ -227,7 +243,34 @@ public class BuySellOrderGUI extends JPanel {
             totalLabel.setText(String.format("Total: $%.2f", price * quantity));
         }
 
+        public void colourBox(boolean green) {
+            if (green) {
+                setBackground(new Color(246,255,246));
+                setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(2,2,2,2, new Color(175,255,185)),
+                        BorderFactory.createLineBorder(new Color(246,255,246), 16)
+                ));
+
+            } else {
+                setBackground(new Color(255,246,246));
+                setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(2,2,2,2, new Color(255,185,175)),
+                        BorderFactory.createLineBorder(new Color(255,246,246), 16)
+                ));
+            }
+        }
+
+        public void toggleOrdered() {
+            this.toggleOrdered = !this.toggleOrdered;
+            if (this.toggleOrdered) {
+                colourBox(true);
+            } else {
+                colourBox(false);
+            }
+        }
+
         public OrderSummaryPanel() {
+            this.toggleOrdered = false;
             setBackground(new Color(255,246,246));
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BorderFactory.createCompoundBorder(
@@ -261,6 +304,11 @@ public class BuySellOrderGUI extends JPanel {
             placeOrderButton = new CustomButton("Place order");
             placeOrderButton.setBounds(50, 300, 80, 25);
             add(placeOrderButton);
+
+            placeOrderButton.addActionListener(e -> {
+                toggleOrdered();
+            });
+
             updateSummary(0,0);
         }
     }

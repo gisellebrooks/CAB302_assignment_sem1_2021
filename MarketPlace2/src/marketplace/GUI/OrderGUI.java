@@ -51,12 +51,25 @@ public class OrderGUI extends JPanel implements ActionListener {
         List<String> assetNames = MainGUIHandler.orderHandler.getAllActiveAssetNames();
         assetNames.add("Doge Coin");
         assetNames.add("Bella Coin");
-        assetBox = new JComboBox(assets.toArray());
+        assetBox = new JComboBox(assetNames.toArray());
         assetBox.setBounds(200, 60, 160, 25);
         add(assetBox);
-        assetBox.addActionListener(this);
+        assetBox.addActionListener(this::actionPerformed);
 
+        buyButton = new JButton("Buy");
+        buyButton.setBounds(300, 150, 120, 25);
+        buyButton.addActionListener(e -> {
 
+            if (assetBox.getSelectedItem() != null) {
+                MainGUIHandler.assetName = assetBox.getSelectedItem().toString();
+                removeAll();
+                add(new BuySellOrderGUI( MainGUIHandler.assetName, false));
+                updateUI();
+            } else {
+                invalid.setText("Select an asset");
+            }
+        });
+        add(buyButton);
 
         sellButton = new JButton("Sell");
         sellButton.setBounds(150, 150, 120, 25);
@@ -68,25 +81,11 @@ public class OrderGUI extends JPanel implements ActionListener {
                 add(new BuySellOrderGUI( MainGUIHandler.assetName, true));
                 updateUI();
             }
-            invalid.setText("Select an asset");
-
+            else {
+                invalid.setText("Select an asset");
+            }
         });
         add(sellButton);
-
-        buyButton = new JButton("Buy");
-        buyButton.setBounds(300, 150, 120, 25);
-        buyButton.addActionListener(e -> {
-
-            if (assetBox.getSelectedItem() != null) {
-                MainGUIHandler.assetName = assetBox.getSelectedItem().toString();
-                removeAll();
-                add(new BuySellOrderGUI( MainGUIHandler.assetName, true));
-                updateUI();
-            }
-            invalid.setText("Select an asset");
-
-        });
-        add(buyButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
