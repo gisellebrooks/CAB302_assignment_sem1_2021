@@ -36,7 +36,7 @@ public class Client {
         FileInputStream in = null;
 
         try {
-            in = new FileInputStream("MarketPlace2/src/marketplace/util/server.props");
+            in = new FileInputStream(rootDir + "/MarketPlace2/src/marketplace/util/server.props");
             props.load(in);
             in.close();
 

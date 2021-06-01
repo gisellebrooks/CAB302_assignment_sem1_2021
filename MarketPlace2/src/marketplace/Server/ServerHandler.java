@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ServerHandler {
+public class ServerHandler extends Thread {
 
     private static String rootDir;
     private static Properties props;
@@ -29,7 +29,7 @@ public class ServerHandler {
 
                     clientSocket = listener.accept();
                     System.out.println("A new client is connected : " + clientSocket);
-
+                    System.out.println(clientSocket.getClass());
                     Thread thread = new ClientHandler(clientSocket, pooledDataSource);
                     thread.start();
 
@@ -49,7 +49,7 @@ public class ServerHandler {
         return new ServerSocket(port, backlog, address);
     }
 
-    public Socket newClientConnection(){
+    public static Socket newClientConnection(){
         return new Socket();
     }
 

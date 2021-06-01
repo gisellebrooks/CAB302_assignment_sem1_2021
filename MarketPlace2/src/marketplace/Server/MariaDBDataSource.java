@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.function.BooleanSupplier;
 
 public class MariaDBDataSource {
+    private String rootDir;
     private static MariaDBDataSource ds;
     private MariaDbPoolDataSource MDBDS;
     private static Connection instance = null;
@@ -24,12 +25,13 @@ public class MariaDBDataSource {
      * Constructor intializes the connection.
      */
     private MariaDBDataSource() throws SQLException {
+        rootDir = System.getProperty("user.dir");
         Properties props = new Properties();
         FileInputStream in = null;
 
         try {
             MDBDS = new MariaDbPoolDataSource();
-            in = new FileInputStream("MarketPlace2/src/marketplace/util/db.props");
+            in = new FileInputStream(rootDir + "/MarketPlace2/src/marketplace/util/db.props");
             props.load(in);
             in.close();
 
@@ -106,10 +108,4 @@ public class MariaDBDataSource {
         return false;
 
     }
-
-    public static void CloseInstance() {
-        if (ds != null)
-            ds.Close();
-    }
-
 }

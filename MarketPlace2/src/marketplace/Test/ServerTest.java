@@ -8,11 +8,13 @@ import org.junit.jupiter.api.*;
 import marketplace.Server.*;
 import marketplace.Client.Client;
 
+import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Properties;
 
 public class ServerTest {
     private static MariaDBDataSource newInstance;
+    private static Properties props;
 
     @BeforeAll
     static void createDBInstance() throws SQLException {
@@ -20,27 +22,45 @@ public class ServerTest {
     }
 
     @Test
-    public void connectToDataBase() throws SQLException {
-        assertNotNull(newInstance.getConnection());
-    }
-
-    @Test
-    public void getConfigInformation(){
-        Properties props = ServerHandler.loadServerConfig();
+    @BeforeAll
+    static void getConfigInformation(){
+        props = ServerHandler.loadServerConfig();
         assertNotNull(props);
     }
 
     @Test
-    public void acceptSingleClient() {
-        Properties props = ServerHandler.loadServerConfig();
-        ServerHandler server = new ServerHandler(props);
-        Client client = new Client();
-
-        /// NEED TO MAKE THREADED
-        assertEquals("Socket[addr=/172.19.6.157,port=64477,localport=6000]", server.newClientConnection());
+    public void connectToDataBase() throws SQLException {
+        assertNotNull(newInstance.getConnection());
     }
 
 
+//    @BeforeAll
+//    public void initServerSocket(){
+//        Thread thread = new ServerHandler(props);
+//        thread.start();
+//
+//    }
+
+//    @Test
+//    public void acceptSingleClient() {
+//        Client client = new Client();
+//        assertNotNull(client);
+//    }
+//
+//    @Test
+//    public void acceptMultipleClients() {
+//
+//        Boolean clientsAccepted = false;
+//        Client client1 = new Client();
+//        System.out.println(ServerHandler.newClientConnection());
+//        Client client2 = new Client();
+//        System.out.println(ServerHandler.newClientConnection());
+//        Client client3 = new Client();
+//        System.out.println(ServerHandler.newClientConnection());
+//
+//        //assertTrue(clientsAccepted);
+//
+//    }
 
 
     @Test
