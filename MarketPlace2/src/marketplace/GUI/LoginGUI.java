@@ -74,7 +74,7 @@ public class LoginGUI extends JPanel implements ActionListener {
             user = MainGUIHandler.userHandler.getUser(userID);
 
             try {
-                passwordHash = PasswordHandler.intoHash(password);
+                passwordHash = PasswordHandler.IntoHash(password);
 
                 if (user.getPasswordHash().equals(passwordHash) && !passwordHash.equals(null)) {
                     removeAll();

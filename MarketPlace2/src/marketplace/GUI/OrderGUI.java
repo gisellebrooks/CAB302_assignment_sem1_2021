@@ -61,7 +61,7 @@ public class OrderGUI extends JPanel implements ActionListener {
             if (assetBox.getSelectedItem() != null) {
                 MainGUIHandler.assetName = assetBox.getSelectedItem().toString();
                 removeAll();
-                add(new SellOrderGUI());
+                add(new BuySellOrderGUI( MainGUIHandler.assetName, true));
                 updateUI();
             }
             invalid.setText("Select an asset");
@@ -76,7 +76,7 @@ public class OrderGUI extends JPanel implements ActionListener {
             if (assetBox.getSelectedItem() != null) {
                 MainGUIHandler.assetName = assetBox.getSelectedItem().toString();
                 removeAll();
-                add(new BuyOrderGUI());
+                add(new BuySellOrderGUI( MainGUIHandler.assetName, true));
                 updateUI();
             }
             invalid.setText("Select an asset");
