@@ -16,6 +16,8 @@ import java.util.*;
  * @version October 22, 2012
  */
 public class Client {
+    private static String rootDir;
+    private static Properties props;
     private Socket socket;
     private String address;
     private int port;
@@ -29,7 +31,8 @@ public class Client {
     }
 
     private static Properties loadServerConfig() {
-        Properties props = new Properties();
+        rootDir = System.getProperty("user.dir");
+        props = new Properties();
         FileInputStream in = null;
 
         try {
