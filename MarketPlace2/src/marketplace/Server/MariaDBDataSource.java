@@ -28,7 +28,7 @@ public class MariaDBDataSource {
 
         try {
             MDBDS = new MariaDbPoolDataSource();
-            in = new FileInputStream("db.props");
+            in = new FileInputStream("MarketPlace2/src/marketplace/util/db.props");
             props.load(in);
             in.close();
 

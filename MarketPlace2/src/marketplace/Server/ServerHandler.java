@@ -45,7 +45,7 @@ public class ServerHandler {
         FileInputStream in = null;
 
         try {
-            in = new FileInputStream("server.props");
+            in = new FileInputStream("MarketPlace2/src/marketplace/util/server.props");
             props.load(in);
             in.close();
 
@@ -60,7 +60,7 @@ public class ServerHandler {
         StringBuffer buffer = new StringBuffer();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("./setupDB.sql"));
+            BufferedReader reader = new BufferedReader(new FileReader("MarketPlace2/src/marketplace/util/setupDB.sql"));
             while ((string = reader.readLine()) != null) {
                 buffer.append(string + "\n");
             }
@@ -85,7 +85,7 @@ public class ServerHandler {
         StringBuffer buffer = new StringBuffer();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("./mockupData.sql"));
+            BufferedReader reader = new BufferedReader(new FileReader("MarketPlace2/src/marketplace/util/mockupData.sql"));
             while ((string = reader.readLine()) != null) {
                 buffer.append(string + "\n");
             }

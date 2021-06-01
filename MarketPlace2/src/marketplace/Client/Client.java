@@ -33,7 +33,7 @@ public class Client {
         FileInputStream in = null;
 
         try {
-            in = new FileInputStream("server.props");
+            in = new FileInputStream("MarketPlace2/src/marketplace/util/server.props");
             props.load(in);
             in.close();
 
@@ -49,9 +49,7 @@ public class Client {
             Properties props = loadServerConfig();
             address = props.getProperty("app.hostname");
             port = Integer.parseInt(props.getProperty("app.port"));
-            System.out.println("here");
-            System.out.println(address);
-            System.out.println(port);
+            System.out.println("Client has connected to the server with the address "+address+" on port "+port+".");
             socket = new Socket(address, port);
 
             try {
