@@ -2,6 +2,7 @@ package marketplace.GUI;
 
 import marketplace.Client.Client;
 import marketplace.GUI.Settings.*;
+import marketplace.Handlers.InventoryHandler;
 import marketplace.Handlers.OrderHandler;
 import marketplace.Handlers.OrganisationHandler;
 import marketplace.Handlers.UserHandler;
@@ -19,6 +20,7 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
     public static UserHandler userHandler;
     public static OrganisationHandler organisationHandler;
     public static OrderHandler orderHandler;
+    public static InventoryHandler inventoryHandler;
     public static JPanel panel;
     public static String userType;
     public static User user;
@@ -39,6 +41,7 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
         userHandler = new UserHandler(client);
         orderHandler = new OrderHandler(client);
         organisationHandler = new OrganisationHandler(client);
+        inventoryHandler = new InventoryHandler(client);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new MainGUIHandler());
@@ -58,7 +61,7 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
         panel.setLayout(null);
         panel.setBounds(0, 0, 800, 600);
 
-        panel.add(new LoginGUI());
+//        panel.add(new LoginGUI());
 //        panel.add(new SettingsNavigationAdminGUI());
 //        panel.add(new SettingsNavigationUserGUI());
 
@@ -68,7 +71,7 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
 //        panel.add(new SignUpUserGUI());
 //        panel.add(new SignUpOrganisationGUI());
 //        panel.add(new ModifyUserGUI());
-//        panel.add(new ModifyOrganisationGUI());
+        panel.add(new ModifyOrganisationGUI());
 //        panel.add(new ChangeUsersPasswordGUI());
 
         add(panel);

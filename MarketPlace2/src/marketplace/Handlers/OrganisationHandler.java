@@ -1,6 +1,7 @@
 package marketplace.Handlers;
 
 import marketplace.Client.Client;
+import marketplace.Objects.Order;
 import marketplace.Objects.Organisation;
 import marketplace.Objects.User;
 import marketplace.TableObject;
@@ -177,5 +178,35 @@ public class OrganisationHandler implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public BigDecimal getOrganisationTotalOwing(String organisationID) {
+        List<User> users;
+        List<Order> activeBuyOrders = new ArrayList<>();
+        BigDecimal result = BigDecimal.valueOf(0);
+
+        try {
+            client.writeToServer("SELECT * FROM USER_INFORMATION WHERE orgID = '" +
+                    organisationID + "';", TableObject.USER);
+            users = (List) client.readListFromServer();
+
+            for (User user : users) {
+                client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS WHERE userID = '" +
+                        user.getUserID() + "';", TableObject.BUY_ORDER);
+                activeBuyOrders.add((Order) client.readListFromServer());
+            }
+
+            for (Order order : activeBuyOrders) {
+                result.add(order.getPrice().multiply(BigDecimal.valueOf(order.getQuantity())));
+            }
+
+            return result;
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return null;
+
     }
 }

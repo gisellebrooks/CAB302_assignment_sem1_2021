@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class OrderHandler implements Serializable {
@@ -23,6 +24,26 @@ public class OrderHandler implements Serializable {
         this.client = client;
          inventoryHandler = new InventoryHandler(client);
          organisationHandler = new OrganisationHandler(client);
+    }
+
+    public List<Order> getAllOrganisationsActiveBuyOrders(){
+        List<Order> result = null;
+        List<User> usersInOrganisation = null;
+
+        try {
+            client.writeToServer("SELECT * FROM USER_INFORMATION WHERE org_id = ;", TableObject.BUY_ORDER);
+            result = (List) client.readListFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        try {
+            client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS;", TableObject.BUY_ORDER);
+            result = (List) client.readListFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return result;
     }
 
     public List<Order> getAllActiveBuyOrders(){
@@ -214,6 +235,30 @@ public class OrderHandler implements Serializable {
     }
 
     public List<String> getAllActiveAssetNames() {
+        List<Order> allBuyOrders = getAllActiveBuyOrders();
+        List<SellOrder> allSellOrders = getAllActiveSellOrders();
+        List<String> allAssetNames = new ArrayList<>();
+
+        if (allBuyOrders != null || allSellOrders != null ) {
+            for (Order assetName : allBuyOrders) {
+                if (!allAssetNames.contains(assetName.getAssetName())) {
+                    allAssetNames.add(assetName.getAssetName());
+                }
+            }
+
+            for (SellOrder assetName : allSellOrders) {
+                if (!allAssetNames.contains(assetName.getAssetName())) {
+                    allAssetNames.add(assetName.getAssetName());
+                }
+            }
+
+            return allAssetNames;
+        }
+
+        return new ArrayList<>();
+    }
+
+    public List<String> getAllOrganisationsAssets(String orgID) {
         List<Order> allBuyOrders = getAllActiveBuyOrders();
         List<SellOrder> allSellOrders = getAllActiveSellOrders();
         List<String> allAssetNames = new ArrayList<>();

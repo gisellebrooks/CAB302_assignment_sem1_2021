@@ -5,6 +5,7 @@ import marketplace.Objects.Inventory;
 import marketplace.TableObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryHandler {
@@ -72,7 +73,25 @@ public class InventoryHandler {
         return assetQuantity;
     }
 
-    public boolean userIDExists(String assetID) {
+    public List<String> getOrganisationsAssets(String organisationID){
+        List<Inventory> inventory = null;
+        List<String> returnList = new ArrayList<>();
+
+        try {
+            client.writeToServer("SELECT * FROM INVENTORY WHERE orgID= '"+ organisationID +"';", TableObject.INVENTORY);
+            inventory = (List<Inventory>) client.readObjectFromServer();
+
+            for (Inventory inv: inventory){
+                returnList.add(inv.getAssetName());
+            }
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return returnList;
+    }
+
+    public boolean assetIDExists(String assetID) {
         Inventory asset = null;
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE assetID = '" + assetID + "';", TableObject.INVENTORY);
