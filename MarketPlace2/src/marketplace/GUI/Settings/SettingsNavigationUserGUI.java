@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 public class SettingsNavigationUserGUI extends JPanel implements ActionListener {
 
     private static JButton changePasswordButton;
-    private static JButton logOutButton;
+//    private static JButton logOutButton;
     private static JButton toHomeButton;
 
     public SettingsNavigationUserGUI() {
@@ -37,16 +37,16 @@ public class SettingsNavigationUserGUI extends JPanel implements ActionListener 
         });
         add(changePasswordButton);
 
-        logOutButton = new JButton("Logout");
-        logOutButton.setBounds(50, 60, 160, 25);
-        logOutButton.addActionListener(e -> {
-            removeAll();
-            MainGUIHandler.user = null;
-            MainGUIHandler.userType = "USER";
-            add(new LoginGUI());
-            updateUI();
-        });
-        add(logOutButton);
+//        logOutButton = new JButton("Logout");
+//        logOutButton.setBounds(50, 60, 160, 25);
+//        logOutButton.addActionListener(e -> {
+//            removeAll();
+//            MainGUIHandler.user = null;
+//            MainGUIHandler.userType = "USER";
+//            add(new LoginGUI());
+//            updateUI();
+//        });
+//        add(logOutButton);
     }
 
     public void actionPerformed(ActionEvent e) {
