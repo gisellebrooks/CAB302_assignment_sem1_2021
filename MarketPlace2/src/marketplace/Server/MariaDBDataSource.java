@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.Properties;
+import java.util.function.BooleanSupplier;
 
 public class MariaDBDataSource {
     private static MariaDBDataSource ds;
@@ -63,70 +64,6 @@ public class MariaDBDataSource {
         return instance;
     }
 
-    public void sendResult(String query) {
-        try (Connection conn = getConnection()) {
-            try (PreparedStatement statement = conn.prepareStatement(query)) {
-                statement.executeQuery();
-
-            } catch (SQLException e) {
-                System.err.println("Exception occurred in method 'getResult' in class 'MariaDBDataSource'");
-                e.printStackTrace();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public long writeJavaObject(String query, Object object){
-        String className = object.getClass().getName();
-        int id = -1;
-
-        try (Connection conn = getConnection()) {
-            try (PreparedStatement statement = conn.prepareStatement(query)) {
-
-                statement.setString(1, className);
-                statement.setObject(2, object);
-                statement.executeUpdate();
-
-                try(ResultSet result = statement.getGeneratedKeys()){
-
-                    if (result.next()){
-                        id = result.getInt(1);
-                    }
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return id;
-    }
-
-    public Object readJavaObject(String query, long id){
-        Object object = null;
-        try (Connection conn = getConnection()) {
-            try (PreparedStatement statement = conn.prepareStatement(query)) {
-
-                statement.setLong(1, id);
-
-                try (ResultSet result = statement.executeQuery()){
-                    result.next();
-                    object = result.getObject(1);
-                }
-
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return object;
-    }
-
     public ResultSet getResult(String query) {
         ResultSet rs = null;
         try (Connection conn = getConnection()) {
@@ -159,8 +96,15 @@ public class MariaDBDataSource {
         }
     }
 
-        private void Close() {
-        MDBDS.close();
+    public Boolean Close() {
+        try {
+            instance.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+
     }
 
     public static void CloseInstance() {
