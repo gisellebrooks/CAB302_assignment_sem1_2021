@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderHandler implements Serializable {
@@ -212,4 +213,27 @@ public class OrderHandler implements Serializable {
         }
     }
 
+    public List<String> getAllActiveAssetNames() {
+        List<Order> allBuyOrders = getAllActiveBuyOrders();
+        List<SellOrder> allSellOrders = getAllActiveSellOrders();
+        List<String> allAssetNames = new ArrayList<>();
+
+        if (allBuyOrders != null || allSellOrders != null ) {
+            for (Order assetName : allBuyOrders) {
+                if (!allAssetNames.contains(assetName.getAssetName())) {
+                    allAssetNames.add(assetName.getAssetName());
+                }
+            }
+
+            for (SellOrder assetName : allSellOrders) {
+                if (!allAssetNames.contains(assetName.getAssetName())) {
+                    allAssetNames.add(assetName.getAssetName());
+                }
+            }
+
+            return allAssetNames;
+        }
+
+        return new ArrayList<>();
+    }
 }

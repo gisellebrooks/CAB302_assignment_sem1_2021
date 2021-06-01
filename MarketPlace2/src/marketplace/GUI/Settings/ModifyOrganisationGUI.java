@@ -67,7 +67,11 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
         toSettingsButton.setBounds(300, 50, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            add(new SettingsNavigationAdminGUI());
+            if (MainGUIHandler.userType.equals("ADMIN")) {
+                add(new SettingsNavigationAdminGUI());
+            } else {
+                add(new SettingsNavigationUserGUI());
+            }
             updateUI();
         });
         add(toSettingsButton);

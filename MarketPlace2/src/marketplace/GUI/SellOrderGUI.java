@@ -1,26 +1,20 @@
 package marketplace.GUI;
 
-import marketplace.Client.Client;
 import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
 import marketplace.GUI.Settings.SettingsNavigationUserGUI;
-import marketplace.Handlers.OrderHandler;
-import marketplace.Handlers.UserHandler;
-import marketplace.Objects.BuyOrder;
 import marketplace.Objects.Order;
-// import marketplace.Objects.Order;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static marketplace.GUI.MainGUIHandler.orderHandler;
 
 
-public class BuyOrderGUI extends JPanel implements ActionListener {
+public class SellOrderGUI extends JPanel implements ActionListener {
 
     private static JLabel Title;
     private static JLabel graphTitle;
@@ -38,18 +32,18 @@ public class BuyOrderGUI extends JPanel implements ActionListener {
     private static JLabel valid;
     private static JLabel invalid;
 
-    public BuyOrderGUI() {
+    public SellOrderGUI() {
 
         setLayout(null);
         setBounds(0, 0, 800, 600);
 
 
-        Title = new JLabel("Buy " + MainGUIHandler.assetName);  /////// NEED LOGIC TO GET SELECTION FROM COMBO BOX FROM ORDERGUI AND ADD THE ASSET NAME HERE
+        Title = new JLabel("Sell " + MainGUIHandler.assetName);  /////// NEED LOGIC TO GET SELECTION FROM COMBO BOX FROM ORDERGUI AND ADD THE ASSET NAME HERE
         Title.setBounds(300, 20, 200, 25);
         Title.setFont (Title.getFont ().deriveFont (20.0f));
         add(Title);
 
-        graphTitle = new JLabel("Price History for " + MainGUIHandler.assetName + " (graph goes here)");
+        graphTitle = new JLabel("Price History for " + MainGUIHandler.assetName);
         graphTitle.setBounds(30, 120, 300, 25);
         add(graphTitle);
 
@@ -71,7 +65,7 @@ public class BuyOrderGUI extends JPanel implements ActionListener {
         buyQuantityTitle.setBounds(450, 160, 100, 25);
         add(buyQuantityTitle);
 
-        buyPriceTitle = new JLabel("Buy Price");
+        buyPriceTitle = new JLabel("Sell Price");
         buyPriceTitle.setBounds(560, 160, 100, 25);
         add(buyPriceTitle);
 
