@@ -28,10 +28,6 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
     private static JLabel invalid;
 
     public SignUpUserGUI() {
-        createGui();
-    }
-
-    public void createGui() {
 
         setLayout(null);
         setBounds(0, 0, 600, 600);

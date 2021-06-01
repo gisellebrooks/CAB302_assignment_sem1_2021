@@ -81,13 +81,9 @@ public class LoginGUI extends JPanel implements ActionListener {
                     MainGUIHandler.userType = user.getAccountType();
                     MainGUIHandler.user = MainGUIHandler.userHandler.getUser(userID);
 
+                    add(new OrderGUI());
 
 
-                    if (MainGUIHandler.userType.equals("ADMIN")) {
-                        add(new SettingsNavigationAdminGUI());
-                    } else {
-                        add(new SettingsNavigationUserGUI());
-                    }
 
                     updateUI();
                 }

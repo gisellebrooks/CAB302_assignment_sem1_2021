@@ -143,8 +143,8 @@ public class OrganisationHandler implements Serializable {
         List<String> allOrganisationsNames = new ArrayList<>();
 
         if (allOrganisations != null) {
-            for (Organisation allOrganisation : allOrganisations) {
-                allOrganisationsNames.add(allOrganisation.getOrgName());
+            for (Organisation organisation : allOrganisations) {
+                allOrganisationsNames.add(organisation.getOrgName());
             }
 
             return allOrganisationsNames;

@@ -16,7 +16,7 @@ public class ServerHandler {
         try {
             MariaDBDataSource pool = MariaDBDataSource.getInstance();
             initDb(pool);
-            //loadMockData(pool);
+//            loadMockData(pool);
             InetAddress addr = InetAddress.getByName(address);
             listener = new ServerSocket(port, 10, addr);
             while (true){
