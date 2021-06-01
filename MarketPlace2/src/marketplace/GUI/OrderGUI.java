@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class OrderGUI extends JPanel implements ActionListener {
     public OrderGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 600, 600);
+        setBounds(0, 0, 1181, 718);
 
         List<Order> buy = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
         List<String> assets = new ArrayList<String>();
