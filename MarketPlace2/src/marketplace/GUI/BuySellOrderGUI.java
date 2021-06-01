@@ -42,20 +42,22 @@ public class BuySellOrderGUI extends JPanel {
         this.isSellOrder = isSellOrder;
         java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0");
         this.buyHistory =  new ArrayList<>();
-        // MOCKED DATA, THIS NEEDS TO READ ALL BUY ORDERS FOR THIS "this.assetName" from the DB
+        // this.buyHistory = MainGUIHandler.orderHandler.getAllActiveBuyOrdersForAsset(assetName).toArray()
+        // MOCKED DATA, Use above call ^
         this.buyHistory.add(new Order(
-                "123", "456", "Doge Coine", 100, new BigDecimal(100), java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0")
+                "123", "456", assetName, 100, new BigDecimal(100), java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0")
         ));
         this.buyHistory.add(new Order(
-                "123", "456", "Doge Coin", 25, new BigDecimal(200), java.sql.Timestamp.valueOf("2017-09-23 10:10:10.0")
+                "123", "456", assetName, 25, new BigDecimal(200), java.sql.Timestamp.valueOf("2017-09-23 10:10:10.0")
         ));
         this.sellHistory =  new ArrayList<>();
-        // MOCKED DATA, THIS NEEDS TO READ ALL RECENT SELL ORDERS FOR THIS "this.assetName" from the DB
+        // this.sellHistory = MainGUIHandler.orderHandler.getAllActiveSellOrdersForAsset(assetName).toArray()
+        // MOCKED DATA, Use above call ^
         this.sellHistory.add(new Order(
-                "123", "456", "Doge Coine", 100, new BigDecimal(100), java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0")
+                "123", "456", assetName, 100, new BigDecimal(100), java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0")
         ));
         this.sellHistory.add(new Order(
-                "123", "456", "Doge Coin", 25, new BigDecimal(200), java.sql.Timestamp.valueOf("2017-09-23 10:10:10.0")
+                "123", "456", assetName, 25, new BigDecimal(200), java.sql.Timestamp.valueOf("2017-09-23 10:10:10.0")
         ));
         this.assetName = assetName;
         this.fonts = new Fonts();

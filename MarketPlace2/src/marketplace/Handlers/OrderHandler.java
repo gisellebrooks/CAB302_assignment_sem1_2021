@@ -36,8 +36,32 @@ public class OrderHandler implements Serializable {
         return result;
     }
 
+    public List<Order> getAllActiveBuyOrdersForAsset(String assetName){
+        //TODO: Filter this by passed in asset name
+        List<Order> result = null;
+        try {
+            client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS;", TableObject.BUY_ORDER);
+            result = (List) client.readListFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return result;
+    }
+
 
     public List<SellOrder> getAllActiveSellOrders(){
+        List<SellOrder> result = null;
+        try {
+            client.writeToServer("SELECT * FROM ACTIVE_SELL_ORDERS;", TableObject.SELL_ORDER);
+            result = (List<SellOrder>) client.readObjectFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return result;
+    }
+
+    public List<SellOrder> getAllActiveSellOrdersForAsset(String assetName){
+        //TODO: Filter this by passed in asset name
         List<SellOrder> result = null;
         try {
             client.writeToServer("SELECT * FROM ACTIVE_SELL_ORDERS;", TableObject.SELL_ORDER);
