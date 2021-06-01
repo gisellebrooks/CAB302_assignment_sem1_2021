@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import java.util.Timer;
+
 public class ServerHandler {
 
     private ServerSocket listener;
@@ -19,6 +21,8 @@ public class ServerHandler {
             //loadMockData(pool);
             InetAddress addr = InetAddress.getByName(address);
             listener = new ServerSocket(port, 10, addr);
+
+            ReconcileOrders reconcileOrders = new ReconcileOrders(pool);
             while (true){
                 Socket socket = null;
                 try {

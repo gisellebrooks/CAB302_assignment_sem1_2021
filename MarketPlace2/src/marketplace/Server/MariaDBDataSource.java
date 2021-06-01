@@ -63,20 +63,6 @@ public class MariaDBDataSource {
         return instance;
     }
 
-    public void sendResult(String query) {
-        try (Connection conn = getConnection()) {
-            try (PreparedStatement statement = conn.prepareStatement(query)) {
-                statement.executeQuery();
-
-            } catch (SQLException e) {
-                System.err.println("Exception occurred in method 'getResult' in class 'MariaDBDataSource'");
-                e.printStackTrace();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public long writeJavaObject(String query, Object object){
         String className = object.getClass().getName();
