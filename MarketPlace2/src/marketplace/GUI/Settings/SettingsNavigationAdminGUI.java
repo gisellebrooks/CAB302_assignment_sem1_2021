@@ -12,11 +12,11 @@ import java.awt.event.ActionListener;
 public class SettingsNavigationAdminGUI extends JPanel implements ActionListener {
 
     private static JButton createUserButton;
-    private static JButton removeUserButton;
+//    private static JButton removeUserButton;
     private static JButton modifyUserButton;
     private static JButton changePasswordButton;
     private static JButton createOrganisationButton;
-    private static JButton removeOrganisationButton;
+//    private static JButton removeOrganisationButton;
     private static JButton modifyOrganisationButton;
     private static JButton logOutButton;
     private static JButton toHomeButton;
@@ -43,14 +43,14 @@ public class SettingsNavigationAdminGUI extends JPanel implements ActionListener
         });
         add(createUserButton);
 
-        removeUserButton = new JButton("Remove User");
-        removeUserButton.setBounds(50, 60, 160, 25);
-        removeUserButton.addActionListener(e -> {
-            removeAll();
-            add(new RemoveUserGUI());
-            updateUI();
-        });
-        add(removeUserButton);
+//        removeUserButton = new JButton("Remove User");
+//        removeUserButton.setBounds(50, 60, 160, 25);
+//        removeUserButton.addActionListener(e -> {
+//            removeAll();
+//            add(new RemoveUserGUI());
+//            updateUI();
+//        });
+//        add(removeUserButton);
 
         modifyUserButton = new JButton("Modify User");
         modifyUserButton.setBounds(50, 100, 160, 25);
@@ -90,14 +90,14 @@ public class SettingsNavigationAdminGUI extends JPanel implements ActionListener
         });
         add(createOrganisationButton);
 
-        removeOrganisationButton = new JButton("Remove Organisation");
-        removeOrganisationButton.setBounds(250, 60, 160, 25);
-        removeOrganisationButton.addActionListener(e -> {
-            removeAll();
-            add(new RemoveOrganisationGUI());
-            updateUI();
-        });
-        add(removeOrganisationButton);
+//        removeOrganisationButton = new JButton("Remove Organisation");
+//        removeOrganisationButton.setBounds(250, 60, 160, 25);
+//        removeOrganisationButton.addActionListener(e -> {
+//            removeAll();
+//            add(new RemoveOrganisationGUI());
+//            updateUI();
+//        });
+//        add(removeOrganisationButton);
 
         modifyOrganisationButton = new JButton("Modify Organisation");
         modifyOrganisationButton.setBounds(250, 100, 160, 25);

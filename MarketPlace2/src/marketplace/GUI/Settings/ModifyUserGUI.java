@@ -20,8 +20,8 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
     private static JButton findUserButton;
     private static JLabel userIDPromptLabel;
     private static JTextField userIDText;
-    private static JLabel organisationLabel;
-    private static JComboBox userOrganisationComboBox;
+//    private static JLabel organisationLabel;
+//    private static JComboBox userOrganisationComboBox;
     private static JLabel userTypeLabel;
     private static JComboBox userTypeComboBox;
 
@@ -81,13 +81,13 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         add(invalid);
 
 
-        organisationLabel = new JLabel("Select your organisation:");
-        organisationLabel.setBounds(10, 120, 180, 25);
-        add(organisationLabel);
+//        organisationLabel = new JLabel("Select your organisation:");
+//        organisationLabel.setBounds(10, 120, 180, 25);
+//        add(organisationLabel);
 
-        userOrganisationComboBox = new JComboBox(MainGUIHandler.organisationHandler.getAllOrganisationsNames().toArray());
-        userOrganisationComboBox.setBounds(10, 150, 165, 25);
-        add(userOrganisationComboBox);
+//        userOrganisationComboBox = new JComboBox(MainGUIHandler.organisationHandler.getAllOrganisationsNames().toArray());
+//        userOrganisationComboBox.setBounds(10, 150, 165, 25);
+//        add(userOrganisationComboBox);
 
         userTypeLabel = new JLabel("Select your user type:");
         userTypeLabel.setBounds(10, 190, 180, 25);
@@ -148,11 +148,11 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
 
                 userOrganisationID = user.getOrganisationID();
 
-                userOrganisation = MainGUIHandler.organisationHandler.getOrganisation(userOrganisationID);
-                userOrganisationName = userOrganisation.getOrgName();
-                userType = user.getAccountType();
-                userTypeComboBox.setSelectedItem(userType);
-                userOrganisationComboBox.setSelectedItem(userOrganisationName);
+//                userOrganisation = MainGUIHandler.organisationHandler.getOrganisation(userOrganisationID);
+//                userOrganisationName = userOrganisation.getOrgName();
+//                userType = user.getAccountType();
+//                userTypeComboBox.setSelectedItem(userType);
+//                userOrganisationComboBox.setSelectedItem(userOrganisationName);
 
                 invalid.setText("");
                 valid.setText(user.getUserID() + " selected");
@@ -184,10 +184,10 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         if (e.getSource() == modifyUserButton) {
             if (userValid) {
 
-                userOrganisationName = userOrganisationComboBox.getSelectedItem().toString();
-                userOrganisationID = MainGUIHandler.organisationHandler.getOrganisationID(userOrganisationName);
-                user.setOrganisationID(userOrganisationID);
-                user.setAccountType(userTypeComboBox.getSelectedItem().toString());
+//                userOrganisationName = userOrganisationComboBox.getSelectedItem().toString();
+//                userOrganisationID = MainGUIHandler.organisationHandler.getOrganisationID(userOrganisationName);
+//                user.setOrganisationID(userOrganisationID);
+//                user.setAccountType(userTypeComboBox.getSelectedItem().toString());
 
                 MainGUIHandler.userHandler.updateUser(user);
 
