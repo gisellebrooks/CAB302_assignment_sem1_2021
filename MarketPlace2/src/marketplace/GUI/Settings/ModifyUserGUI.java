@@ -169,7 +169,7 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
             if (userValid) {
                 try {
                     newPassword = passwordHandler.generatePassword();
-                    user.setPasswordHash(passwordHandler.intoHash(newPassword));
+                    user.setPasswordHash(passwordHandler.IntoHash(newPassword));
                     MainGUIHandler.userHandler.updateUserPassword(user);
                     newPasswordText.setText(newPassword);
                     invalid.setText("");

@@ -110,12 +110,12 @@ public class ChangeUsersPasswordGUI extends JPanel implements ActionListener {
 
         try {
             if (oldPassword.length() < 249 && newPassword.length() < 249 && confirmedPassword.length() < 249) {
-                if (passwordHandler.intoHash(oldPassword).equals(usersCurrentPasswordHash)) {
+                if (passwordHandler.IntoHash(oldPassword).equals(usersCurrentPasswordHash)) {
                     if (!newPassword.equals(oldPassword)) {
                         if (newPassword.equals(confirmedPassword)) {
                             if (PasswordHandler.IsPasswordStrong(newPassword)) {
 
-                                user.setPasswordHash(passwordHandler.intoHash(newPassword));
+                                user.setPasswordHash(passwordHandler.IntoHash(newPassword));
 
                                 MainGUIHandler.userHandler.updateUserPassword(user);
 

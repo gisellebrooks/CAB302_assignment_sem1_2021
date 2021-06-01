@@ -32,7 +32,7 @@ public class PasswordHandler {
         final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()?";
         String newPassword = "";
         Matcher match = pattern.matcher(newPassword);
-        int randomLength = ThreadLocalRandom.current().nextInt(13, 19);
+        int randomLength = ThreadLocalRandom.current().nextInt(13, 15);
 
         while (!match.matches()) {
             newPassword = "";
@@ -77,7 +77,7 @@ public class PasswordHandler {
      * @param hash sha-256 encryption of input message, byte array
      * @return hexString hexadecimal string of SHA-256 hash
      */
-    public static String toHexidecimalString(byte[] hash)
+    public static String ToHexidecimalString(byte[] hash)
     {
         // Convert byte array into sign number representation
         BigInteger number = new BigInteger(1, hash);
@@ -100,9 +100,9 @@ public class PasswordHandler {
      * @return SHA256 hash of the message in a string
      * @throws NoSuchAlgorithmException if sha-256 algorithm can't be found
      */
-    public static String intoHash(String message) throws NoSuchAlgorithmException {
+    public static String IntoHash(String message) throws NoSuchAlgorithmException {
         message += salt;
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        return toHexidecimalString(md.digest(message.getBytes(StandardCharsets.UTF_8)));
+        return ToHexidecimalString(md.digest(message.getBytes(StandardCharsets.UTF_8)));
     }
 }

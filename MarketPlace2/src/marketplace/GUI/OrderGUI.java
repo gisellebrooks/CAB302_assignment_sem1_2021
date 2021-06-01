@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class OrderGUI extends JPanel implements ActionListener {
     public OrderGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 600, 600);
+        setBounds(0, 0, 1181, 718);
 
         List<Order> buy = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
         List<String> assets = new ArrayList<String>();
@@ -47,27 +48,13 @@ public class OrderGUI extends JPanel implements ActionListener {
         assetNamePromptLabel.setBounds(250, 20, 80, 50);
         add(assetNamePromptLabel);
 
-        assetBox = new JComboBox(MainGUIHandler.orderHandler.getAllActiveAssetNames().toArray());
+        List<String> assetNames = MainGUIHandler.orderHandler.getAllActiveAssetNames();
+        assetNames.add("Doge Coin");
+        assetNames.add("Bella Coin");
+        assetBox = new JComboBox(assetNames.toArray());
         assetBox.setBounds(200, 60, 160, 25);
         add(assetBox);
-        assetBox.addActionListener(this);
-
-
-
-        sellButton = new JButton("Sell");
-        sellButton.setBounds(150, 150, 120, 25);
-        sellButton.addActionListener(e -> {
-
-            if (assetBox.getSelectedItem() != null) {
-                MainGUIHandler.assetName = assetBox.getSelectedItem().toString();
-                removeAll();
-                add(new SellOrderGUI());
-                updateUI();
-            }
-            invalid.setText("Select an asset");
-
-        });
-        add(sellButton);
+        assetBox.addActionListener(this::actionPerformed);
 
         buyButton = new JButton("Buy");
         buyButton.setBounds(300, 150, 120, 25);
@@ -76,13 +63,29 @@ public class OrderGUI extends JPanel implements ActionListener {
             if (assetBox.getSelectedItem() != null) {
                 MainGUIHandler.assetName = assetBox.getSelectedItem().toString();
                 removeAll();
-                add(new BuyOrderGUI());
+                add(new BuySellOrderGUI( MainGUIHandler.assetName, false));
                 updateUI();
+            } else {
+                invalid.setText("Select an asset");
             }
-            invalid.setText("Select an asset");
-
         });
         add(buyButton);
+
+        sellButton = new JButton("Sell");
+        sellButton.setBounds(150, 150, 120, 25);
+        sellButton.addActionListener(e -> {
+
+            if (assetBox.getSelectedItem() != null) {
+                MainGUIHandler.assetName = assetBox.getSelectedItem().toString();
+                removeAll();
+                add(new BuySellOrderGUI( MainGUIHandler.assetName, true));
+                updateUI();
+            }
+            else {
+                invalid.setText("Select an asset");
+            }
+        });
+        add(sellButton);
 
         valid = new JLabel("");
         valid.setForeground(Color.green);
