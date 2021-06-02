@@ -173,7 +173,7 @@ public class OrganisationHandler implements Serializable {
 
     public void updateOrganisationCredits(String orgID, BigDecimal credits) {
         try {
-            client.writeToServer("UPDATE ORGANISATIONAL_UNIT_INFORMATION SET credits = '" + credits + "' WHERE orgID = '" + orgID + "');", TableObject.ORGANISATION);
+            client.writeToServer("UPDATE ORGANISATIONAL_UNIT_INFORMATION SET credits = '" + credits + "' WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
             client.readListFromServer();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -181,25 +181,24 @@ public class OrganisationHandler implements Serializable {
     }
 
     public BigDecimal getOrganisationTotalOwing(String organisationID) {
-        List<User> users;
+        List<User> users = null;
         List<Order> activeBuyOrders = new ArrayList<>();
         BigDecimal result = BigDecimal.valueOf(0);
 
         try {
             client.writeToServer("SELECT * FROM USER_INFORMATION WHERE orgID = '" +
                     organisationID + "';", TableObject.USER);
-            users = (List) client.readListFromServer();
+            users = ((List) client.readListFromServer());
 
             for (User user : users) {
                 client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS WHERE userID = '" +
                         user.getUserID() + "';", TableObject.BUY_ORDER);
-                activeBuyOrders.add((Order) client.readListFromServer());
+                activeBuyOrders = ((List) client.readListFromServer());
             }
 
             for (Order order : activeBuyOrders) {
-                result.add(order.getPrice().multiply(BigDecimal.valueOf(order.getQuantity())));
+                result = result.add(order.getPrice().multiply(BigDecimal.valueOf(order.getQuantity())));
             }
-
             return result;
 
         } catch (Exception exception) {
@@ -208,5 +207,34 @@ public class OrganisationHandler implements Serializable {
 
         return null;
 
+    }
+
+    public int getOrganisationSellingQuantity(String organisationID) {
+        List<User> users = null;
+        List<Order> activeSellOrders = new ArrayList<>();
+        int result = 0;
+
+        try {
+            client.writeToServer("SELECT * FROM USER_INFORMATION WHERE orgID = '" +
+                    organisationID + "';", TableObject.USER);
+            users = ((List) client.readListFromServer());
+
+            for (User user : users) {
+                client.writeToServer("SELECT * FROM ACTIVE_SELL_ORDERS WHERE userID = '" +
+                        user.getUserID() + "';", TableObject.SELL_ORDER);
+                activeSellOrders = ((List) client.readListFromServer());
+            }
+
+            for (Order order : activeSellOrders) {
+                result += order.getQuantity();
+            }
+
+            return result;
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return 0;
     }
 }

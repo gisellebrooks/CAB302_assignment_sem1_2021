@@ -2,6 +2,7 @@ package marketplace.Handlers;
 
 import marketplace.Client.Client;
 import marketplace.Objects.Inventory;
+import marketplace.Objects.User;
 import marketplace.TableObject;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class InventoryHandler {
         return result;
     }
 
+
     public void addAsset(String assetID, String assetName, String orgID, int quantity) {
 
         try {
@@ -36,12 +38,56 @@ public class InventoryHandler {
         }
     }
 
+    public List<Inventory> getAllInventory(){
+        List<Inventory> inventory = null;
+
+        try {
+            client.writeToServer("SELECT * FROM INVENTORY;", TableObject.INVENTORY);
+            inventory = (List<Inventory>) client.readObjectFromServer();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return inventory;
+    }
+
+    public String newAssetID() {
+        List<Inventory> inventories = getAllInventory();
+        int currentID = 0;
+        int maxID = 0;
+        String holder;
+        String newID;
+
+        for (Inventory inventory : inventories) {
+            holder = (inventory.getAssetID());
+            holder = holder.replace("asset", "");
+            currentID = (Integer.parseInt((holder)));
+
+            if (currentID > maxID) {
+                maxID = currentID;
+            }
+        }
+
+        newID = "asset" + (maxID + 1);
+
+        return newID;
+    }
+
     public void removeAsset(String assetID, String assetName, String orgID, int quantity) {
 
         try {
             client.writeToServer("D INTO INVENTORY VALUES('" + assetID + "', '" + assetName + "', '" + orgID +
                     "', '" + quantity + "' );", TableObject.INVENTORY);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateOrganisationAssetQuantity(String assetID, String orgID, int quantity) {
+        try {
+            client.writeToServer("UPDATE INVENTORY SET quantity = '"+ quantity +"' WHERE assetID= '" + assetID
+                    + "' AND orgID = '" + orgID + "';", TableObject.INVENTORY);
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -73,22 +119,33 @@ public class InventoryHandler {
         return assetQuantity;
     }
 
-    public List<String> getOrganisationsAssets(String organisationID){
+    public List<Inventory> getOrganisationsAssets(String organisationID){
         List<Inventory> inventory = null;
-        List<String> returnList = new ArrayList<>();
 
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE orgID= '"+ organisationID +"';", TableObject.INVENTORY);
             inventory = (List<Inventory>) client.readObjectFromServer();
-
-            for (Inventory inv: inventory){
-                returnList.add(inv.getAssetName());
-            }
-
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return returnList;
+        return inventory;
+    }
+
+    public boolean assetNameExists(String assetName, String orgID) {
+        Inventory asset = null;
+
+        try {
+            List<Inventory> inventories = getOrganisationsAssets(orgID);
+
+            for (Inventory inventory : inventories) {
+                if (inventory.getAssetName().equals(assetName)) {
+                    return true;
+                }
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return false;
     }
 
     public boolean assetIDExists(String assetID) {
@@ -103,5 +160,14 @@ public class InventoryHandler {
             return true;
         }
         return false;
+    }
+
+    public void deleteOrganisationAsset(String assetID, String organisationID) {
+        try {
+            client.writeToServer("DELETE FROM INVENTORY WHERE assetID = '" + assetID + "' orgID = '" + organisationID + "';", TableObject.INVENTORY);
+            client.readListFromServer();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

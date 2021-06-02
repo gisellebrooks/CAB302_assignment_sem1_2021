@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 public class SettingsNavigationUserGUI extends JPanel implements ActionListener {
 
     private static JButton changePasswordButton;
-//
     private static JButton toHomeButton;
 
     public SettingsNavigationUserGUI() {

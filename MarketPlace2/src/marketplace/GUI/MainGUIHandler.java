@@ -9,6 +9,7 @@ import marketplace.Handlers.UserHandler;
 import marketplace.Objects.User;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -53,13 +54,14 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
         this.setVisible(true);
 
         setTitle("Market");
-        setSize(800,600);
+        setSize(1181, 718);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
         panel = new JPanel();
         panel.setLayout(null);
-        panel.setBounds(0, 0, 800, 600);
+        panel.setPreferredSize(new Dimension(1181, 718));
+        panel.setBounds(0, 0, 1181, 718);
 
 //        panel.add(new LoginGUI());
 //        panel.add(new SettingsNavigationAdminGUI());
