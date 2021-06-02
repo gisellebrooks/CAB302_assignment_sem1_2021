@@ -113,7 +113,7 @@ public class BuySellOrderGUI extends JPanel {
             main.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 100));
             main.add(new DataPanel());
 //            add(new TextPanel());
-            main.add(Box.createRigidArea(new Dimension(10, 0)));;
+            main.add(Box.createRigidArea(new Dimension(10, 0)));
             main.add(new PlaceOrderPanel());
             add(main);
         }
@@ -317,14 +317,16 @@ public class BuySellOrderGUI extends JPanel {
 
         public DataPanel(){
             JPanel container = new DefaultJPanel();
-            container.setPreferredSize(new Dimension(480, 580));
+            container.setPreferredSize(new Dimension(600, 580));
 //            container.setBackground(Color.YELLOW);
             JScrollPane scroll = new JScrollPane(container);
-
             scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
             scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            scroll.setPreferredSize(new Dimension(600, 580));
+
             JLabel buyHistoryLabel = new CustomLabel(String.format("Price History for %s", assetName), fonts.smallHeading, true);
             container.add(buyHistoryLabel);
+
             add(scroll);
             graph = new GraphView();
             container.add(graph);
@@ -347,7 +349,7 @@ public class BuySellOrderGUI extends JPanel {
 
         public History(boolean isSell){
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            setPreferredSize(new Dimension(480, 200));
+//            setPreferredSize(new Dimension(600, 200));
 //            container.setBackground(Color.YELLOW);
             JLabel buyHistoryLabel = new CustomLabel(String.format("Recent %s Orders", isSell ? "sell" : "buy"), fonts.smallHeading, true);
             add(buyHistoryLabel);
@@ -381,15 +383,15 @@ public class BuySellOrderGUI extends JPanel {
         public TableRow(String status, String organisationalUnit, String quantity, String pricePerUnit, String orderDate){
             JPanel container = new DefaultJPanel();
             JLabel statusLabel = new CustomLabel(status, fonts.small, true);
-            statusLabel.setPreferredSize(new Dimension(70, 20));
+            statusLabel.setPreferredSize(new Dimension(65, 20));
             JLabel organisationalUnitLabel = new CustomLabel(organisationalUnit, fonts.small, true);
-            organisationalUnitLabel.setPreferredSize(new Dimension(120, 20));
+            organisationalUnitLabel.setPreferredSize(new Dimension(150, 20));
             JLabel quantityLabel =  new CustomLabel(quantity, fonts.small, true);
-            quantityLabel.setPreferredSize(new Dimension(75, 20));
+            quantityLabel.setPreferredSize(new Dimension(70, 20));
             JLabel pricePerUnitLabel =  new CustomLabel(pricePerUnit, fonts.small, true);
-            pricePerUnitLabel.setPreferredSize(new Dimension(70, 20));
+            pricePerUnitLabel.setPreferredSize(new Dimension(100, 20));
             JLabel orderDateLabel = new CustomLabel(orderDate, fonts.small, true);
-            orderDateLabel.setPreferredSize(new Dimension(110, 20));
+            orderDateLabel.setPreferredSize(new Dimension(140, 20));
             container.add(statusLabel);
             container.add(organisationalUnitLabel);
             container.add(quantityLabel);

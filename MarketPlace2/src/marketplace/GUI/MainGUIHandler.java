@@ -68,12 +68,12 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
 //        panel.add(new SettingsNavigationUserGUI());
 
 //        panel.add(new BuyOrderGUI());
-//        panel.add(new OrderGUI());
+        panel.add(new OrderGUI());
 
 //        panel.add(new SignUpUserGUI());
 //        panel.add(new SignUpOrganisationGUI());
 //        panel.add(new ModifyUserGUI());
-        panel.add(new ModifyOrganisationGUI());
+//        panel.add(new ModifyOrganisationGUI());
 //        panel.add(new ChangeUsersPasswordGUI());
 
         add(panel);

@@ -3,6 +3,7 @@ package marketplace.GUI;
 import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
 import marketplace.GUI.Settings.SettingsNavigationUserGUI;
 import marketplace.Objects.Order;
+import marketplace.Util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,22 +18,23 @@ public class OrderGUI extends JPanel implements ActionListener {
 
     private static JLabel assetNamePromptLabel;
     private static JComboBox assetBox;
-    private static JButton sellButton;
-    private static JButton buyButton;
-    private static JButton toSettingButton;
+    private static CustomButton sellButton;
+    private static CustomButton buyButton;
+    private static CustomButton toSettingButton;
     private static JLabel valid;
     private static JLabel invalid;
+    Fonts fonts;
 
     public OrderGUI() {
-
+        this.fonts = new Fonts();
         setLayout(null);
         setBounds(0, 0, 1181, 718);
 
         List<Order> buy = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
         List<String> assets = new ArrayList<String>();
 
-        toSettingButton = new JButton("SETTINGS");
-        toSettingButton.setBounds(430, 20, 120, 25);
+        toSettingButton = new CustomButton("Settings");
+        toSettingButton.setBounds(1000, 20, 120, 25);
         toSettingButton.addActionListener(e -> {
             removeAll();
             if (MainGUIHandler.userType.equals("ADMIN")) {
@@ -44,19 +46,23 @@ public class OrderGUI extends JPanel implements ActionListener {
         });
         add(toSettingButton);
 
-        assetNamePromptLabel = new JLabel("Select Asset");
-        assetNamePromptLabel.setBounds(250, 20, 80, 50);
+        assetNamePromptLabel = new CustomLabel(String.format("Select Asset"), fonts.smallHeading, true);
+        assetNamePromptLabel.setBounds(550, 60, 80, 50);
+        assetNamePromptLabel.setFont(fonts.inputLabel);
         add(assetNamePromptLabel);
 
         List<String> assetNames = MainGUIHandler.orderHandler.getAllActiveAssetNames();
         assetNames.add("Doge Coin");
         assetNames.add("Bella Coin");
         assetBox = new JComboBox(assetNames.toArray());
-        assetBox.setBounds(200, 60, 160, 25);
+        assetBox.setBounds(510, 100, 160, 25);
         add(assetBox);
         assetBox.addActionListener(this::actionPerformed);
+        assetBox.setForeground(Color.BLACK);
+        assetBox.setOpaque(true);
+        assetBox.setFont(fonts.small);
 
-        buyButton = new JButton("Buy");
+        buyButton = new CustomButton("Buy");
         buyButton.setBounds(300, 150, 120, 25);
         buyButton.addActionListener(e -> {
 
@@ -71,7 +77,7 @@ public class OrderGUI extends JPanel implements ActionListener {
         });
         add(buyButton);
 
-        sellButton = new JButton("Sell");
+        sellButton = new CustomButton("Sell");
         sellButton.setBounds(150, 150, 120, 25);
         sellButton.addActionListener(e -> {
 

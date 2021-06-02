@@ -4,6 +4,7 @@ import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
 import marketplace.GUI.Settings.SettingsNavigationUserGUI;
 import marketplace.Objects.User;
 import marketplace.PasswordHandler;
+import marketplace.Util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,28 +14,29 @@ import java.awt.event.ActionListener;
 
 public class LoginGUI extends JPanel implements ActionListener {
 
-    private static JLabel userLabel;
-    private static JTextField userText;
-    private static JLabel passwordLabel;
+    private static CustomLabel userLabel;
+    private static CustomTextField userText;
+    private static CustomLabel passwordLabel;
     private static JTextField passwordText;
-    private static JButton button;
+    private static CustomButton button;
     private static JLabel valid;
     private static JLabel invalid;
+    Fonts fonts;
 
     public LoginGUI() {
-
+        this.fonts = new Fonts();
         setLayout(null);
         setBounds(0, 0, 600, 600);
 
-        userLabel = new JLabel("User");
+        userLabel = new CustomLabel(String.format("User"), fonts.smallHeading, true);
         userLabel.setBounds(10, 20, 80, 25);
         add(userLabel);
 
-        userText = new JTextField(20);
+        userText = new CustomTextField(20);
         userText.setBounds(100, 20, 160, 25);
         add(userText);
 
-        passwordLabel = new JLabel("Password");
+        passwordLabel = new CustomLabel(String.format("Password"), fonts.smallHeading, true);
         passwordLabel.setBounds(10, 50, 80, 25);
         add(passwordLabel);
 
@@ -42,7 +44,7 @@ public class LoginGUI extends JPanel implements ActionListener {
         passwordText.setBounds(100, 50, 160, 25);
         add(passwordText);
 
-        button = new JButton("Login");
+        button = new CustomButton("Login");
         button.setBounds(10, 80, 80, 25);
         button.addActionListener(this);
         add(button);
