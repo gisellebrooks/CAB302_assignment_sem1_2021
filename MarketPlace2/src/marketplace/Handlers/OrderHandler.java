@@ -21,48 +21,31 @@ public class OrderHandler implements Serializable {
          inventoryHandler = new InventoryHandler(client);
          organisationHandler = new OrganisationHandler(client);
     }
-    public List<Order> getAllOrganisationsActiveBuyOrders(){
-        List<Order> result = null;
-        List<User> usersInOrganisation = null;
-
-        try {
-            client.writeToServer("SELECT * FROM USER_INFORMATION WHERE org_id = ;", TableObject.BUY_ORDER);
-            result = (List) client.readListFromServer();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-
-        try {
-            client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS;", TableObject.BUY_ORDER);
-            result = (List) client.readListFromServer();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return result;
-    }
 
     public List<Order> getAllActiveBuyOrdersForAsset(String assetName){
-        //TODO: Filter this by passed in asset name
-        List<Order> result = null;
-        try {
-            client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS;", TableObject.BUY_ORDER);
-            result = (List) client.readListFromServer();
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        List<Order> allBuyOrders;
+        List<Order> allBuyOrdersForAsset = new ArrayList<>();
+        allBuyOrders = getAllActiveBuyOrders();
+
+        for (Order buyOrder: allBuyOrders){
+            if(buyOrder.getAssetName().equals(assetName)){
+                allBuyOrdersForAsset.add(buyOrder);
+            }
         }
-        return result;
+        return allBuyOrdersForAsset;
     }
 
     public List<SellOrder> getAllActiveSellOrdersForAsset(String assetName){
-        //TODO: Filter this by passed in asset name
-        List<SellOrder> result = null;
-        try {
-            client.writeToServer("SELECT * FROM ACTIVE_SELL_ORDERS;", TableObject.SELL_ORDER);
-            result = (List<SellOrder>) client.readObjectFromServer();
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        List<SellOrder> allSellOrders;
+        List<SellOrder> allSellOrdersForAsset = new ArrayList<>();
+        allSellOrders = getAllActiveSellOrders();
+
+        for (SellOrder sellOrder: allSellOrders){
+            if(sellOrder.getAssetName().equals(assetName)){
+                allSellOrdersForAsset.add(sellOrder);
+            }
         }
-        return result;
+        return allSellOrdersForAsset;
     }
 
 
