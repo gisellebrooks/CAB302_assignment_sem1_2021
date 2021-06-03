@@ -27,6 +27,23 @@ public class InventoryHandler {
         return result;
     }
 
+//    public List<String> getAllAssetNames() {
+//        List<String> results = null;
+//        List<Inventory> inventories = null;
+//        try {
+//            client.writeToServer("SELECT * FROM INVENTORY GROUP BY assetName;", TableObject.INVENTORY);
+//            inventories = (List) client.readListFromServer();
+//            for (Inventory inventory : inventories) {
+//                if (!results.contains(inventory.getAssetName())) {
+//                    results.add(inventory.getAssetName());
+//                }
+//            }
+//        } catch (IOException | ClassNotFoundException exception) {
+//            exception.printStackTrace();
+//        }
+//        return results;
+//    }
+
 
     public void addAsset(String assetID, String assetName, String orgID, int quantity) {
 

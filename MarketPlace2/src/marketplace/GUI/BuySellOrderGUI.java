@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -16,6 +17,20 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+
+/**
+ * <h1>Create the Buy and sell order GUIs!</h1>
+ * * Displays a 'Place order panel' and to calculate buy and sell orders
+ * * based on price and quantity and place them.
+ * *
+ * * <p>
+ * * <b>Note:</b> Giving proper comments in your program makes it more
+ * * user friendly and it is assumed as a high quality code.
+ * *
+ * * @author  Zara Ali
+ * * @version 1.0
+ * * @since   2014-03-31
+ */
 
 public class BuySellOrderGUI extends JPanel {
     JPanel mainPanel;
@@ -137,6 +152,7 @@ public class BuySellOrderGUI extends JPanel {
         }
 
         public void calculateOrder() {
+            //TODO: add giselle's method to check if user has enough credits to place order.
             try {
                 setQuantity(Float.parseFloat(buyQuantityText.getText()));
             } catch (NumberFormatException ex) {

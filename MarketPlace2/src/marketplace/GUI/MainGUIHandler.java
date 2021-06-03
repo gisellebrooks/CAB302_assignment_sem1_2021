@@ -26,6 +26,7 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
     public static String userType;
     public static User user;
     public static String assetName;
+    public static Boolean isSellOrder;
 
 
     public static void main(String[] args){
@@ -67,7 +68,7 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
 //        panel.add(new SettingsNavigationAdminGUI());
 //        panel.add(new SettingsNavigationUserGUI());
 
-//        panel.add(new BuyOrderGUI());
+//        panel.add(new BuySellOrderGUI(assetName, isSellOrder));
         panel.add(new OrderGUI());
 
 //        panel.add(new SignUpUserGUI());
