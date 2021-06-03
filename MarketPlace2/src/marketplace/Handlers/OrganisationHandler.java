@@ -10,6 +10,7 @@ import marketplace.TableObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,6 @@ public class OrganisationHandler implements Serializable {
         if (!orgID.contains("org")) {
             throw new Exception("Organisation couldn't be found");
         }
-
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" +
                     orgID + "';", TableObject.ORGANISATION);
@@ -194,6 +194,25 @@ public class OrganisationHandler implements Serializable {
         }
     }
 
+    public boolean organisationHasCredits(String orgID, BigDecimal totalPrice) throws Exception {
+        List<Organisation> orgInformation;
+        try {
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" +
+                    orgID + "';", TableObject.ORGANISATION);
+            orgInformation = client.readListFromServer();
+
+            if (orgInformation != null){
+                if (orgInformation.get(0).getCredits().compareTo(totalPrice) > 0){
+                    return true;
+                }
+            }
+
+        } catch (Exception exception) {
+            throw new Exception("Organisation does not exist");
+        }
+        return false;
+    }
+
     public void updateOrganisationCredits(String orgID, BigDecimal credits) throws Exception {
 
         if (credits == null || credits.compareTo(BigDecimal.valueOf(0)) != 1) {
@@ -206,7 +225,6 @@ public class OrganisationHandler implements Serializable {
 
         try {
             client.writeToServer("UPDATE ORGANISATIONAL_UNIT_INFORMATION SET credits = '" + credits + "' WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
-            client.readListFromServer();
         } catch (Exception exception) {
             throw new Exception(exception.getMessage());
         }

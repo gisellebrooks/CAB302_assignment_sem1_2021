@@ -107,7 +107,6 @@ public class OrderHandler implements Serializable {
 
                 exception.printStackTrace();
             }
-
         }
 
         String[] part = lastID.split("(?<=\\D)(?=\\d)");
