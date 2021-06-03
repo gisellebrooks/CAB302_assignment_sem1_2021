@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.Properties;
-import java.util.function.BooleanSupplier;
 
 public class MariaDBDataSource {
     private static MariaDBDataSource ds;

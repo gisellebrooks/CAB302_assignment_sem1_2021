@@ -122,8 +122,6 @@ public class OrganisationHandler implements Serializable {
         return false;
     }
 
-
-
     public String newOrganisationID() {
         List<Organisation> organisations = getAllOrganisations();
         int currentID = 0;
