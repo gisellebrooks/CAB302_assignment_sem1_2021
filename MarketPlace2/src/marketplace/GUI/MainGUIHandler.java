@@ -63,12 +63,12 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
         panel.setPreferredSize(new Dimension(1181, 718));
         panel.setBounds(0, 0, 1181, 718);
 
-//        panel.add(new LoginGUI());
+        panel.add(new LoginGUI());
 //        panel.add(new SettingsNavigationAdminGUI());
 //        panel.add(new SettingsNavigationUserGUI());
 
 //        panel.add(new BuyOrderGUI());
-        panel.add(new OrderGUI());
+//        panel.add(new OrderGUI());
 
 //        panel.add(new SignUpUserGUI());
 //        panel.add(new SignUpOrganisationGUI());

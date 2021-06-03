@@ -4,7 +4,6 @@ import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
 import marketplace.GUI.Settings.SettingsNavigationUserGUI;
 import marketplace.Objects.User;
 import marketplace.PasswordHandler;
-import marketplace.Util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,29 +13,27 @@ import java.awt.event.ActionListener;
 
 public class LoginGUI extends JPanel implements ActionListener {
 
-    private static CustomLabel userLabel;
-    private static CustomTextField userText;
-    private static CustomLabel passwordLabel;
+    private static JLabel userLabel;
+    private static JTextField userText;
+    private static JLabel passwordLabel;
     private static JTextField passwordText;
-    private static CustomButton button;
-    private static JLabel valid;
+    private static JButton button;
     private static JLabel invalid;
-    Fonts fonts;
 
     public LoginGUI() {
-        this.fonts = new Fonts();
-        setLayout(null);
-        setBounds(0, 0, 600, 600);
 
-        userLabel = new CustomLabel(String.format("User"), fonts.smallHeading, true);
+        setLayout(null);
+        setBounds(0, 0, 1181, 718);
+
+        userLabel = new JLabel("User");
         userLabel.setBounds(10, 20, 80, 25);
         add(userLabel);
 
-        userText = new CustomTextField(20);
+        userText = new JTextField(20);
         userText.setBounds(100, 20, 160, 25);
         add(userText);
 
-        passwordLabel = new CustomLabel(String.format("Password"), fonts.smallHeading, true);
+        passwordLabel = new JLabel("Password");
         passwordLabel.setBounds(10, 50, 80, 25);
         add(passwordLabel);
 
@@ -44,15 +41,10 @@ public class LoginGUI extends JPanel implements ActionListener {
         passwordText.setBounds(100, 50, 160, 25);
         add(passwordText);
 
-        button = new CustomButton("Login");
+        button = new JButton("Login");
         button.setBounds(10, 80, 80, 25);
         button.addActionListener(this);
         add(button);
-
-        valid = new JLabel("");
-        valid.setForeground(Color.green);
-        valid.setBounds(10, 110, 300, 25);
-        add(valid);
 
         invalid = new JLabel("");
         invalid.setForeground(Color.red);
@@ -63,36 +55,21 @@ public class LoginGUI extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String userID = userText.getText();
         String password = passwordText.getText();
-        String passwordHash = null;
         User user;
 
-        valid.setText("");
-        invalid.setText("Invalid details!");
-
-        // if user found then test password matches
-        if (userID.length() < 249 && userID != null  && password. length() < 249 && password != null &&
-                MainGUIHandler.userHandler.userIDExists(userID)) {
+        try {
+            MainGUIHandler.userHandler.loginUser(userID, password);
 
             user = MainGUIHandler.userHandler.getUser(userID);
+            MainGUIHandler.userType = user.getAccountType();
+            MainGUIHandler.user = MainGUIHandler.userHandler.getUser(userID);
 
-            try {
-                passwordHash = PasswordHandler.IntoHash(password);
+            removeAll();
+            add(new OrderGUI());
+            updateUI();
 
-                if (user.getPasswordHash().equals(passwordHash) && !passwordHash.equals(null)) {
-                    removeAll();
-                    MainGUIHandler.userType = user.getAccountType();
-                    MainGUIHandler.user = MainGUIHandler.userHandler.getUser(userID);
-
-                    add(new OrderGUI());
-
-
-
-                    updateUI();
-                }
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                invalid.setText("Invalid details!");
-            }
+        } catch (Exception exception) {
+            invalid.setText(exception.getMessage());
         }
     }
 }

@@ -186,7 +186,7 @@ public class OrderHandler implements Serializable {
         }
     }
 
-    public void reconcileOrder() throws IOException, ClassNotFoundException {
+    public void reconcileOrder() throws Exception {
         List<Order> buy = getAllActiveBuyOrders();
         List<SellOrder> sell = getAllActiveSellOrders();
 

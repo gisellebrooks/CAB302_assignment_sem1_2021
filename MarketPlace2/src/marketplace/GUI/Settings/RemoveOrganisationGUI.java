@@ -27,10 +27,6 @@ public class RemoveOrganisationGUI extends JPanel implements ActionListener {
         organisationIDPromptLabel.setBounds(10, 20, 160, 25);
         add(organisationIDPromptLabel);
 
-//        organisationIDText = new JTextField(20);
-//        organisationIDText.setBounds(10, 50, 160, 25);
-//        add(organisationIDText);
-
         organisationComboBox = new JComboBox(MainGUIHandler.organisationHandler.getAllOrganisationsNames().toArray());
         organisationComboBox.setBounds(10, 50, 200, 25);
         add(organisationComboBox);
@@ -64,18 +60,30 @@ public class RemoveOrganisationGUI extends JPanel implements ActionListener {
         valid.setText("");
         invalid.setText("");
 
-        String organisationID;
+        String organisationID = null;
         String organisationName;
 
         // get organisation ID with org name
         organisationName = organisationComboBox.getSelectedItem().toString();
-        organisationID = MainGUIHandler.organisationHandler.getOrganisationID(organisationName);
+        try {
+            organisationID = MainGUIHandler.organisationHandler.getOrganisationID(organisationName);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
 
-        if (MainGUIHandler.organisationHandler.organisationIDExists(organisationID)) {
-            MainGUIHandler.organisationHandler.removeOrganisation(organisationID);
-            valid.setText("Organisation was successfully removed");
-        } else {
-            invalid.setText("Organisation can't be found or can't be removed");
+        try {
+            if (MainGUIHandler.organisationHandler.organisationIDExists(organisationID)) {
+                try {
+                    MainGUIHandler.organisationHandler.removeOrganisation(organisationID);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                valid.setText("Organisation was successfully removed");
+            } else {
+                invalid.setText("Organisation can't be found or can't be removed");
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 }

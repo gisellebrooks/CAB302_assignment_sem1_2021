@@ -25,14 +25,12 @@ public class ChangeUsersPasswordGUI extends JPanel implements ActionListener {
     private static JLabel valid;
     private static JLabel invalid;
 
-    boolean userValid;
     User user = null;
 
     public ChangeUsersPasswordGUI() {
 
         setLayout(null);
         setBounds(0, 0, 600, 600);
-
 
         oldPasswordPromptLabel = new JLabel("Old Password:");
         oldPasswordPromptLabel.setBounds(20, 30, 160, 25);
@@ -63,7 +61,6 @@ public class ChangeUsersPasswordGUI extends JPanel implements ActionListener {
         changePasswordButton.addActionListener(this);
         add(changePasswordButton);
 
-
         valid = new JLabel("");
         valid.setForeground(Color.green);
         valid.setBounds(20, 240, 260, 25);
@@ -87,17 +84,14 @@ public class ChangeUsersPasswordGUI extends JPanel implements ActionListener {
             updateUI();
         });
         add(toSettingsButton);
-
-
     }
 
     public void actionPerformed(ActionEvent e) {
         String oldPassword;
         String newPassword;
         String confirmedPassword;
-        String usersCurrentPasswordHash;
 
-
+        valid.setText("");
 
         PasswordHandler passwordHandler = new PasswordHandler();
 
@@ -106,44 +100,17 @@ public class ChangeUsersPasswordGUI extends JPanel implements ActionListener {
         oldPassword = oldPasswordText.getText();
         newPassword = newPasswordText.getText();
         confirmedPassword = confirmPasswordText.getText();
-        usersCurrentPasswordHash = user.getPasswordHash();
 
         try {
-            if (oldPassword.length() < 249 && newPassword.length() < 249 && confirmedPassword.length() < 249) {
-                if (passwordHandler.IntoHash(oldPassword).equals(usersCurrentPasswordHash)) {
-                    if (!newPassword.equals(oldPassword)) {
-                        if (newPassword.equals(confirmedPassword)) {
-                            if (PasswordHandler.IsPasswordStrong(newPassword)) {
+            user.setPasswordHash(passwordHandler.IntoHash(newPassword));
 
-                                user.setPasswordHash(passwordHandler.IntoHash(newPassword));
+            MainGUIHandler.userHandler.updateUserPassword(
+                    MainGUIHandler.user, oldPassword, newPassword, confirmedPassword);
 
-                                MainGUIHandler.userHandler.updateUserPassword(user);
-
-                                valid.setText("Password has been changed");
-                                invalid.setText("");
-
-                            } else {
-                                valid.setText("");
-                                invalid.setText("That password is not strong enough");
-                            }
-                        } else {
-                            valid.setText("");
-                            invalid.setText("Please confirm the password");
-                        }
-                    } else {
-                        valid.setText("");
-                        invalid.setText("New password must be different to old password");
-                    }
-                } else {
-                    valid.setText("");
-                    invalid.setText("Old password doesn't match");
-                }
-            } else {
-                valid.setText("");
-                invalid.setText("invalid");
-            }
-        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-            noSuchAlgorithmException.printStackTrace();
+            valid.setText("Password has been changed");
+            invalid.setText("");
+        } catch (Exception exception) {
+            invalid.setText(exception.getMessage());
         }
     }
 }

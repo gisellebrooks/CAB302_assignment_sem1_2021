@@ -1,6 +1,7 @@
 package marketplace.Handlers;
 
 import marketplace.Client.Client;
+import marketplace.GUI.MainGUIHandler;
 import marketplace.Objects.Order;
 import marketplace.Objects.Organisation;
 import marketplace.Objects.User;
@@ -30,40 +31,65 @@ public class OrganisationHandler implements Serializable {
         return result;
     }
 
-    public Organisation getOrganisation(String orgID){
-        List<Organisation> result;
+    public Organisation getOrganisation(String orgID) throws Exception {
+        List<Organisation> result = null;
+
+        if (!orgID.contains("org")) {
+            throw new Exception("Organisation couldn't be found");
+        }
+
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" +
                     orgID + "';", TableObject.ORGANISATION);
-            result = (List<Organisation> ) client.readListFromServer();
+            result = (List) client.readListFromServer();
+            return result.get(0);
 
-            if (result.size() > 0) {
-                return result.get(0);
-            }
-        } catch (Exception exception) {
+        } catch (IOException | ClassNotFoundException exception) {
             exception.printStackTrace();
+        } catch (IndexOutOfBoundsException exception) {
+            throw new Exception("Organisation couldn't be found");
         }
 
-        return null;
+        if (result == null) {
+            throw new Exception("Organisation couldn't be found");
+        }
+
+        return result.get(0);
     }
 
-    public void addOrganisation(String orgID, String orgName, double credits) {
+    public void addOrganisation(String orgID, String orgName, double credits) throws Exception {
+
+        if (orgName.length() < 2) {
+            throw new Exception("Organisation name is too short");
+        }
+
+        if (orgName.length() > 200) {
+            throw new Exception("Organisation name is too long");
+        }
+
+        if (credits > 1000000000 * 1000000000) {
+            throw new Exception("Credits are too large");
+        }
+
+        if (organisationNameExists(orgName)) {
+            throw new Exception("That organisation name is taken");
+        }
 
         try {
             client.writeToServer("INSERT INTO ORGANISATIONAL_UNIT_INFORMATION VALUES('" + orgID + "', '" + orgName
                     + "', '" + credits + "');", TableObject.ORGANISATION);
             client.readListFromServer();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            throw new Exception("That organisation couldn't be added");
         }
     }
 
-    public void removeOrganisation(String orgID) {
+    public void removeOrganisation(String orgID) throws Exception {
         try {
             client.writeToServer("DELETE FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
             client.readListFromServer();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            throw new Exception("That organisation couldn't be removed");
         }
     }
 
@@ -78,7 +104,7 @@ public class OrganisationHandler implements Serializable {
         }
     }
 
-    public boolean organisationIDExists(String orgID) {
+    public boolean organisationIDExists(String orgID) throws Exception {
         List<Organisation> result;
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" +
@@ -90,29 +116,13 @@ public class OrganisationHandler implements Serializable {
             }
 
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new Exception("Organisation ID couldn't be found");
         }
 
         return false;
     }
 
-    public boolean organisationNameExists(String organisationName) {
-        List<Organisation> result;
-        try {
-            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" +
-                    organisationName + "';", TableObject.ORGANISATION);
-            result = (List<Organisation>) client.readListFromServer();
 
-            if (result.size() > 0 && result.get(0).getOrgName().equals(organisationName)) {
-                return true;
-            }
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-
-        return false;
-    }
 
     public String newOrganisationID() {
         List<Organisation> organisations = getAllOrganisations();
@@ -154,7 +164,7 @@ public class OrganisationHandler implements Serializable {
         return new ArrayList<>();
     }
 
-    public String getOrganisationID(String organisationName) {
+    public String getOrganisationID(String organisationName) throws Exception {
         List<Organisation> result;
         try {
             client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" +
@@ -164,26 +174,51 @@ public class OrganisationHandler implements Serializable {
             return result.get(0).getOrgID();
 
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new Exception("Organisation does not exist");
         }
-
-        return null;
-
     }
 
-    public void updateOrganisationCredits(String orgID, BigDecimal credits) {
+    public boolean organisationNameExists(String organisationName) throws Exception {
+        List<Organisation> result;
+        try {
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" +
+                    organisationName + "';", TableObject.ORGANISATION);
+            result = (List<Organisation>) client.readListFromServer();
+
+            if (result != null) {
+                return true;
+            } else {
+                throw new Exception("Organisation does not exist");
+            }
+
+        } catch (Exception exception) {
+            throw new Exception("Organisation does not exist");
+        }
+    }
+
+    public void updateOrganisationCredits(String orgID, BigDecimal credits) throws Exception {
+
+        if (credits == null || credits.compareTo(BigDecimal.valueOf(0)) != 1) {
+            throw new Exception("Please enter a valid number");
+        }
+
+        if (credits.compareTo(getOrganisationTotalOwing(orgID)) != 1) {
+            throw new Exception("Current buy orders don't allow that");
+        }
+
         try {
             client.writeToServer("UPDATE ORGANISATIONAL_UNIT_INFORMATION SET credits = '" + credits + "' WHERE orgID = '" + orgID + "';", TableObject.ORGANISATION);
             client.readListFromServer();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            throw new Exception(exception.getMessage());
         }
     }
 
-    public BigDecimal getOrganisationTotalOwing(String organisationID) {
+    public BigDecimal getOrganisationTotalOwing(String organisationID) throws Exception {
         List<User> users = null;
         List<Order> activeBuyOrders = new ArrayList<>();
         BigDecimal result = BigDecimal.valueOf(0);
+
 
         try {
             client.writeToServer("SELECT * FROM USER_INFORMATION WHERE orgID = '" +
@@ -202,14 +237,11 @@ public class OrganisationHandler implements Serializable {
             return result;
 
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new Exception("Error");
         }
-
-        return null;
-
     }
 
-    public int getOrganisationSellingQuantity(String organisationID) {
+    public int getOrganisationSellingQuantity(String organisationID) throws Exception {
         List<User> users = null;
         List<Order> activeSellOrders = new ArrayList<>();
         int result = 0;
@@ -232,9 +264,7 @@ public class OrganisationHandler implements Serializable {
             return result;
 
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new Exception("Error");
         }
-
-        return 0;
     }
 }
