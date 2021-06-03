@@ -160,8 +160,4 @@ public class OrganisationHandler implements Serializable {
         return null;
     }
 
-    public void updateOrganisationCredits(String buyOrgID, BigDecimal newCredits) {
-
-
-    }
 }

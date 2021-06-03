@@ -1,5 +1,8 @@
 package marketplace.Server;
 
+import marketplace.Objects.Inventory;
+import marketplace.Objects.Order;
+
 import java.io.*;
 import java.net.*;
 import java.sql.Connection;
@@ -19,6 +22,11 @@ public class ServerHandler {
             MariaDBDataSource pool = MariaDBDataSource.getInstance();
             initDb(pool);
             //loadMockData(pool);
+            ReconcileOrders rec = new ReconcileOrders(pool);
+
+            rec.run();
+
+
             InetAddress addr = InetAddress.getByName(address);
             listener = new ServerSocket(port, 10, addr);
 
@@ -116,6 +124,8 @@ public class ServerHandler {
         Properties props = loadServerConfig();
 
         ServerHandler server = new ServerHandler(Integer.parseInt(props.getProperty("app.port")), props.getProperty("app.hostname"));
+
+
 
     }
 }
