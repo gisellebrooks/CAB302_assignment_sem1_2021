@@ -5,8 +5,9 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
-public class ReconcileOrders {
+public class ReconcileOrders extends TimerTask {
     private final MariaDBDataSource pool;
 
     public ReconcileOrders(MariaDBDataSource pool) {
@@ -222,7 +223,7 @@ public class ReconcileOrders {
         return organisationList;
     }
 
-    public Inventory getInventoryInformation(String assetID) throws SQLException {
+    public Inventory getInventoryInformation(String assetID) {
         ResultSet result = null;
         Inventory inventory = new Inventory();
 
@@ -234,11 +235,15 @@ public class ReconcileOrders {
             e.printStackTrace();
         }
 
-        if (result != null && result.next()) {
-            inventory.setAssetID(result.getString("assetID"));
-            inventory.setAssetName(result.getString("assetName"));
-            inventory.setOrgID(result.getString("orgID"));
-            inventory.setQuantity(result.getInt("quantity"));
+        try {
+            if (result != null && result.next()) {
+                inventory.setAssetID(result.getString("assetID"));
+                inventory.setAssetName(result.getString("assetName"));
+                inventory.setOrgID(result.getString("orgID"));
+                inventory.setQuantity(result.getInt("quantity"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return inventory;
     }
@@ -415,7 +420,9 @@ public class ReconcileOrders {
         }
     }
 
-    public void run() throws SQLException {
+    @Override
+    public void run() {
+        System.out.println("we're running");
 
         List<Order> buyOrders = null;
         String buyID;

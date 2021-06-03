@@ -23,7 +23,7 @@ public class ServerHandler {
     InetAddress address;
     Socket clientSocket;
 
-    public ServerHandler(Properties props){
+    public ServerHandler(Properties props, MariaDBDataSource pooledDataSource){
         try {
             listener = newServerSocket(props);
 
@@ -128,12 +128,12 @@ public class ServerHandler {
 
     public static void main(String[] args) throws SQLException {
         pooledDataSource = MariaDBDataSource.getInstance();
-
         initDb(pooledDataSource);
-
+        //loadMockData(pooledDataSource);
         Properties props = loadServerConfig();
-
-        ServerHandler server = new ServerHandler(props);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new ReconcileOrders(pooledDataSource), 0, 10000);
+        ServerHandler server = new ServerHandler(props, pooledDataSource);
 
     }
 }
