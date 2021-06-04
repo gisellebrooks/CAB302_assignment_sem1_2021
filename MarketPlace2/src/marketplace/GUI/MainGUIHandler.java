@@ -70,6 +70,8 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
 
 //        panel.add(new BuySellOrderGUI(assetName, isSellOrder));
         panel.add(new OrderGUI());
+//        panel.add(new BuyOrderGUI());
+//        panel.add(new OrderGUI());
 
 //        panel.add(new SignUpUserGUI());
 //        panel.add(new SignUpOrganisationGUI());

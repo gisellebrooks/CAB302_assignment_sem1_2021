@@ -62,11 +62,15 @@ public class RemoveUserGUI extends JPanel implements ActionListener {
         userIDText.setText("");
 
         if (userID.length() < 249 && userID != null) {
-            if (MainGUIHandler.userHandler.userIDExists(userID)) {
-                MainGUIHandler.userHandler.removeUser(userID);
-                valid.setText("User was successfully removed");
-            } else {
-                invalid.setText("User can't be found or can't be removed");
+            try {
+                if (MainGUIHandler.userHandler.userIDExists(userID)) {
+                    MainGUIHandler.userHandler.removeUser(userID);
+                    valid.setText("User was successfully removed");
+                } else {
+                    invalid.setText("User can't be found or can't be removed");
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         } else {
             invalid.setText("Provided userID is invalid");

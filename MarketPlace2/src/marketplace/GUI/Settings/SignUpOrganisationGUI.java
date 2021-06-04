@@ -22,7 +22,7 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener {
     public SignUpOrganisationGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 600, 600);
+        setBounds(0, 0, 1181, 718);
 
         namePromptLabel = new JLabel("Organisation Name:");
         namePromptLabel.setBounds(10, 20, 160, 25);
@@ -75,9 +75,9 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        String newID = null;
-        double credits = 0;
-        String organisationName = null;
+        String newID;
+        double credits;
+        String organisationName;
 
         valid.setText("");
         invalid.setText("");
@@ -87,25 +87,15 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener {
             newID = MainGUIHandler.organisationHandler.newOrganisationID();
             organisationName = nameText.getText();
 
-            if (organisationName.length() > 200) {
-                invalid.setText("That organisation name is too long");
-            } else if (organisationName.length() < 2) {
-                invalid.setText("That organisation name is too short");
-            } else if (credits > 1000000000) {
-                invalid.setText("That credit amount is too large");
-            } else if (MainGUIHandler.organisationHandler.organisationNameExists(organisationName)) {
-                invalid.setText("That organisation name is taken");
-            }else {
-                    MainGUIHandler.organisationHandler.addOrganisation(newID, organisationName, credits);
-                    nameText.setText("");
-                    creditsText.setText("");
-                    valid.setText("Organisation was successfully created");
-                    invalid.setText("");
-                    givenIDLabel.setText("OrganisationID: " + newID);
-            }
+            MainGUIHandler.organisationHandler.addOrganisation(newID, organisationName, credits);
+            nameText.setText("");
+            creditsText.setText("");
+            valid.setText("Organisation was successfully created");
+            invalid.setText("");
+            givenIDLabel.setText("OrganisationID: " + newID);
 
-        } catch (NumberFormatException NumberFormatError) {
-            invalid.setText("Credits must be a number");
+        } catch (Exception exception) {
+            invalid.setText(exception.getMessage());
         }
     }
 }

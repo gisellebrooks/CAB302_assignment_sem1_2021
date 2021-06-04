@@ -116,7 +116,7 @@ public class ClientHandler extends Thread {
                             List<Order> buyHistory = new ArrayList<>();
                             while (result.next()){
                                 SellOrder oldBuy = new SellOrder();
-                                oldBuy.setOrderID(result.getString("buyID"));
+                                oldBuy.setOrderID(result.getString("oldBuyID"));
                                 oldBuy.setUserID(result.getString("userID"));
                                 oldBuy.setAssetID(result.getString("assetID"));
                                 oldBuy.setQuantity(result.getInt("quantity"));
@@ -132,7 +132,7 @@ public class ClientHandler extends Thread {
                             List<SellOrder> sellHistory = new ArrayList<>();
                             while (result.next()){
                                 SellOrder oldSell = new SellOrder();
-                                oldSell.setOrderID(result.getString("sellID"));
+                                oldSell.setOrderID(result.getString("oldSellID"));
                                 oldSell.setUserID(result.getString("userID"));
                                 oldSell.setAssetID(result.getString("assetID"));
                                 oldSell.setQuantity(result.getInt("quantity"));

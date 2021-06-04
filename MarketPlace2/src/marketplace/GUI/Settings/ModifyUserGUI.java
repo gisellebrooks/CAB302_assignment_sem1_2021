@@ -1,7 +1,6 @@
 package marketplace.GUI.Settings;
 
 import marketplace.GUI.MainGUIHandler;
-import marketplace.Objects.Organisation;
 import marketplace.Objects.User;
 import marketplace.PasswordHandler;
 
@@ -20,8 +19,6 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
     private static JButton findUserButton;
     private static JLabel userIDPromptLabel;
     private static JTextField userIDText;
-//    private static JLabel organisationLabel;
-//    private static JComboBox userOrganisationComboBox;
     private static JLabel userTypeLabel;
     private static JComboBox userTypeComboBox;
 
@@ -38,9 +35,7 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
     public ModifyUserGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 600, 600);
-
-
+        setBounds(0, 0, 1181, 718);
 
         resetPasswordButton = new JButton("Reset User's Password");
         resetPasswordButton.setBounds(300, 40, 180, 25);
@@ -55,7 +50,6 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         newPasswordText.setBounds(300, 100, 180, 25);
         add(newPasswordText);
 
-
         userIDPromptLabel = new JLabel("User ID:");
         userIDPromptLabel.setBounds(10, 20, 160, 25);
         add(userIDPromptLabel);
@@ -69,7 +63,6 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         findUserButton.addActionListener(this);
         add(findUserButton);
 
-
         valid = new JLabel("");
         valid.setForeground(Color.green);
         valid.setBounds(10, 100, 260, 25);
@@ -79,15 +72,6 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         invalid.setForeground(Color.red);
         invalid.setBounds(10, 100, 340, 25);
         add(invalid);
-
-
-//        organisationLabel = new JLabel("Select your organisation:");
-//        organisationLabel.setBounds(10, 120, 180, 25);
-//        add(organisationLabel);
-
-//        userOrganisationComboBox = new JComboBox(MainGUIHandler.organisationHandler.getAllOrganisationsNames().toArray());
-//        userOrganisationComboBox.setBounds(10, 150, 165, 25);
-//        add(userOrganisationComboBox);
 
         userTypeLabel = new JLabel("Select your user type:");
         userTypeLabel.setBounds(10, 190, 180, 25);
@@ -115,53 +99,38 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
             } else {
                 add(new SettingsNavigationUserGUI());
             }
-
             updateUI();
         });
         add(toSettingsButton);
-
     }
 
     public void actionPerformed(ActionEvent e) {
 
         String userID;
         String newPassword;
-        String userOrganisationName;
-        String userOrganisationID;
-        Organisation userOrganisation;
-        String userType;
 
         PasswordHandler passwordHandler = new PasswordHandler();
 
         valid.setText("");
-        invalid.setText("invalid");
+        invalid.setText("");
 
         if (e.getSource() == findUserButton) {
 
             newPasswordText.setText("");
-            userID = userIDText.getText();
 
-            if (!userID.isEmpty() && userID.length() < 250 && MainGUIHandler.userHandler.userIDExists(userID)) {
+            try {
                 userValid = true;
                 userID = userIDText.getText();
                 user = MainGUIHandler.userHandler.getUser(userID);
 
-                userOrganisationID = user.getOrganisationID();
-
-//                userOrganisation = MainGUIHandler.organisationHandler.getOrganisation(userOrganisationID);
-//                userOrganisationName = userOrganisation.getOrgName();
-//                userType = user.getAccountType();
-//                userTypeComboBox.setSelectedItem(userType);
-//                userOrganisationComboBox.setSelectedItem(userOrganisationName);
-
                 invalid.setText("");
                 valid.setText(user.getUserID() + " selected");
 
-            } else {
+            } catch (Exception exception) {
                 user = null;
                 userValid = false;
                 valid.setText("");
-                invalid.setText("That userID is invalid");
+                invalid.setText(exception.getMessage());
             }
         }
 
@@ -173,31 +142,32 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
                     MainGUIHandler.userHandler.updateUserPassword(user);
                     newPasswordText.setText(newPassword);
                     invalid.setText("");
-                } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-                    noSuchAlgorithmException.printStackTrace();
+                } catch (Exception exception) {
+                    invalid.setText(exception.getMessage());
                 }
             } else {
-                invalid.setText("invalid user");
+                invalid.setText("Find a valid user");
             }
         }
 
         if (e.getSource() == modifyUserButton) {
             if (userValid) {
-
-//                userOrganisationName = userOrganisationComboBox.getSelectedItem().toString();
-//                userOrganisationID = MainGUIHandler.organisationHandler.getOrganisationID(userOrganisationName);
-//                user.setOrganisationID(userOrganisationID);
-//                user.setAccountType(userTypeComboBox.getSelectedItem().toString());
-
-                MainGUIHandler.userHandler.updateUser(user);
-
-                invalid.setText("");
-                valid.setText("user information updated");
+                try {
+                    MainGUIHandler.userHandler.updateUser(user);
+                    invalid.setText("");
+                    valid.setText(user.getUserID() + " information updated");
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             } else {
-                invalid.setText("invalid user");
+                invalid.setText("Find a valid user");
             }
 
-            MainGUIHandler.user = MainGUIHandler.userHandler.getUser(MainGUIHandler.user.getUserID());
+            try {
+                MainGUIHandler.user = MainGUIHandler.userHandler.getUser(MainGUIHandler.user.getUserID());
+            } catch (Exception exception) {
+                invalid.setText("Error");
+            }
         }
     }
 }

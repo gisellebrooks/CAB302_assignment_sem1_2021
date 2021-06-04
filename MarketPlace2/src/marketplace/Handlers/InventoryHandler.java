@@ -1,6 +1,7 @@
 package marketplace.Handlers;
 
 import marketplace.Client.Client;
+import marketplace.GUI.MainGUIHandler;
 import marketplace.Objects.Inventory;
 import marketplace.Objects.User;
 import marketplace.TableObject;
@@ -27,31 +28,25 @@ public class InventoryHandler {
         return result;
     }
 
-//    public List<String> getAllAssetNames() {
-//        List<String> results = null;
-//        List<Inventory> inventories = null;
-//        try {
-//            client.writeToServer("SELECT * FROM INVENTORY GROUP BY assetName;", TableObject.INVENTORY);
-//            inventories = (List) client.readListFromServer();
-//            for (Inventory inventory : inventories) {
-//                if (!results.contains(inventory.getAssetName())) {
-//                    results.add(inventory.getAssetName());
-//                }
-//            }
-//        } catch (IOException | ClassNotFoundException exception) {
-//            exception.printStackTrace();
-//        }
-//        return results;
-//    }
+    public void addAsset(String assetID, String assetName, String orgID, int quantity) throws Exception {
 
+        if (assetName == null || assetName.length() < 2) {
+            throw new Exception("Please enter an asset name");
+        }
 
-    public void addAsset(String assetID, String assetName, String orgID, int quantity) {
+        if (quantity < 1) {
+            throw new Exception("Please enter a quantity more than 0");
+        }
+
+        if (assetNameExists(assetName, orgID)) {
+            throw new Exception("Organisation already has that asset");
+        }
 
         try {
             client.writeToServer("INSERT INTO INVENTORY VALUES('" + assetID + "', '" + assetName + "', '" + orgID +
                     "', '" + quantity + "' );", TableObject.INVENTORY);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -61,8 +56,8 @@ public class InventoryHandler {
         try {
             client.writeToServer("SELECT * FROM INVENTORY;", TableObject.INVENTORY);
             inventory = (List<Inventory>) client.readObjectFromServer();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException exception) {
+            exception.printStackTrace();
         }
         return inventory;
     }
@@ -94,18 +89,36 @@ public class InventoryHandler {
         try {
             client.writeToServer("D INTO INVENTORY VALUES('" + assetID + "', '" + assetName + "', '" + orgID +
                     "', '" + quantity + "' );", TableObject.INVENTORY);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
-    public void updateOrganisationAssetQuantity(String assetID, String orgID, int quantity) {
-        try {
-            client.writeToServer("UPDATE INVENTORY SET quantity = '"+ quantity +"' WHERE assetID= '" + assetID
-                    + "' AND orgID = '" + orgID + "';", TableObject.INVENTORY);
-            client.readListFromServer();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+    public void updateOrganisationAssetQuantity(String assetID, String orgID, int quantity) throws Exception {
+
+        if (quantity < 0) {
+            throw new Exception("Please enter a valid number");
+        }
+
+        if (quantity < (MainGUIHandler.organisationHandler.getOrganisationSellingQuantity(orgID))) {
+            throw new Exception("Current sell orders don't allow that");
+        }
+
+        if (quantity == 0) {
+            try {
+                client.writeToServer("DELETE FROM INVENTORY WHERE assetID = '" + assetID + "' orgID = '" + orgID + "';", TableObject.INVENTORY);
+                client.readListFromServer();
+            } catch (IOException | ClassNotFoundException exception) {
+                exception.printStackTrace();
+            }
+        } else {
+            try {
+                client.writeToServer("UPDATE INVENTORY SET quantity = '"+ quantity +"' WHERE assetID= '" + assetID
+                        + "' AND orgID = '" + orgID + "';", TableObject.INVENTORY);
+                client.readListFromServer();
+            } catch (IOException | ClassNotFoundException exception) {
+                exception.printStackTrace();
+            }
         }
     }
 
@@ -113,8 +126,8 @@ public class InventoryHandler {
 
         try {
             client.writeToServer("UPDATE INVENTORY SET quantity= '"+ quantity +"' WHERE assetID= '"+ assetID +"';", TableObject.INVENTORY);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -136,19 +149,51 @@ public class InventoryHandler {
         return assetQuantity;
     }
 
-    public List<Inventory> getOrganisationsAssets(String organisationID){
+    public Inventory getOrganisationsAsset(String organisationID, String assetName) throws Exception {
         List<Inventory> inventory = null;
+
+        if (assetName == null) {
+            throw new Exception("Please enter an asset name");
+        }
+
+        try {
+            client.writeToServer("SELECT * FROM INVENTORY WHERE orgID= '"+ organisationID +
+                    "' AND assetName = '" + assetName + "';", TableObject.INVENTORY);
+            inventory = (List) client.readListFromServer();
+            return inventory.get(0);
+
+        } catch (IOException | ClassNotFoundException exception) {
+            exception.printStackTrace();
+        } catch (IndexOutOfBoundsException exception) {
+            throw new Exception("Asset couldn't be found");
+        }
+
+        if (inventory == null) {
+            throw new Exception("Asset couldn't be found");
+        }
+
+        return inventory.get(0);
+    }
+
+    public List<Inventory> getOrganisationsAssets(String organisationID) throws Exception {
+        List<Inventory> inventories = null;
+
+        if (organisationID == null) {
+            throw new Exception("Please enter an organisation ID");
+        }
 
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE orgID= '"+ organisationID +"';", TableObject.INVENTORY);
-            inventory = (List<Inventory>) client.readObjectFromServer();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            inventories = (List<Inventory>) client.readObjectFromServer();
+
+        } catch (IOException | ClassNotFoundException exception) {
+            exception.printStackTrace();
         }
-        return inventory;
+
+        return inventories;
     }
 
-    public boolean assetNameExists(String assetName, String orgID) {
+    public boolean assetNameExists(String assetName, String orgID) throws Exception {
         Inventory asset = null;
 
         try {
@@ -159,7 +204,7 @@ public class InventoryHandler {
                     return true;
                 }
             }
-        } catch (Exception exception) {
+        } catch (IOException | ClassNotFoundException exception) {
             exception.printStackTrace();
         }
         return false;

@@ -30,7 +30,7 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
     public SignUpUserGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 600, 600);
+        setBounds(0, 0, 1181, 718);
 
         namePromptLabel = new JLabel("Full Name:");
         namePromptLabel.setBounds(10, 20, 80, 25);
@@ -105,7 +105,7 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String userID;
-        String passwordHash = null;
+        String passwordHash;
         String name;
         String password;
         String accountType;
@@ -117,37 +117,26 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
         givenIDLabel.setText("");
         givenPasswordText.setText("");
 
-        password = new PasswordHandler().generatePassword();
         try {
+            organisationName = organisationComboBox.getSelectedItem().toString();
+            accountType = userTypeComboBox.getSelectedItem().toString();
+            userID = MainGUIHandler.userHandler.newUserID();
+            name = nameText.getText();
+
+            password = new PasswordHandler().generatePassword();
+            organisationID = MainGUIHandler.organisationHandler.getOrganisationID(organisationName);
             passwordHash = new PasswordHandler().IntoHash(password);
-        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
-            noSuchAlgorithmException.printStackTrace();
-        }
 
-        // get organisation ID with org name
-        organisationName = organisationComboBox.getSelectedItem().toString();
-        organisationID = MainGUIHandler.organisationHandler.getOrganisationID(organisationName);
+            MainGUIHandler.userHandler.addUser(userID, passwordHash, accountType, organisationID, name);
 
-        if (nameText.isValid() && nameText.getText().length() > 2 ) {
-            if (nameText.getText().length() < 250) {
+            nameText.setText("");
+            valid.setText("signup successful!");
+            invalid.setText("");
+            givenPasswordText.setText(password);
+            givenIDLabel.setText(userID);
 
-                name = nameText.getText();
-                accountType = userTypeComboBox.getSelectedItem().toString();
-                userID = MainGUIHandler.userHandler.newUserID();
-
-                MainGUIHandler.userHandler.addUser(userID, passwordHash, accountType, organisationID, name);
-
-                nameText.setText("");
-                valid.setText("signup successful!");
-                invalid.setText("");
-                givenPasswordText.setText(password);
-                givenIDLabel.setText(userID);
-
-            } else {
-                invalid.setText("The name is too long");
-            }
-        } else {
-            invalid.setText("The name is too short");
+        } catch (Exception exception) {
+            invalid.setText(exception.getMessage());
         }
     }
 }

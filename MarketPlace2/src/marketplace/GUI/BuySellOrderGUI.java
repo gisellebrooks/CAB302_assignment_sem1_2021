@@ -1,3 +1,15 @@
+/**
+ * TODO: wherever we go to place a buy/sell order we need to add the methods addNewBuyOrder and addNewSellOrder. These methods
+ *  each take userID, assetID, quantity of assets, and price per asset
+ *
+ * TODO: when calculating the order price, you need to add a check if the organisation has enough credits.
+ *  Use the method in organisationHandler called organisationHasCredits which returns either true or false. This method
+ *  takes orgID and total price
+ *
+ *
+ */
+
+
 package marketplace.GUI;
 
 import marketplace.GUI.Settings.SettingsNavigationAdminGUI;

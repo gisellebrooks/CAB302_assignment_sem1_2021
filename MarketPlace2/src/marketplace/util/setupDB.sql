@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS ACTIVE_SELL_ORDERS
                 PRIMARY KEY ( sellID )) ;
 
 CREATE TABLE IF NOT EXISTS BUY_ORDER_HISTORY 
-                (buyID VARCHAR(255), 
+                (oldBuyID VARCHAR(255),
+                buyID VARCHAR(255),
                 userID VARCHAR(255),
                 assetID VARCHAR(255),
                 quantity INTEGER,
@@ -40,7 +41,8 @@ CREATE TABLE IF NOT EXISTS BUY_ORDER_HISTORY
                 reconcileDate TIMESTAMP);
 
 CREATE TABLE IF NOT EXISTS SELL_ORDER_HISTORY
-                (sellID VARCHAR(255) NOT NULL, 
+                (oldSellID VARCHAR(255),
+                sellID VARCHAR(255),
                 userID VARCHAR(255),
                 assetID VARCHAR(255),
                 quantity INTEGER,

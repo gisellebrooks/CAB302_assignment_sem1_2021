@@ -35,7 +35,7 @@ public class SellOrderGUI extends JPanel implements ActionListener {
     public SellOrderGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 800, 600);
+        setBounds(0, 0, 1181, 718);
 
 
         Title = new JLabel("Sell " + MainGUIHandler.assetName);  /////// NEED LOGIC TO GET SELECTION FROM COMBO BOX FROM ORDERGUI AND ADD THE ASSET NAME HERE

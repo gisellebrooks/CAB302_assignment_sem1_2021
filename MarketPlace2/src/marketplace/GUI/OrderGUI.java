@@ -51,10 +51,10 @@ public class OrderGUI extends JPanel implements ActionListener {
         assetNamePromptLabel.setFont(fonts.inputLabel);
         add(assetNamePromptLabel);
 
-        List<String> assetNames = MainGUIHandler.orderHandler.getAllActiveAssetNames();
-//        assetNames.add("Doge Coin");
-//        assetNames.add("Bella Coin");
-        assetBox= new JComboBox(MainGUIHandler.orderHandler.getAllActiveAssetNames().toArray());
+        List<String> assetNames =  MainGUIHandler.orderHandler.getAllActiveAssetNames();
+        assetBox= new JComboBox(MainGUIHandler.orderHandler.getAllActiveAssetNames().toArray(new String[0]));
+        System.out.println(assetNames);
+
 //        assetNames = assetBox.getSelectedItem().toString();
 
 //        assetBox = new JComboBox(assetNames.toArray());

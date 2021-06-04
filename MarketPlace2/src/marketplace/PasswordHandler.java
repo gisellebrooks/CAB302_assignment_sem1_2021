@@ -101,8 +101,13 @@ public class PasswordHandler {
      * @throws NoSuchAlgorithmException if sha-256 algorithm can't be found
      */
     public static String IntoHash(String message) throws NoSuchAlgorithmException {
-        message += salt;
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        return ToHexidecimalString(md.digest(message.getBytes(StandardCharsets.UTF_8)));
+        try {
+            message += salt;
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            return ToHexidecimalString(md.digest(message.getBytes(StandardCharsets.UTF_8)));
+        } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+            throw new NoSuchAlgorithmException("Error with password management");
+        }
+
     }
 }
