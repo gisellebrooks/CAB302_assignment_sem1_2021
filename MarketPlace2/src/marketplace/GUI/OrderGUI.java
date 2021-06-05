@@ -2,6 +2,7 @@ package marketplace.GUI;
 
 import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
 import marketplace.GUI.Settings.SettingsNavigationUserGUI;
+import marketplace.Objects.Inventory;
 import marketplace.Objects.Order;
 import marketplace.Util.Fonts;
 
@@ -72,7 +73,7 @@ public class OrderGUI extends FullSizeJPanel implements ActionListener {
             if (assetBox.getSelectedItem() != null) {
                 MainGUI.assetName = assetBox.getSelectedItem().toString();
                 removeAll();
-                add(new BuySellOrderGUI( MainGUI.assetName, false));
+                add(new BuySellOrderGUI( MainGUI.assetName,null, false));
                 updateUI();
             } else {
                 invalid.setText("Select an asset");
@@ -85,10 +86,15 @@ public class OrderGUI extends FullSizeJPanel implements ActionListener {
         sellButton.addActionListener(e -> {
 
             if (assetBox.getSelectedItem() != null) {
-                MainGUI.assetName = assetBox.getSelectedItem().toString();
-                removeAll();
-                add(new BuySellOrderGUI( MainGUI.assetName, true));
-                updateUI();
+                try {
+                    MainGUI.assetName = assetBox.getSelectedItem().toString();
+                    removeAll();
+                    Inventory asset = MainGUI.inventoryHandler.getOrganisationsAsset(MainGUI.orgID, MainGUI.assetName);
+                    add(new BuySellOrderGUI(MainGUI.assetName, asset, true));
+                    updateUI();
+                } catch (Exception exception) {
+                    invalid.setText("You do not have any of this asset to sell");
+                }
             }
             else {
                 invalid.setText("Select an asset");

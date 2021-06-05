@@ -121,12 +121,12 @@ public class OrderHandler implements Serializable {
         return (orderType + IDNumber);
     }
 
-    public void addNewBuyOrder(String userID, int quantity, BigDecimal price){
+    public void addNewBuyOrder(String userID, String assetName, int quantity, BigDecimal price){
         Timestamp orderDate = new Timestamp(System.currentTimeMillis());
         String id = newOrderID("buy");
 
         try {
-            client.writeToServer("INSERT INTO ACTIVE_BUY_ORDERS VALUES('"+id+"', '"+userID+"', '"+ quantity +
+            client.writeToServer("INSERT INTO ACTIVE_BUY_ORDERS VALUES('"+id+"', '"+userID+"', '"+assetName+"', '"+ quantity +
                     "', '" + price +"', '" +orderDate+ "' );", TableObject.SELL_ORDER);
         } catch (IOException e) {
             e.printStackTrace();

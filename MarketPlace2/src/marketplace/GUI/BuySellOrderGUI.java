@@ -13,18 +13,13 @@ package marketplace.GUI;
 
 import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
 import marketplace.GUI.Settings.SettingsNavigationUserGUI;
-import marketplace.Handlers.UserHandler;
-import marketplace.Objects.Order;
-import marketplace.Objects.Organisation;
-import marketplace.Objects.SellOrder;
-import marketplace.Objects.User;
+import marketplace.Objects.*;
 import marketplace.Util.Fonts;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -52,6 +47,7 @@ import java.util.Collection;
 public class BuySellOrderGUI extends FullSizeJPanel {
     public JPanel mainPanel;
     public String assetName;
+    public Inventory inventory;
     public Fonts fonts;
     public List<Order> activeBuyOrders;
     public List<SellOrder> activeSellOrders;
@@ -65,12 +61,14 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         }
     }
 
-    public BuySellOrderGUI(String assetName, Boolean isSellOrder) {
+    public BuySellOrderGUI(String assetName, Inventory inventory, Boolean isSellOrder) {
         System.out.println("Buy history " + activeBuyOrders);
         List<String> timestamp = new ArrayList<String>();
 //        List<String> price = new ArrayList<String>();
 
         this.isSellOrder = isSellOrder;
+        inventory = inventory;
+        assetName = assetName;
         java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0");
         this.activeBuyOrders = MainGUI.orderHandler.getAllActiveBuyOrdersForAsset(assetName);
         this.activeSellOrders = MainGUI.orderHandler.getAllActiveSellOrdersForAsset(assetName);
@@ -197,7 +195,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             }
             invalidCreditLabel.setText("");
             invalidOrderLabel.setText("");
-            orderSummaryPanel.updateSummary(this.quantity, this.price);
+            orderSummaryPanel.updateSummary(this.quantity, new BigDecimal(this.price));
             System.out.println("this is the total" + price);
         }
 
@@ -290,11 +288,15 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         JLabel quantityLabel;
         JLabel totalLabel;
         boolean toggleOrdered;
+        int quantity;
+        BigDecimal price;
 
-        public void updateSummary(float quantity, float price) {
+        public void updateSummary(int quantity, BigDecimal price) {
+            quantity = quantity;
+            price = price;
             priceLabel.setText(String.format("at $%.2f per unit", price));
-            quantityLabel.setText(String.format("%.1f %s units", quantity, assetName));
-            totalLabel.setText(String.format("Total: $%.2f", price * quantity));
+            quantityLabel.setText(String.format("%d %s units", quantity, assetName));
+            totalLabel.setText(String.format("Total: $%.2f",  price.multiply(new BigDecimal(quantity))));
         }
 
         public void colourBox(boolean green) {
@@ -361,10 +363,25 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             add(placeOrderButton);
 
             placeOrderButton.addActionListener(e -> {
+                if (isSellOrder) {
+                    MainGUI.orderHandler.addNewSellOrder(
+                            MainGUI.user.getUserID(),
+                            inventory.getAssetID(),
+                            quantity,
+                            price
+                    );
+                } else {
+                    MainGUI.orderHandler.addNewBuyOrder(
+                            MainGUI.user.getUserID(),
+                            assetName,
+                            quantity,
+                            price
+                    );
+                }
                 toggleOrdered();
             });
 
-            updateSummary(0,0);
+            updateSummary(0, new BigDecimal(0));
         }
     }
     class DataPanel extends DefaultJPanel {
@@ -480,7 +497,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             @Override
             public void run(){
                 JFrame frame = new JFrame("Buy Orders");
-                BuySellOrderGUI gui = new BuySellOrderGUI("", true);
+                BuySellOrderGUI gui = new BuySellOrderGUI("",null, true);
                 frame.setDefaultLookAndFeelDecorated(true);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.add(gui.getMainPanel());
