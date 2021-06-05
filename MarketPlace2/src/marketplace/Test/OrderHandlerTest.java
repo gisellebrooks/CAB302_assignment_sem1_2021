@@ -37,6 +37,12 @@ public class OrderHandlerTest {
         props = ServerHandler.loadServerConfig();
         Thread thread = new ServerHandler();
         thread.start();
+        // We sleep this thread so that the server handler has time to finish setting up before we continue
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @BeforeEach
@@ -77,7 +83,7 @@ public class OrderHandlerTest {
         expectedFirstBuyOrder.add("RAM");
         expectedFirstBuyOrder.add(15);
         expectedFirstBuyOrder.add("10.00");
-        expectedFirstBuyOrder.add("2021-03-24 16:34:26.0");
+        expectedFirstBuyOrder.add("2021-03-24 16:34:27.0");
 
         // Assert both lists are equal
         assertEquals(expectedFirstBuyOrder, actualFirstBuyOrder);

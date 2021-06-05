@@ -146,17 +146,14 @@ public class ServerHandler extends Thread {
         }
     }
 
-    public static void main(String[] args) throws SQLException {
-        pooledDataSource = MariaDBDataSource.getInstance();
-        initDb(pooledDataSource);
-        //loadMockData(pooledDataSource);
-        Properties props = loadServerConfig();
-        ServerHandler server = new ServerHandler();
-        server.run();
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new ReconcileOrders(pooledDataSource), 0, 10000);
-
-
-    }
-
+//      public static void main(String[] args) throws SQLException {
+//          pooledDataSource = MariaDBDataSource.getInstance();
+//          initDb(pooledDataSource);
+// //         loadMockData(pooledDataSource);
+//          Properties props = loadServerConfig();
+//          Timer timer = new Timer();
+//          timer.scheduleAtFixedRate(new ReconcileOrders(pooledDataSource), 0, 10000);
+//          ServerHandler server = new ServerHandler();
+//          server.run();
+//      }
 }

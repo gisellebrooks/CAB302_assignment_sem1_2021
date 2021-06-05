@@ -84,7 +84,7 @@ public class MainGUI extends JFrame implements Runnable {
         panel.setLayout(null);
         panel.setBounds(0, 0, FullSizeJPanel.fullWidth, FullSizeJPanel.fullHeight);
 
-//        panel.add(new LoginGUI());
+        panel.add(new LoginGUI());
 //        panel.add(new SettingsNavigationAdminGUI());
 //        panel.add(new SettingsNavigationUserGUI());
 
@@ -94,7 +94,7 @@ public class MainGUI extends JFrame implements Runnable {
 //        panel.add(new OrderGUI());
         System.out.println(user);
 
-        panel.add(new OrderGUI());
+//        panel.add(new OrderGUI());
 
 //        panel.add(new SignUpUserGUI());
 //        panel.add(new SignUpOrganisationGUI());

@@ -47,38 +47,38 @@ VALUES ('asset6', 'DOGE', 'org4', 30);
 
 
 INSERT INTO ACTIVE_BUY_ORDERS 
-VALUES ('buy1', 'user1', 'RAM', 15, 10, '2021-03-24 16:34:26.66');
+VALUES ('buy1', 'user1', 'RAM', 15, 10, '2021-03-24 16:34:27.0');
 
 INSERT INTO ACTIVE_BUY_ORDERS 
-VALUES ('buy2', 'user2', 'CPU', 15, 10, '2021-03-24 16:34:26.66');
+VALUES ('buy2', 'user2', 'CPU', 15, 10, '2021-03-24 16:34:26.0');
 
 INSERT INTO ACTIVE_BUY_ORDERS 
-VALUES ('buy3', 'user3', 'CPU', 5, 20, '2021-03-24 16:34:26.66');
+VALUES ('buy3', 'user3', 'CPU', 5, 20, '2021-03-24 16:34:26.0');
 
 INSERT INTO ACTIVE_BUY_ORDERS 
-VALUES ('buy4', 'user4', 'ARDUINOS', 30, 15, '2021-03-24 16:34:26.66');
+VALUES ('buy4', 'user4', 'ARDUINOS', 30, 15, '2021-03-24 16:34:26.0');
 
 INSERT INTO ACTIVE_BUY_ORDERS
-VALUES ('buy5', 'user1', 'DOGE', 10, 15, '2021-03-24 16:34:26.66');
+VALUES ('buy5', 'user1', 'DOGE', 10, 15, '2021-03-24 16:34:26.0');
 
 INSERT INTO ACTIVE_BUY_ORDERS
-VALUES ('buy6', 'user4', 'RAM', 30, 50, '2021-03-24 16:34:26.66');
+VALUES ('buy6', 'user4', 'RAM', 30, 50, '2021-03-24 16:34:26.0');
 
 
 INSERT INTO ACTIVE_SELL_ORDERS 
-VALUES ('sell1', 'user3', 'asset3', 'ARDUINOS', 15, 10, '2021-03-24 16:34:26.66');
+VALUES ('sell1', 'user3', 'asset3', 'ARDUINOS', 15, 10, '2021-03-24 16:34:26.0');
 
 INSERT INTO ACTIVE_SELL_ORDERS 
-VALUES ('sell2', 'user4', 'asset4', 'CPU', 15, 10, '2021-03-24 16:34:27.66');
+VALUES ('sell2', 'user4', 'asset4', 'CPU', 15, 10, '2021-03-24 16:34:27.0');
 
 INSERT INTO ACTIVE_SELL_ORDERS 
-VALUES ('sell3', 'user1', 'asset1', 'CPU', 10, 12, '2021-03-24 16:34:28.66');
+VALUES ('sell3', 'user1', 'asset1', 'CPU', 10, 12, '2021-03-24 16:34:28.0');
 
 INSERT INTO ACTIVE_SELL_ORDERS
-VALUES ('sell4', 'user1', 'asset5', 'RAM', 10, 17, '2021-03-24 16:34:29.66');
+VALUES ('sell4', 'user1', 'asset5', 'RAM', 10, 17, '2021-03-24 16:34:29.0');
 
 INSERT INTO ACTIVE_SELL_ORDERS
-VALUES ('sell5', 'user4', 'asset6', 'DOGE', 10, 10, '2021-03-24 16:34:30.66');
+VALUES ('sell5', 'user4', 'asset6', 'DOGE', 10, 10, '2021-03-24 16:34:30.0');
 
 
 
