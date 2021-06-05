@@ -11,11 +11,19 @@
 
 package marketplace.GUI;
 
+import com.sun.tools.javac.Main;
 import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
 import marketplace.GUI.Settings.SettingsNavigationUserGUI;
 import marketplace.Objects.*;
 import marketplace.Util.Fonts;
-
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.SeriesException;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.time.Second;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.chart.ChartPanel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -403,21 +411,51 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             container.add(buyHistoryLabel);
 
             add(scroll);
-            graph = new GraphView();
-
-            container.add(graph);
             // MOCKED DATA, THIS NEEDS TO READ ALL RECENT PRICES FOR THIS "this.assetName" from the DB
-            Integer[] data = {1,4,7,3,4,5,6,7,8,3,4,6};
-            Collection<Integer> intList = new ArrayList<Integer>(data.length);
-            for (int i : data)
-            {
-                intList.add(i);
-            }
-            graph.setValues(intList);
+//            Integer[] data = {1,4,7,3,4,5,6,7,8,3,4,6};
+//            Collection<Integer> intList = new ArrayList<Integer>(data.length);
+//            for (int i : data)
+//            {
+//                intList.add(i);
+//            }
+//            graph.setValues(intList);
+            final XYDataset dataset = createDataset( );
+            final JFreeChart chart = createChart( dataset );
+            final ChartPanel chartPanel = new ChartPanel( chart );
+            chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 370 ) );
+            chartPanel.setMouseZoomable( true , false );
+            container.add( chartPanel );
             container.add(new History(false));
             container.add(new History(true));
 
 //            add(new BuyOrderTable());
+        }
+
+
+        private XYDataset createDataset( ) {
+            final TimeSeries series = new TimeSeries( "Price History" );
+            List<SellOrder> orderHistory = MainGUI.orderHandler.getAllSellOrderHistoryForAsset(assetName);
+
+            for (SellOrder order: orderHistory) {
+                try {
+                    series.addOrUpdate(new Second(order.getOrderDate()), order.getPrice().doubleValue() );
+                } catch ( SeriesException e ) {
+                    System.err.println("Error adding to series");
+                }
+            }
+
+            return new TimeSeriesCollection(series);
+        }
+
+        private JFreeChart createChart(final XYDataset dataset ) {
+            return ChartFactory.createTimeSeriesChart(
+                    "Price History",
+                    "Date Time",
+                    "Price",
+                    dataset,
+                    false,
+                    false,
+                    false);
         }
     }
 
