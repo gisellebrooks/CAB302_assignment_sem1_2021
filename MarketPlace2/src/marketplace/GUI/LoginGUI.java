@@ -68,11 +68,11 @@ public class LoginGUI extends FullSizeJPanel implements ActionListener {
         try {
             MainGUI.userHandler.loginUser(userID, password);
 
-            user = MainGUIHandler.userHandler.searchUser(userID);
-            MainGUIHandler.userType = user.getAccountType();
-            MainGUIHandler.orgID = user.getOrganisationID();
-            MainGUIHandler.setUser(user);
-            System.out.println(MainGUIHandler.user.getUserID());
+            user = MainGUI.userHandler.searchUser(userID);
+            MainGUI.userType = user.getAccountType();
+            MainGUI.orgID = user.getOrganisationID();
+            MainGUI.setUser(user);
+            System.out.println(MainGUI.user.getUserID());
             removeAll();
             add(new OrderGUI());
             updateUI();

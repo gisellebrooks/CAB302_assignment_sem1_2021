@@ -72,9 +72,9 @@ public class BuySellOrderGUI extends FullSizeJPanel {
 
         this.isSellOrder = isSellOrder;
         java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0");
-        this.activeBuyOrders = MainGUIHandler.orderHandler.getAllActiveBuyOrdersForAsset(assetName);
-        this.activeSellOrders = MainGUIHandler.orderHandler.getAllActiveSellOrdersForAsset(assetName);
-        this.activeSellOrders = MainGUIHandler.orderHandler.getAllActiveSellOrdersForAsset(assetName);
+        this.activeBuyOrders = MainGUI.orderHandler.getAllActiveBuyOrdersForAsset(assetName);
+        this.activeSellOrders = MainGUI.orderHandler.getAllActiveSellOrdersForAsset(assetName);
+        this.activeSellOrders = MainGUI.orderHandler.getAllActiveSellOrdersForAsset(assetName);
 
         System.out.println("Buy history " + activeBuyOrders);
 
@@ -185,8 +185,8 @@ public class BuySellOrderGUI extends FullSizeJPanel {
                         invalidOrderLabel.setText("Invalid Price");
                         return;
                     }
-                    if (MainGUIHandler.organisationHandler.organisationHasCredits(MainGUIHandler.orgID, BigDecimal.valueOf(price))){
-                        System.out.println("org id is " + MainGUIHandler.orgID + " price is " +price);
+                    if (MainGUI.organisationHandler.organisationHasCredits(MainGUI.orgID, BigDecimal.valueOf(price))){
+                        System.out.println("org id is " + MainGUI.orgID + " price is " +price);
                     }else {
                         System.out.println("false");
                         invalidCreditLabel.setText("You don't have enough credits!");
@@ -432,8 +432,8 @@ public class BuySellOrderGUI extends FullSizeJPanel {
 
             String organisationUnit;
             try {
-                User user = MainGUIHandler.userHandler.searchUser(order.getUserID());
-                Organisation organisation = MainGUIHandler.organisationHandler.getOrganisation(user.getOrganisationID());
+                User user = MainGUI.userHandler.searchUser(order.getUserID());
+                Organisation organisation = MainGUI.organisationHandler.getOrganisation(user.getOrganisationID());
                 organisationUnit = organisation.getOrgName();
             } catch (Exception exception) {
                 exception.printStackTrace();

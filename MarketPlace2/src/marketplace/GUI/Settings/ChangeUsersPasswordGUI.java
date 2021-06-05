@@ -2,7 +2,6 @@ package marketplace.GUI.Settings;
 
 import marketplace.GUI.MainGUI;
 import marketplace.GUI.FullSizeJPanel;
-import marketplace.GUI.MainGUIHandler;
 import marketplace.Objects.User;
 import marketplace.Handlers.PasswordHandler;
 

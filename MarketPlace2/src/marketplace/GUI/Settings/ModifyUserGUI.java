@@ -2,7 +2,6 @@ package marketplace.GUI.Settings;
 
 import marketplace.GUI.MainGUI;
 import marketplace.GUI.FullSizeJPanel;
-import marketplace.GUI.MainGUIHandler;
 import marketplace.Objects.User;
 import marketplace.Handlers.PasswordHandler;
 
@@ -121,7 +120,7 @@ public class ModifyUserGUI extends FullSizeJPanel implements ActionListener {
             try {
                 userValid = true;
                 userID = userIDText.getText();
-                user = MainGUIHandler.userHandler.searchUser(userID);
+                user = MainGUI.userHandler.searchUser(userID);
 
                 invalid.setText("");
                 valid.setText(user.getUserID() + " selected");
@@ -164,7 +163,7 @@ public class ModifyUserGUI extends FullSizeJPanel implements ActionListener {
             }
 
             try {
-                MainGUIHandler.user = MainGUIHandler.userHandler.searchUser(MainGUIHandler.user.getUserID());
+                MainGUI.user = MainGUI.userHandler.searchUser(MainGUI.user.getUserID());
             } catch (Exception exception) {
                 invalid.setText("Error");
             }

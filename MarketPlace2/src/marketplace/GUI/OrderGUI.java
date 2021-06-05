@@ -50,8 +50,8 @@ public class OrderGUI extends FullSizeJPanel implements ActionListener {
         assetNamePromptLabel.setFont(fonts.inputLabel);
         add(assetNamePromptLabel);
 
-        List<String> assetNames =  MainGUIHandler.orderHandler.getAllActiveAssetNames();
-        assetBox= new JComboBox(MainGUIHandler.orderHandler.getAllActiveAssetNames().toArray(new String[0]));
+        List<String> assetNames =  MainGUI.orderHandler.getAllActiveAssetNames();
+        assetBox= new JComboBox(MainGUI.orderHandler.getAllActiveAssetNames().toArray(new String[0]));
         System.out.println(assetNames);
 
 //        assetNames = assetBox.getSelectedItem().toString();

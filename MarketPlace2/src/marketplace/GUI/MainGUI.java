@@ -37,7 +37,7 @@ public class MainGUI extends JFrame implements Runnable {
      * This method runs when the MainGUI is initialised and it starts the gui and program for the client.
      */
     public static void setUser(User user) {
-        MainGUIHandler.user = user;
+        MainGUI.user = user;
     }
 
     public static void main(String[] args){

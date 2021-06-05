@@ -249,7 +249,7 @@ public class UserHandler {
      */
     public Boolean loginUser(String userID, String passwordString) throws Exception {
 
-        User user = MainGUIHandler.userHandler.searchUser(userID);
+        User user = MainGUI.userHandler.searchUser(userID);
         String passwordHash = PasswordHandler.IntoHash(passwordString);
 
         // check if userID exists
