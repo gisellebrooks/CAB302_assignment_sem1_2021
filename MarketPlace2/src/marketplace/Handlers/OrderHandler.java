@@ -79,6 +79,31 @@ public class OrderHandler implements Serializable {
         return result;
     }
 
+    public List<SellOrder> getAllSellOrderHistory(){
+        List<SellOrder> result = null;
+        try {
+            client.writeToServer("SELECT * FROM SELL_ORDER_HISTORY;", TableObject.SELL_HISTORY);
+            result =  client.readListFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return result;
+    }
+
+    public List<SellOrder> getAllSellOrderHistoryForAsset(String assetName){
+        List<SellOrder> allSellOrderHistory;
+        List<SellOrder> allSellOrderHistoryForAsset = new ArrayList<>();
+        allSellOrderHistory = getAllSellOrderHistory();
+
+        for (SellOrder sellOrder: allSellOrderHistory){
+            String name = sellOrder.getAssetName();
+            if(name != null && name.equals(assetName)){
+                allSellOrderHistoryForAsset.add(sellOrder);
+            }
+        }
+        return allSellOrderHistoryForAsset;
+    }
+
 
     public String newOrderID(String orderType) {
         Object orderID = null;
