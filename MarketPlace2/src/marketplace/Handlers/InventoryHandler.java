@@ -25,7 +25,7 @@ public class InventoryHandler {
         Inventory result = null;
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE assetID = '" + assetID + "';", TableObject.INVENTORY);
-            result = (Inventory) client.readObjectFromServer();
+            result = (Inventory) client.readListFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -59,7 +59,7 @@ public class InventoryHandler {
 
         try {
             client.writeToServer("SELECT * FROM INVENTORY;", TableObject.INVENTORY);
-            inventory = (List<Inventory>) client.readObjectFromServer();
+            inventory = (List<Inventory>) client.readListFromServer();
         } catch (IOException | ClassNotFoundException exception) {
             exception.printStackTrace();
         }
@@ -140,7 +140,7 @@ public class InventoryHandler {
         int assetQuantity = 0;
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE assetID= '"+ assetID +"';", TableObject.INVENTORY);
-            inventory = (List<Inventory>) client.readObjectFromServer();
+            inventory = (List<Inventory>) client.readListFromServer();
 
             for (Inventory inv: inventory){
                 assetQuantity = inv.getQuantity();
@@ -188,7 +188,7 @@ public class InventoryHandler {
 
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE orgID= '"+ organisationID +"';", TableObject.INVENTORY);
-            inventories = (List<Inventory>) client.readObjectFromServer();
+            inventories = (List<Inventory>) client.readListFromServer();
 
         } catch (IOException | ClassNotFoundException exception) {
             exception.printStackTrace();
@@ -218,7 +218,7 @@ public class InventoryHandler {
         Inventory asset = null;
         try {
             client.writeToServer("SELECT * FROM INVENTORY WHERE assetID = '" + assetID + "';", TableObject.INVENTORY);
-            asset = (Inventory) client.readObjectFromServer();
+            asset = (Inventory) client.readListFromServer();
         } catch (Exception exception) {
             exception.printStackTrace();
         }

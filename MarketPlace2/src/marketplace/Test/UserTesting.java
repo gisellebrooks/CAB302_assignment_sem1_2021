@@ -23,7 +23,7 @@ public class UserTesting {
         Properties props = ServerHandler.loadServerConfig();
 
 
-        ServerHandler server = new ServerHandler(props, newInstance);
+        ServerHandler server = new ServerHandler();
 //        MainGUIHandler mainGUIHandler = new MainGUIHandler();
 
 //        System.out.println("good");

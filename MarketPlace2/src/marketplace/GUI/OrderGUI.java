@@ -58,6 +58,7 @@ public class OrderGUI extends FullSizeJPanel implements ActionListener {
 //        assetNames = assetBox.getSelectedItem().toString();
 
 //        assetBox = new JComboBox(assetNames.toArray());
+
         assetBox.setBounds(510, 100, 160, 25);
         add(assetBox);
         assetBox.addActionListener(this::actionPerformed);

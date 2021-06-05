@@ -5,6 +5,7 @@ import marketplace.Handlers.InventoryHandler;
 import marketplace.Handlers.OrderHandler;
 import marketplace.Handlers.OrganisationHandler;
 import marketplace.Handlers.UserHandler;
+import marketplace.Objects.Order;
 import marketplace.Objects.User;
 
 import javax.swing.*;
@@ -49,13 +50,17 @@ public class MainGUI extends JFrame implements Runnable {
             client.connect();
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(0);
+
         }
+
 
         userHandler = new UserHandler(client);
         orderHandler = new OrderHandler(client);
         organisationHandler = new OrganisationHandler(client);
         inventoryHandler = new InventoryHandler(client);
 
+        System.out.println("hereee");
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new MainGUI());
     }
@@ -67,6 +72,9 @@ public class MainGUI extends JFrame implements Runnable {
 
         this.setVisible(true);
 
+        for (String name: orderHandler.getAllActiveAssetNames() ){
+            System.out.println(name);
+        }
         setTitle("Market");
         setSize(FullSizeJPanel.fullWidth, FullSizeJPanel.fullHeight);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,7 +84,7 @@ public class MainGUI extends JFrame implements Runnable {
         panel.setLayout(null);
         panel.setBounds(0, 0, FullSizeJPanel.fullWidth, FullSizeJPanel.fullHeight);
 
-        panel.add(new LoginGUI());
+//        panel.add(new LoginGUI());
 //        panel.add(new SettingsNavigationAdminGUI());
 //        panel.add(new SettingsNavigationUserGUI());
 
@@ -85,6 +93,9 @@ public class MainGUI extends JFrame implements Runnable {
 //        panel.add(new BuyOrderGUI());
 //        panel.add(new OrderGUI());
         System.out.println(user);
+
+        panel.add(new OrderGUI());
+
 //        panel.add(new SignUpUserGUI());
 //        panel.add(new SignUpOrganisationGUI());
 //        panel.add(new ModifyUserGUI());
