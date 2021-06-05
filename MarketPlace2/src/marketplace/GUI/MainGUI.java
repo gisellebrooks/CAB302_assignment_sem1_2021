@@ -1,7 +1,6 @@
 package marketplace.GUI;
 
 import marketplace.Client.Client;
-import marketplace.GUI.Settings.*;
 import marketplace.Handlers.InventoryHandler;
 import marketplace.Handlers.OrderHandler;
 import marketplace.Handlers.OrganisationHandler;
@@ -10,12 +9,17 @@ import marketplace.Objects.User;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
-
-public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
+/**
+ * The MainGUI file is the initialiser for the gui for clients. It starts the GUI at the login page. Sets handlers
+ * and starts the main frame that all other gui panels are held in. This is the window that holds the program's
+ * GUI.
+ *
+ * @see marketplace.GUI for GUI files
+ *
+ */
+public class MainGUI extends JFrame implements Runnable {
 
     public static Client client;
     public static UserHandler userHandler;
@@ -27,14 +31,16 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
     public static User user;
     public static String assetName;
 
-
+    /**
+     * This method runs when the MainGUI is initialised and it starts the gui and program for the client.
+     */
     public static void main(String[] args){
 
         client = new Client();
 
+        // try to connect the client to the server
         try {
             client.connect();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,10 +51,12 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
         inventoryHandler = new InventoryHandler(client);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
-        SwingUtilities.invokeLater(new MainGUIHandler());
+        SwingUtilities.invokeLater(new MainGUI());
     }
 
-    @Override
+    /**
+     * Lays out the frame for the GUI to sit in and starts the LoginGUI for clients who start the program.
+     */
     public void run() {
 
         this.setVisible(true);
@@ -62,25 +70,8 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
         panel.setLayout(null);
         panel.setPreferredSize(new Dimension(1181, 718));
         panel.setBounds(0, 0, 1181, 718);
-
         panel.add(new LoginGUI());
-//        panel.add(new SettingsNavigationAdminGUI());
-//        panel.add(new SettingsNavigationUserGUI());
-
-//        panel.add(new BuyOrderGUI());
-//        panel.add(new OrderGUI());
-
-//        panel.add(new SignUpUserGUI());
-//        panel.add(new SignUpOrganisationGUI());
-//        panel.add(new ModifyUserGUI());
-//        panel.add(new ModifyOrganisationGUI());
-//        panel.add(new ChangeUsersPasswordGUI());
 
         add(panel);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }

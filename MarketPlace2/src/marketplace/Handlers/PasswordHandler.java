@@ -1,4 +1,4 @@
-package marketplace;
+package marketplace.Handlers;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
@@ -10,9 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Provides hashing functionality, creates strong passwords, checks strength of passwords.
+ * Provides all functionality for dealing with passwords.
  *
- * @param
- * @return
+ * @author Jack Gate-Leven
  */
 public class PasswordHandler {
 
@@ -23,9 +24,10 @@ public class PasswordHandler {
 
     /**
      * Generates a strong random password with 13-19 characters, picked from digits, letters and characters
-     * @return newPassword , the randomly generated password
+     *
+     * @return newPassword , a randomly generated strong password
      */
-    public String generatePassword() {
+    public String generatePassword(){
 
         Pattern pattern = Pattern.compile(passwordRegex);
         SecureRandom random = new SecureRandom();
@@ -49,36 +51,32 @@ public class PasswordHandler {
 
     /**
      * Checks if a password is strong against previously declared standards
+     *
      * @param password , the password to be checked
-     * @return boolean of whether the input was a storng password or not
+     * @return boolean of whether the input was a strong password or not
      */
-    public static boolean IsPasswordStrong(String password) {
+    public static boolean IsPasswordStrong(String password){
 
-        // is password null
-        if (password == null || password == "") {
-            return false; // throw error for new password being empty
+        if (password == null || password.equals("")) {
+            return false;
         }
 
-        // check password is strong
+        // check password is strong through regular expression
         Pattern pattern = Pattern.compile(passwordRegex);
         Matcher match = pattern.matcher(password);
 
-        if (match.matches()){
-            return true;
-        } else {
-            return false;
-        }
+        // if password is strong
+        return match.matches();
     }
 
-
-
     /**
+     * Helper method for IntoHash, turns byte array into hexadecimal
+     *
      * REFERENCE: geeks for geeks article on "SHA-256 Hash in Java"
      * @param hash sha-256 encryption of input message, byte array
      * @return hexString hexadecimal string of SHA-256 hash
      */
-    public static String ToHexidecimalString(byte[] hash)
-    {
+    public static String ToHexidecimalString(byte[] hash){
         // Convert byte array into sign number representation
         BigInteger number = new BigInteger(1, hash);
 
@@ -96,6 +94,7 @@ public class PasswordHandler {
 
     /**
      * adds a salt to the input message and gets it's SHA-256 hash
+     *
      * @param message string that is to be encrypted with SHA-256
      * @return SHA256 hash of the message in a string
      * @throws NoSuchAlgorithmException if sha-256 algorithm can't be found
@@ -108,6 +107,5 @@ public class PasswordHandler {
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
             throw new NoSuchAlgorithmException("Error with password management");
         }
-
     }
 }

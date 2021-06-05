@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static marketplace.GUI.MainGUIHandler.orderHandler;
+import static marketplace.GUI.MainGUI.orderHandler;
 
 
 public class SellOrderGUI extends JPanel implements ActionListener {
@@ -38,12 +38,12 @@ public class SellOrderGUI extends JPanel implements ActionListener {
         setBounds(0, 0, 1181, 718);
 
 
-        Title = new JLabel("Sell " + MainGUIHandler.assetName);  /////// NEED LOGIC TO GET SELECTION FROM COMBO BOX FROM ORDERGUI AND ADD THE ASSET NAME HERE
+        Title = new JLabel("Sell " + MainGUI.assetName);  /////// NEED LOGIC TO GET SELECTION FROM COMBO BOX FROM ORDERGUI AND ADD THE ASSET NAME HERE
         Title.setBounds(300, 20, 200, 25);
         Title.setFont (Title.getFont ().deriveFont (20.0f));
         add(Title);
 
-        graphTitle = new JLabel("Price History for " + MainGUIHandler.assetName);
+        graphTitle = new JLabel("Price History for " + MainGUI.assetName);
         graphTitle.setBounds(30, 120, 300, 25);
         add(graphTitle);
 
@@ -87,7 +87,7 @@ public class SellOrderGUI extends JPanel implements ActionListener {
         toSettingsButton.setBounds(350, 50, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            if (MainGUIHandler.userType.equals("ADMIN")) {
+            if (MainGUI.userType.equals("ADMIN")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());

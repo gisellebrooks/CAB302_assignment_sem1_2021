@@ -1,6 +1,6 @@
 package marketplace.GUI.Settings;
 
-import marketplace.GUI.MainGUIHandler;
+import marketplace.GUI.MainGUI;
 import marketplace.Objects.Inventory;
 import marketplace.Objects.Organisation;
 import javax.swing.*;
@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.util.List;
 
 public class ModifyOrganisationGUI extends JPanel implements ActionListener {
 
@@ -129,7 +128,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
         toSettingsButton.setBounds(460, 40, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            if (MainGUIHandler.userType.equals("ADMIN")) {
+            if (MainGUI.userType.equals("ADMIN")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());
@@ -170,7 +169,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
         if (e.getSource() == findOrganisationButton) {
             try {
                 organisationID = organisationIDText.getText();
-                organisation = MainGUIHandler.organisationHandler.getOrganisation(organisationID);
+                organisation = MainGUI.organisationHandler.getOrganisation(organisationID);
                 foundOrganisation = true;
                 valid.setText("Organisation found");
                 nameText.setText(organisation.getOrgName());
@@ -189,7 +188,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
             if (foundOrganisation) {
                 try {
                     credits = new BigDecimal(creditsText.getText());
-                    MainGUIHandler.organisationHandler.updateOrganisationCredits(organisationID, credits);
+                    MainGUI.organisationHandler.updateOrganisationCredits(organisationID, credits);
                     valid.setText("credits changed");
                     invalid.setText("");
                 } catch (NumberFormatException NumberFormatError) {
@@ -207,7 +206,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
                 try {
                     assetQuantityText.setText("");
                     selectedAsset = assetNameText.getText();
-                    currentAsset = MainGUIHandler.inventoryHandler.getOrganisationsAsset(organisationID, selectedAsset);
+                    currentAsset = MainGUI.inventoryHandler.getOrganisationsAsset(organisationID, selectedAsset);
                     foundAsset = true;
                     assetQuantityText.setText(String.valueOf(currentAsset.getQuantity()));
 
@@ -224,7 +223,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
             if (foundOrganisation && foundAsset) {
                 try {
                     newQuantityForAsset = Integer.parseInt(assetQuantityText.getText());
-                    MainGUIHandler.inventoryHandler.updateOrganisationAssetQuantity(currentAsset.getAssetID(), organisationID, newQuantityForAsset);
+                    MainGUI.inventoryHandler.updateOrganisationAssetQuantity(currentAsset.getAssetID(), organisationID, newQuantityForAsset);
 
                     valid.setText("asset quantity changed");
                     invalid.setText("");
@@ -244,7 +243,7 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
                 try {
                     newAssetName = newAssetNameText.getText();
                     newAssetQuantity = Integer.parseInt(newAssetQuantityText.getText());
-                    MainGUIHandler.inventoryHandler.addAsset(MainGUIHandler.inventoryHandler.newAssetID(), newAssetName, organisationID, newAssetQuantity);
+                    MainGUI.inventoryHandler.addAsset(MainGUI.inventoryHandler.newAssetID(), newAssetName, organisationID, newAssetQuantity);
                     valid.setText("asset added");
                     invalid.setText("");
                     newAssetNameText.setText("");

@@ -11,6 +11,13 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handler class for Order object type. Handles methods that main methods for interacting with Order type.
+ * Interacts with ACTIVE_BUY_ORDERS, ACTIVE_SELL_ORDERS tables in database.
+ *
+ * @see Order
+ *
+ */
 public class OrderHandler implements Serializable {
     private final Client client;
     private InventoryHandler inventoryHandler;

@@ -39,9 +39,6 @@ public class ServerTest {
         assertEquals("Socket[addr=/172.19.6.157,port=64477,localport=6000]", server.newClientConnection());
     }
 
-
-
-
     @Test
     public void closeDataBaseConnection(){
         assertTrue(newInstance.Close());

@@ -1,14 +1,13 @@
 package marketplace.GUI.Settings;
 
-import marketplace.GUI.MainGUIHandler;
+import marketplace.GUI.MainGUI;
 import marketplace.Objects.User;
-import marketplace.PasswordHandler;
+import marketplace.Handlers.PasswordHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.NoSuchAlgorithmException;
 
 
 public class ChangeUsersPasswordGUI extends JPanel implements ActionListener {
@@ -76,7 +75,7 @@ public class ChangeUsersPasswordGUI extends JPanel implements ActionListener {
         toSettingsButton.addActionListener(e -> {
             removeAll();
 
-            if (MainGUIHandler.user.getAccountType().equals("ADMIN")) {
+            if (MainGUI.user.getAccountType().equals("ADMIN")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());
@@ -95,7 +94,7 @@ public class ChangeUsersPasswordGUI extends JPanel implements ActionListener {
 
         PasswordHandler passwordHandler = new PasswordHandler();
 
-        user = MainGUIHandler.user;
+        user = MainGUI.user;
 
         oldPassword = oldPasswordText.getText();
         newPassword = newPasswordText.getText();
@@ -104,8 +103,8 @@ public class ChangeUsersPasswordGUI extends JPanel implements ActionListener {
         try {
             user.setPasswordHash(passwordHandler.IntoHash(newPassword));
 
-            MainGUIHandler.userHandler.updateUserPassword(
-                    MainGUIHandler.user, oldPassword, newPassword, confirmedPassword);
+            MainGUI.userHandler.updateUserPassword(
+                    MainGUI.user, oldPassword, newPassword, confirmedPassword);
 
             valid.setText("Password has been changed");
             invalid.setText("");

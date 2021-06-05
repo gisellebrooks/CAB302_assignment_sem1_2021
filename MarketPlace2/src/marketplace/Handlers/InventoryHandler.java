@@ -1,15 +1,19 @@
 package marketplace.Handlers;
 
 import marketplace.Client.Client;
-import marketplace.GUI.MainGUIHandler;
+import marketplace.GUI.MainGUI;
 import marketplace.Objects.Inventory;
-import marketplace.Objects.User;
 import marketplace.TableObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handler class for Inventory object type. Handles methods that main methods for interacting with Inventory type.
+ * Interacts with INVENTORY table in database.
+ *
+ * @see Inventory
+ *
+ */
 public class InventoryHandler {
     private final Client client;
 
@@ -100,7 +104,7 @@ public class InventoryHandler {
             throw new Exception("Please enter a valid number");
         }
 
-        if (quantity < (MainGUIHandler.organisationHandler.getOrganisationSellingQuantity(orgID))) {
+        if (quantity < (MainGUI.organisationHandler.getOrganisationSellingQuantity(orgID, assetID))) {
             throw new Exception("Current sell orders don't allow that");
         }
 

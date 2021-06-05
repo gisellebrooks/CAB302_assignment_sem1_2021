@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,14 +29,14 @@ public class OrderGUI extends JPanel implements ActionListener {
         setLayout(null);
         setBounds(0, 0, 1181, 718);
 
-        List<Order> buy = MainGUIHandler.orderHandler.getAllActiveBuyOrders();
+        List<Order> buy = MainGUI.orderHandler.getAllActiveBuyOrders();
         List<String> assets = new ArrayList<String>();
 
         toSettingButton = new CustomButton("Settings");
         toSettingButton.setBounds(1000, 20, 120, 25);
         toSettingButton.addActionListener(e -> {
             removeAll();
-            if (MainGUIHandler.userType.equals("ADMIN")) {
+            if (MainGUI.userType.equals("ADMIN")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());
@@ -51,7 +50,7 @@ public class OrderGUI extends JPanel implements ActionListener {
         assetNamePromptLabel.setFont(fonts.inputLabel);
         add(assetNamePromptLabel);
 
-        List<String> assetNames = MainGUIHandler.orderHandler.getAllActiveAssetNames();
+        List<String> assetNames = MainGUI.orderHandler.getAllActiveAssetNames();
         assetNames.add("Doge Coin");
         assetNames.add("Bella Coin");
         assetBox = new JComboBox(assetNames.toArray());
@@ -67,9 +66,9 @@ public class OrderGUI extends JPanel implements ActionListener {
         buyButton.addActionListener(e -> {
 
             if (assetBox.getSelectedItem() != null) {
-                MainGUIHandler.assetName = assetBox.getSelectedItem().toString();
+                MainGUI.assetName = assetBox.getSelectedItem().toString();
                 removeAll();
-                add(new BuySellOrderGUI( MainGUIHandler.assetName, false));
+                add(new BuySellOrderGUI( MainGUI.assetName, false));
                 updateUI();
             } else {
                 invalid.setText("Select an asset");
@@ -82,9 +81,9 @@ public class OrderGUI extends JPanel implements ActionListener {
         sellButton.addActionListener(e -> {
 
             if (assetBox.getSelectedItem() != null) {
-                MainGUIHandler.assetName = assetBox.getSelectedItem().toString();
+                MainGUI.assetName = assetBox.getSelectedItem().toString();
                 removeAll();
-                add(new BuySellOrderGUI( MainGUIHandler.assetName, true));
+                add(new BuySellOrderGUI( MainGUI.assetName, true));
                 updateUI();
             }
             else {

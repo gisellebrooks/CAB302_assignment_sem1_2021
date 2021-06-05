@@ -1,14 +1,13 @@
 package marketplace.GUI.Settings;
 
-import marketplace.GUI.MainGUIHandler;
+import marketplace.GUI.MainGUI;
 import marketplace.Objects.User;
-import marketplace.PasswordHandler;
+import marketplace.Handlers.PasswordHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 
@@ -94,7 +93,7 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         toSettingsButton.setBounds(200, 400, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            if (MainGUIHandler.user.getAccountType().equals("ADMIN")) {
+            if (MainGUI.user.getAccountType().equals("ADMIN")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());
@@ -121,7 +120,7 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
             try {
                 userValid = true;
                 userID = userIDText.getText();
-                user = MainGUIHandler.userHandler.getUser(userID);
+                user = MainGUI.userHandler.getUser(userID);
 
                 invalid.setText("");
                 valid.setText(user.getUserID() + " selected");
@@ -139,7 +138,7 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
                 try {
                     newPassword = passwordHandler.generatePassword();
                     user.setPasswordHash(passwordHandler.IntoHash(newPassword));
-                    MainGUIHandler.userHandler.updateUserPassword(user);
+                    MainGUI.userHandler.updateUserPassword(user);
                     newPasswordText.setText(newPassword);
                     invalid.setText("");
                 } catch (Exception exception) {
@@ -153,7 +152,7 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
         if (e.getSource() == modifyUserButton) {
             if (userValid) {
                 try {
-                    MainGUIHandler.userHandler.updateUser(user);
+                    MainGUI.userHandler.updateUser(user);
                     invalid.setText("");
                     valid.setText(user.getUserID() + " information updated");
                 } catch (Exception exception) {
@@ -164,7 +163,7 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
             }
 
             try {
-                MainGUIHandler.user = MainGUIHandler.userHandler.getUser(MainGUIHandler.user.getUserID());
+                MainGUI.user = MainGUI.userHandler.getUser(MainGUI.user.getUserID());
             } catch (Exception exception) {
                 invalid.setText("Error");
             }

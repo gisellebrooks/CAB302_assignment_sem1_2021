@@ -1,6 +1,6 @@
 package marketplace.GUI.Settings;
 
-import marketplace.GUI.MainGUIHandler;
+import marketplace.GUI.MainGUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +54,7 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener {
         toSettingsButton.setBounds(300, 50, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            if (MainGUIHandler.userType.equals("ADMIN")) {
+            if (MainGUI.userType.equals("ADMIN")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());
@@ -84,10 +84,10 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener {
 
         try  {
             credits = Double.parseDouble(creditsText.getText());
-            newID = MainGUIHandler.organisationHandler.newOrganisationID();
+            newID = MainGUI.organisationHandler.newOrganisationID();
             organisationName = nameText.getText();
 
-            MainGUIHandler.organisationHandler.addOrganisation(newID, organisationName, credits);
+            MainGUI.organisationHandler.addOrganisation(newID, organisationName, credits);
             nameText.setText("");
             creditsText.setText("");
             valid.setText("Organisation was successfully created");

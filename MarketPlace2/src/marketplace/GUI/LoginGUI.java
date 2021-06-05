@@ -1,9 +1,6 @@
 package marketplace.GUI;
 
-import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
-import marketplace.GUI.Settings.SettingsNavigationUserGUI;
 import marketplace.Objects.User;
-import marketplace.PasswordHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,11 +55,11 @@ public class LoginGUI extends JPanel implements ActionListener {
         User user;
 
         try {
-            MainGUIHandler.userHandler.loginUser(userID, password);
+            MainGUI.userHandler.loginUser(userID, password);
 
-            user = MainGUIHandler.userHandler.getUser(userID);
-            MainGUIHandler.userType = user.getAccountType();
-            MainGUIHandler.user = MainGUIHandler.userHandler.getUser(userID);
+            user = MainGUI.userHandler.getUser(userID);
+            MainGUI.userType = user.getAccountType();
+            MainGUI.user = MainGUI.userHandler.getUser(userID);
 
             removeAll();
             add(new OrderGUI());

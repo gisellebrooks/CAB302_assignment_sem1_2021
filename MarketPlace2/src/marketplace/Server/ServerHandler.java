@@ -134,6 +134,5 @@ public class ServerHandler {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new ReconcileOrders(pooledDataSource), 0, 10000);
         ServerHandler server = new ServerHandler(props, pooledDataSource);
-
     }
 }

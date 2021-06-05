@@ -1,13 +1,12 @@
 package marketplace.GUI.Settings;
 
-import marketplace.GUI.MainGUIHandler;
-import marketplace.PasswordHandler;
+import marketplace.GUI.MainGUI;
+import marketplace.Handlers.PasswordHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class SignUpUserGUI extends JPanel implements ActionListener {
@@ -44,7 +43,7 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
         organisationLabel.setBounds(10, 80, 180, 25);
         add(organisationLabel);
 
-        organisationComboBox = new JComboBox(MainGUIHandler.organisationHandler.getAllOrganisationsNames().toArray());
+        organisationComboBox = new JComboBox(MainGUI.organisationHandler.getAllOrganisationsNames().toArray());
         organisationComboBox.setBounds(10, 100, 165, 25);
         add(organisationComboBox);
 
@@ -120,14 +119,14 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
         try {
             organisationName = organisationComboBox.getSelectedItem().toString();
             accountType = userTypeComboBox.getSelectedItem().toString();
-            userID = MainGUIHandler.userHandler.newUserID();
+            userID = MainGUI.userHandler.newUserID();
             name = nameText.getText();
 
             password = new PasswordHandler().generatePassword();
-            organisationID = MainGUIHandler.organisationHandler.getOrganisationID(organisationName);
+            organisationID = MainGUI.organisationHandler.getOrganisationID(organisationName);
             passwordHash = new PasswordHandler().IntoHash(password);
 
-            MainGUIHandler.userHandler.addUser(userID, passwordHash, accountType, organisationID, name);
+            MainGUI.userHandler.addUser(userID, passwordHash, accountType, organisationID, name);
 
             nameText.setText("");
             valid.setText("signup successful!");
