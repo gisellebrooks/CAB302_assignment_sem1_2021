@@ -1,6 +1,8 @@
 package marketplace.GUI.Settings;
 
 import marketplace.GUI.MainGUI;
+import marketplace.GUI.FullSizeJPanel;
+import marketplace.GUI.MainGUIHandler;
 import marketplace.Objects.Inventory;
 import marketplace.Objects.Organisation;
 import javax.swing.*;
@@ -9,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 
-public class ModifyOrganisationGUI extends JPanel implements ActionListener {
+public class ModifyOrganisationGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel organisationIDPromptLabel;
     private static JTextField organisationIDText;
@@ -41,7 +43,6 @@ public class ModifyOrganisationGUI extends JPanel implements ActionListener {
     public ModifyOrganisationGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 1181, 718);
 
         organisationIDPromptLabel = new JLabel("Organisation ID:");
         organisationIDPromptLabel.setBounds(10, 20, 160, 25);

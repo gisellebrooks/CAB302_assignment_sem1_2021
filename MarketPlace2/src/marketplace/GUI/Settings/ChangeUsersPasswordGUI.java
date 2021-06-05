@@ -1,6 +1,8 @@
 package marketplace.GUI.Settings;
 
 import marketplace.GUI.MainGUI;
+import marketplace.GUI.FullSizeJPanel;
+import marketplace.GUI.MainGUIHandler;
 import marketplace.Objects.User;
 import marketplace.Handlers.PasswordHandler;
 
@@ -10,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class ChangeUsersPasswordGUI extends JPanel implements ActionListener {
+public class ChangeUsersPasswordGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel oldPasswordPromptLabel;
     private static JTextField oldPasswordText;
@@ -29,7 +31,6 @@ public class ChangeUsersPasswordGUI extends JPanel implements ActionListener {
     public ChangeUsersPasswordGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 600, 600);
 
         oldPasswordPromptLabel = new JLabel("Old Password:");
         oldPasswordPromptLabel.setBounds(20, 30, 160, 25);

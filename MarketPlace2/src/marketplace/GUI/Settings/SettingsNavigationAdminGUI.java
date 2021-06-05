@@ -1,9 +1,10 @@
 package marketplace.GUI.Settings;
 
+import marketplace.GUI.FullSizeJPanel;
 import marketplace.GUI.OrderGUI;
 import javax.swing.*;
 
-public class SettingsNavigationAdminGUI extends JPanel {
+public class SettingsNavigationAdminGUI extends FullSizeJPanel {
 
     private static JButton createUserButton;
     private static JButton modifyUserButton;
@@ -14,7 +15,6 @@ public class SettingsNavigationAdminGUI extends JPanel {
 
     public SettingsNavigationAdminGUI() {
         setLayout(null);
-        setBounds(0, 0, 1181, 718);
 
         toHomeButton = new JButton("Home");
         toHomeButton.setBounds(450, 20, 120, 25);

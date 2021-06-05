@@ -114,7 +114,6 @@ public class OrderHandler implements Serializable {
 
                 exception.printStackTrace();
             }
-
         }
 
         String[] part = lastID.split("(?<=\\D)(?=\\d)");
@@ -179,11 +178,9 @@ public class OrderHandler implements Serializable {
                     allAssetNames.add(assetName.getAssetName());
                 }
             }
-
-            return allAssetNames;
         }
 
-        return new ArrayList<>();
+        return allAssetNames;
     }
 
     public List<String> getAllOrganisationsAssets(String orgID) {

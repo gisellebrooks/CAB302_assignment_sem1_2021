@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class OrderGUI extends JPanel implements ActionListener {
+public class OrderGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel assetNamePromptLabel;
     private static JComboBox assetBox;
@@ -50,14 +50,18 @@ public class OrderGUI extends JPanel implements ActionListener {
         assetNamePromptLabel.setFont(fonts.inputLabel);
         add(assetNamePromptLabel);
 
-        List<String> assetNames = MainGUI.orderHandler.getAllActiveAssetNames();
-        assetNames.add("Doge Coin");
-        assetNames.add("Bella Coin");
-        assetBox = new JComboBox(assetNames.toArray());
+        List<String> assetNames =  MainGUIHandler.orderHandler.getAllActiveAssetNames();
+        assetBox= new JComboBox(MainGUIHandler.orderHandler.getAllActiveAssetNames().toArray(new String[0]));
+        System.out.println(assetNames);
+
+//        assetNames = assetBox.getSelectedItem().toString();
+
+//        assetBox = new JComboBox(assetNames.toArray());
         assetBox.setBounds(510, 100, 160, 25);
         add(assetBox);
         assetBox.addActionListener(this::actionPerformed);
         assetBox.setForeground(Color.BLACK);
+        assetBox.setBackground(Color.WHITE);
         assetBox.setOpaque(true);
         assetBox.setFont(fonts.small);
 

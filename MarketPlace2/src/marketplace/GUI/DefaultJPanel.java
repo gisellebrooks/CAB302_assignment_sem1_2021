@@ -1,6 +1,7 @@
 package marketplace.GUI;
 import javax.swing.*;
 import java.awt.*;
+import java.math.BigInteger;
 
 public class DefaultJPanel extends JPanel {
 
@@ -8,5 +9,4 @@ public class DefaultJPanel extends JPanel {
         super();
         setBackground(Color.WHITE);
     }
-
 }

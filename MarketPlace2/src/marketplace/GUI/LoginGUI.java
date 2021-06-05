@@ -6,9 +6,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.border.EmptyBorder;
 
-
-public class LoginGUI extends JPanel implements ActionListener {
+public class LoginGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel userLabel;
     private static JTextField userText;
@@ -16,6 +23,7 @@ public class LoginGUI extends JPanel implements ActionListener {
     private static JTextField passwordText;
     private static JButton button;
     private static JLabel invalid;
+    public JPanel ImagePanel;
 
     public LoginGUI() {
 
@@ -47,6 +55,9 @@ public class LoginGUI extends JPanel implements ActionListener {
         invalid.setForeground(Color.red);
         invalid.setBounds(10, 110, 300, 25);
         add(invalid);
+
+        ImagePanel = new ImagePanel();
+        add(ImagePanel);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -57,10 +68,11 @@ public class LoginGUI extends JPanel implements ActionListener {
         try {
             MainGUI.userHandler.loginUser(userID, password);
 
-            user = MainGUI.userHandler.getUser(userID);
-            MainGUI.userType = user.getAccountType();
-            MainGUI.user = MainGUI.userHandler.getUser(userID);
-
+            user = MainGUIHandler.userHandler.searchUser(userID);
+            MainGUIHandler.userType = user.getAccountType();
+            MainGUIHandler.orgID = user.getOrganisationID();
+            MainGUIHandler.setUser(user);
+            System.out.println(MainGUIHandler.user.getUserID());
             removeAll();
             add(new OrderGUI());
             updateUI();
@@ -69,4 +81,26 @@ public class LoginGUI extends JPanel implements ActionListener {
             invalid.setText(exception.getMessage());
         }
     }
+
+    public class ImagePanel extends JPanel{
+
+        private BufferedImage image;
+
+        public ImagePanel() {
+            try {
+                image = ImageIO.read(new File("MarketPlace2/src/marketplace/Home.png"));
+                System.out.println("oo");
+            } catch (IOException ex) {
+                System.out.println("oops");
+            }
+        }
+        @Override
+        public void paintComponent(Graphics g) {
+            System.out.println("and a oop");
+            super.paintComponent(g);
+            g.drawImage(image, 50, 50, this); // see javadoc for more info on the parameters
+        }
+
+    }
 }
+

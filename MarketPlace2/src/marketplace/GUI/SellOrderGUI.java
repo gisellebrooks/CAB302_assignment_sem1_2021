@@ -14,7 +14,7 @@ import java.util.List;
 import static marketplace.GUI.MainGUI.orderHandler;
 
 
-public class SellOrderGUI extends JPanel implements ActionListener {
+public class SellOrderGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel Title;
     private static JLabel graphTitle;

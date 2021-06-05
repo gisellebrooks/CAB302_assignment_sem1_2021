@@ -28,12 +28,18 @@ public class MainGUI extends JFrame implements Runnable {
     public static InventoryHandler inventoryHandler;
     public static JPanel panel;
     public static String userType;
+    public static String orgID;
     public static User user;
     public static String assetName;
+    public static Boolean isSellOrder;
 
     /**
      * This method runs when the MainGUI is initialised and it starts the gui and program for the client.
      */
+    public static void setUser(User user) {
+        MainGUIHandler.user = user;
+    }
+
     public static void main(String[] args){
 
         client = new Client();
@@ -62,15 +68,28 @@ public class MainGUI extends JFrame implements Runnable {
         this.setVisible(true);
 
         setTitle("Market");
-        setSize(1181, 718);
+        setSize(FullSizeJPanel.fullWidth, FullSizeJPanel.fullHeight);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
         panel = new JPanel();
         panel.setLayout(null);
-        panel.setPreferredSize(new Dimension(1181, 718));
-        panel.setBounds(0, 0, 1181, 718);
+        panel.setBounds(0, 0, FullSizeJPanel.fullWidth, FullSizeJPanel.fullHeight);
+
         panel.add(new LoginGUI());
+//        panel.add(new SettingsNavigationAdminGUI());
+//        panel.add(new SettingsNavigationUserGUI());
+
+//        panel.add(new BuySellOrderGUI(assetName, isSellOrder));
+//        panel.add(new OrderGUI());
+//        panel.add(new BuyOrderGUI());
+//        panel.add(new OrderGUI());
+        System.out.println(user);
+//        panel.add(new SignUpUserGUI());
+//        panel.add(new SignUpOrganisationGUI());
+//        panel.add(new ModifyUserGUI());
+//        panel.add(new ModifyOrganisationGUI());
+//        panel.add(new ChangeUsersPasswordGUI());
 
         add(panel);
     }

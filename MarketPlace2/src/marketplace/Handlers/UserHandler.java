@@ -30,41 +30,20 @@ public class UserHandler {
         this.client = client;
     }
 
-    /**
-     * Sends a query to the server to then get all the users from the database, USER_INFORMATION table.
-     *
-     * @return a list of all users in the database, returns an empty list if no users are found.
-     * @throws Exception when an error occurs in the process and returns an error message.
-     *
-     */
-    public List<User> getAllUsers() throws Exception {
-
-        List<User> result;
-
-        // try and get all users from the database, USER_INFORMATION table
+    public List<User> getAllUsers() {
+        List<User> result = null;
         try {
             client.writeToServer("SELECT * FROM USER_INFORMATION;", TableObject.USER);
             result = (List) client.readListFromServer();
         } catch (Exception exception) {
-
-            // if an error occurs in trying to get the user list
-            throw new Exception("User can't be found");
+            exception.printStackTrace();
         }
 
         // will return empty if no users exist in the database
         return result;
     }
 
-    /**
-     * Sends a query to the server to then get a user based on their unique userID.
-     *
-     * @return a list containing just the user that has a matching userID to the parameter.
-     * @throws Exception when an error occurs in the process and returns an error message.
-     *
-     */
-    public User getUser(String userID) throws Exception {
-
-        // a list of all the users in the database
+    public User searchUser(String userID) throws Exception {
         List<User> users = getAllUsers();
         User result = null;
 
@@ -219,9 +198,12 @@ public class UserHandler {
      * @return true if the user can be found and false if they can't.
      */
     public boolean userIDExists(String userID) throws Exception {
-        User user;
-        user = getUser(userID);
-        return user.getUserID() != null;
+        User user = null;
+        user = searchUser(userID);
+        if (user.getUserID() != null) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -267,7 +249,7 @@ public class UserHandler {
      */
     public Boolean loginUser(String userID, String passwordString) throws Exception {
 
-        User user = MainGUI.userHandler.getUser(userID);
+        User user = MainGUIHandler.userHandler.searchUser(userID);
         String passwordHash = PasswordHandler.IntoHash(passwordString);
 
         // check if userID exists

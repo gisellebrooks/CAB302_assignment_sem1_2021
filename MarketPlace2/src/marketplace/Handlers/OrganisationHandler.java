@@ -9,6 +9,7 @@ import marketplace.TableObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -263,6 +264,9 @@ public class OrganisationHandler implements Serializable {
 
             if (orgInformation != null){
                 if (orgInformation.get(0).getCredits().compareTo(totalPrice) > 0){
+                    System.out.println(orgInformation.get(0).getCredits());
+                    System.out.println(totalPrice);
+                    System.out.println(orgInformation.get(0).getCredits().compareTo(totalPrice));
                     return true;
                 }
             }
