@@ -7,14 +7,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.*;
 
-/**
- * Client
- * Will connect to the server using a Socket. Provides an interface to
- * to that socket to read and write to the socket.
- *
- * @author Cory Gross
- * @version October 22, 2012
- */
+
 public class Client{
     private static String rootDir;
     private static Properties props;

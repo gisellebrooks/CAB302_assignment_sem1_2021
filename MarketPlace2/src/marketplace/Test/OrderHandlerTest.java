@@ -42,7 +42,6 @@ public class OrderHandlerTest {
             e.printStackTrace();
         }
         orderHandler = new OrderHandler(client);
-
     }
 
     @Test
@@ -128,11 +127,15 @@ public class OrderHandlerTest {
         assertEquals(expectedNewSellOrderID, actualNewSellOrderID);
     }
 
+//    @Test
+//    public void
 
+    // test new order ID with empty database
+    // test getting active orders with empty database
+    // test adding a new buy order
+    // test adding a new sell order
+    // test ammending an order
+    // test deleting an order
 
-
-
-
-    // test
 
 }
