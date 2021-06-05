@@ -493,14 +493,17 @@ public class ReconcileOrders extends TimerTask {
                                 if (buyQuantity < sellQuantity) {
                                     quantitySold = buyQuantity;
                                     remainderSellQuantity = sellQuantity - buyQuantity;
+                                    remainderBuyQuantity = 0;
 
                                 } else if (buyQuantity > sellQuantity) {
                                     quantitySold = sellQuantity;
                                     remainderBuyQuantity = buyQuantity - sellQuantity;
+                                    remainderSellQuantity = 0;
 
                                 } else {
                                     quantitySold = buyQuantity;
                                     remainderBuyQuantity = 0;
+                                    remainderSellQuantity = 0;
                                 }
 
                                 totalPurchasePrice = sellPrice.multiply(new BigDecimal(quantitySold));
