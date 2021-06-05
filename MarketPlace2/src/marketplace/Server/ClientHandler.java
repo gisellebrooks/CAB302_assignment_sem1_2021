@@ -25,7 +25,6 @@ public class ClientHandler extends Thread {
 
     public void run(){
         try {
-            System.out.println("new thread");
             ResultSet result = null;
             outputToClient = new ObjectOutputStream(socket.getOutputStream());
 
@@ -91,6 +90,7 @@ public class ClientHandler extends Thread {
                                 buy.setOrderDate(result.getTimestamp("orderDate"));
                                 objectList.add(buy);
                             }
+
                             outputToClient.writeObject(objectList);
                             outputToClient.flush();
                             break;
@@ -163,7 +163,5 @@ public class ClientHandler extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 }

@@ -6,6 +6,7 @@ import marketplace.Handlers.InventoryHandler;
 import marketplace.Handlers.OrderHandler;
 import marketplace.Handlers.OrganisationHandler;
 import marketplace.Handlers.UserHandler;
+import marketplace.Objects.Order;
 import marketplace.Objects.User;
 
 import javax.swing.*;
@@ -37,13 +38,17 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
 
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(0);
+
         }
+
 
         userHandler = new UserHandler(client);
         orderHandler = new OrderHandler(client);
         organisationHandler = new OrganisationHandler(client);
         inventoryHandler = new InventoryHandler(client);
 
+        System.out.println("hereee");
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new MainGUIHandler());
     }
@@ -53,6 +58,9 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
 
         this.setVisible(true);
 
+        for (String name: orderHandler.getAllActiveAssetNames() ){
+            System.out.println(name);
+        }
         setTitle("Market");
         setSize(1181, 718);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,12 +71,12 @@ public class MainGUIHandler extends JFrame implements ActionListener, Runnable {
         panel.setPreferredSize(new Dimension(1181, 718));
         panel.setBounds(0, 0, 1181, 718);
 
-        panel.add(new LoginGUI());
+//        panel.add(new LoginGUI());
 //        panel.add(new SettingsNavigationAdminGUI());
 //        panel.add(new SettingsNavigationUserGUI());
 
 //        panel.add(new BuyOrderGUI());
-//        panel.add(new OrderGUI());
+        panel.add(new OrderGUI());
 
 //        panel.add(new SignUpUserGUI());
 //        panel.add(new SignUpOrganisationGUI());

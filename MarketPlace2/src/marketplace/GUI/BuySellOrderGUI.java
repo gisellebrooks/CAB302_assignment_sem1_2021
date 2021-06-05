@@ -53,6 +53,7 @@ public class BuySellOrderGUI extends JPanel {
         List<String> timestamp = new ArrayList<String>();
         List<String> price = new ArrayList<String>();
         */
+
         this.isSellOrder = isSellOrder;
         java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0");
         this.buyHistory =  new ArrayList<>();

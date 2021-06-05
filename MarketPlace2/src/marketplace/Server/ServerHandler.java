@@ -12,7 +12,7 @@ import java.util.Properties;
 
 import java.util.Timer;
 
-public class ServerHandler {
+public class ServerHandler extends Thread {
 
     private static String rootDir;
     private static Properties props;
@@ -22,9 +22,17 @@ public class ServerHandler {
     int backlog;
     InetAddress address;
     Socket clientSocket;
+    public ServerHandler(){}
 
-    public ServerHandler(Properties props, MariaDBDataSource pooledDataSource){
+    @Override
+    public void run(){
         try {
+            pooledDataSource = MariaDBDataSource.getInstance();
+            initDb(pooledDataSource);
+            //loadMockData(pooledDataSource);
+            Properties props = loadServerConfig();
+
+            rootDir = System.getProperty("user.dir");
             listener = newServerSocket(props);
 
             while (true){
@@ -44,7 +52,13 @@ public class ServerHandler {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
+    }
+    public void startReconcileOrders(){
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new ReconcileOrders(pooledDataSource), 0, 10000);
     }
 
     private ServerSocket newServerSocket(Properties props) throws IOException {
@@ -60,11 +74,12 @@ public class ServerHandler {
 
     public static Properties loadServerConfig() {
         rootDir = System.getProperty("user.dir");
+
         props = new Properties();
         FileInputStream in = null;
 
         try {
-            in = new FileInputStream(rootDir + "/MarketPlace2/src/marketplace/util/server.props");
+            in = new FileInputStream(rootDir + "/MarketPlace2/src/marketplace/Util/server.props");
             props.load(in);
             in.close();
 
@@ -74,12 +89,15 @@ public class ServerHandler {
         return props;
     }
 
-    private static void initDb(MariaDBDataSource pool) throws SQLException {
+    public static void initDb(MariaDBDataSource pool) throws SQLException {
+        rootDir = System.getProperty("user.dir");
         String string;
         StringBuffer buffer = new StringBuffer();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("MarketPlace2/src/marketplace/util/setupDB.sql"));
+            BufferedReader reader = new BufferedReader(new FileReader(rootDir +
+                    "/MarketPlace2/src/marketplace/Util/setupDB.sql"));
+
             while ((string = reader.readLine()) != null) {
                 buffer.append(string + "\n");
             }
@@ -100,11 +118,14 @@ public class ServerHandler {
         }
     }
     public static void loadMockData(MariaDBDataSource pool) throws SQLException {
+        rootDir = System.getProperty("user.dir");
         String string;
         StringBuffer buffer = new StringBuffer();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("MarketPlace2/src/marketplace/util/mockupData.sql"));
+            BufferedReader reader = new BufferedReader(new FileReader(
+                    rootDir+ "/MarketPlace2/src/marketplace/Util/mockupData.sql"));
+
             while ((string = reader.readLine()) != null) {
                 buffer.append(string + "\n");
             }
@@ -126,14 +147,15 @@ public class ServerHandler {
 
     }
 
-    public static void main(String[] args) throws SQLException {
-        pooledDataSource = MariaDBDataSource.getInstance();
-        initDb(pooledDataSource);
-        //loadMockData(pooledDataSource);
-        Properties props = loadServerConfig();
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new ReconcileOrders(pooledDataSource), 0, 10000);
-        ServerHandler server = new ServerHandler(props, pooledDataSource);
+//    public static void main(String[] args) throws SQLException {
+//        pooledDataSource = MariaDBDataSource.getInstance();
+//        initDb(pooledDataSource);
+//        //loadMockData(pooledDataSource);
+//        Properties props = loadServerConfig();
+//        Timer timer = new Timer();
+//        timer.scheduleAtFixedRate(new ReconcileOrders(pooledDataSource), 0, 10000);
+//        ServerHandler server = new ServerHandler(props, pooledDataSource);
+//
+//    }
 
-    }
 }

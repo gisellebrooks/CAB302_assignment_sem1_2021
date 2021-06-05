@@ -31,8 +31,8 @@ public class ServerTest {
 
     @Test
     public void acceptSingleClient() {
-        Properties props = ServerHandler.loadServerConfig();
-        ServerHandler server = new ServerHandler(props, newInstance);
+
+        ServerHandler server = new ServerHandler();
         Client client = new Client();
 
         /// NEED TO MAKE THREADED

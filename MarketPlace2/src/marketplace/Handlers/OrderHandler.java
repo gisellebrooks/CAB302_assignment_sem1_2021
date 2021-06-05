@@ -48,7 +48,6 @@ public class OrderHandler implements Serializable {
         return allSellOrdersForAsset;
     }
 
-
     public List<Order> getAllActiveBuyOrders(){
         List<Order> result = null;
         try {
@@ -59,7 +58,6 @@ public class OrderHandler implements Serializable {
         }
         return result;
     }
-
 
     public List<SellOrder> getAllActiveSellOrders(){
         List<SellOrder> result = null;
@@ -74,17 +72,21 @@ public class OrderHandler implements Serializable {
 
 
     public String newOrderID(String orderType) {
-        Object orderID = null;
+        Order buyOrderID = null;
+        SellOrder sellOrderID = null;
         String lastID = null;
         if (orderType.equals("buy")){
             List<Order> buyList = null;
             try {
-                client.writeToServer("SELECT buyID FROM ACTIVE_BUY_ORDERS ORDER BY cast(buyID as SIGNED) DESC LIMIT 1;", TableObject.USER);
+                client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS ORDER BY buyID DESC LIMIT 1;", TableObject.BUY_ORDER);
 
                 buyList = (List<Order>) client.readListFromServer();
                 if (buyList != null){
-                    orderID = buyList.get(0);
-                    lastID = ((Order) orderID).getOrderID();
+                    buyOrderID = buyList.get(0);
+                    lastID = buyOrderID.getOrderID();
+                }
+                else {
+                    lastID = "buy0";
                 }
 
             } catch (Exception exception) {
@@ -95,12 +97,16 @@ public class OrderHandler implements Serializable {
         } else if (orderType.equals("sell")) {
             List<SellOrder> sellList = null;
             try {
-                client.writeToServer("SELECT sellID FROM ACTIVE_BUY_ORDERS ORDER BY cast(sellID as SIGNED) DESC LIMIT 1;", TableObject.USER);
+                client.writeToServer(
+                        "SELECT * FROM ACTIVE_SELL_ORDERS ORDER BY sellID DESC LIMIT 1;", TableObject.SELL_ORDER);
 
                 sellList = (List<SellOrder>) client.readListFromServer();
                 if (sellList != null){
-                    orderID = sellList.get(0);
-                    lastID = ((SellOrder) orderID).getOrderID();
+                    sellOrderID = sellList.get(0);
+                    lastID = sellOrderID.getOrderID();
+                }
+                else {
+                    lastID = "sell0";
                 }
 
             } catch (Exception exception) {
@@ -171,7 +177,6 @@ public class OrderHandler implements Serializable {
                     allAssetNames.add(assetName.getAssetName());
                 }
             }
-
             return allAssetNames;
         }
 
@@ -189,7 +194,6 @@ public class OrderHandler implements Serializable {
                     allAssetNames.add(assetName.getAssetName());
                 }
             }
-
             for (SellOrder assetName : allSellOrders) {
                 if (!allAssetNames.contains(assetName.getAssetName())) {
                     allAssetNames.add(assetName.getAssetName());
