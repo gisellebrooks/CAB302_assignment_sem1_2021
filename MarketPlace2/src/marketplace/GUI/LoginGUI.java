@@ -1,6 +1,7 @@
 package marketplace.GUI;
 
 import marketplace.Objects.User;
+import marketplace.Util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,41 +24,56 @@ public class LoginGUI extends FullSizeJPanel implements ActionListener {
     private static JTextField passwordText;
     private static JButton button;
     private static JLabel invalid;
-    public JPanel ImagePanel;
+    Fonts fonts;
+    public JPanel image;
 
     public LoginGUI() {
 
         setLayout(null);
         setBounds(0, 0, 1181, 718);
 
-        userLabel = new JLabel("User");
-        userLabel.setBounds(10, 20, 80, 25);
-        add(userLabel);
+        image = new ImagePanel();
+        image.setBounds(110, 135, 500, 500);
+        add(image);
 
-        userText = new JTextField(20);
-        userText.setBounds(100, 20, 160, 25);
-        add(userText);
+        int loginOffsetx = 750;
+        int loginOffsety = 300;
 
-        passwordLabel = new JLabel("Password");
-        passwordLabel.setBounds(10, 50, 80, 25);
-        add(passwordLabel);
+        JPanel login = new DefaultJPanel();
+        login.setBounds(loginOffsetx + 10, loginOffsety + 20, 500, 200);
+        login.setLayout(new BoxLayout(login, BoxLayout.Y_AXIS));
 
-        passwordText = new JPasswordField();
-        passwordText.setBounds(100, 50, 160, 25);
-        add(passwordText);
+        this.fonts = new Fonts();
+        JPanel userInput = new DefaultJPanel();
+        userInput.setBackground(Color.WHITE);
+        userInput.setLayout(new BoxLayout(userInput, BoxLayout.Y_AXIS));
 
-        button = new JButton("Login");
-        button.setBounds(10, 80, 80, 25);
+        userLabel = new CustomLabel("User", fonts.inputLabel, true);
+        userInput.add(userLabel);
+
+        userText = new CustomTextField(20);
+        userInput.add(userText);
+        login.add(userInput);
+
+        JPanel passwordInput = new DefaultJPanel();
+        passwordInput.setBackground(Color.WHITE);
+        passwordInput.setLayout(new BoxLayout(passwordInput, BoxLayout.Y_AXIS));
+
+        passwordLabel = new CustomLabel("Password", fonts.inputLabel, true);
+        passwordInput.add(passwordLabel);
+
+        passwordText = new CustomPasswordField();
+        passwordInput.add(passwordText);
+        login.add(passwordInput);
+
+        button = new CustomButton("Login");
         button.addActionListener(this);
-        add(button);
+        login.add(button);
 
-        invalid = new JLabel("");
+        invalid = new CustomLabel("", fonts.inputLabel, true);
         invalid.setForeground(Color.red);
-        invalid.setBounds(10, 110, 300, 25);
-        add(invalid);
-
-        ImagePanel = new ImagePanel();
-        add(ImagePanel);
+        login.add(invalid);
+        add(login);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -82,25 +98,18 @@ public class LoginGUI extends FullSizeJPanel implements ActionListener {
         }
     }
 
-    public class ImagePanel extends JPanel{
-
-        private BufferedImage image;
+    public class ImagePanel extends JPanel {
 
         public ImagePanel() {
             try {
-                image = ImageIO.read(new File("MarketPlace2/src/marketplace/Home.png"));
-                System.out.println("oo");
+                setBackground(Color.WHITE);
+                BufferedImage myPicture = ImageIO.read(new File("MarketPlace2/src/images/Home.png"));
+                JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+                add(picLabel);
             } catch (IOException ex) {
-                System.out.println("oops");
+                System.out.println(ex.getMessage());
             }
         }
-        @Override
-        public void paintComponent(Graphics g) {
-            System.out.println("and a oop");
-            super.paintComponent(g);
-            g.drawImage(image, 50, 50, this); // see javadoc for more info on the parameters
-        }
-
     }
 }
 
