@@ -100,11 +100,12 @@ public class ServerHandler {
         }
     }
     public static void loadMockData(MariaDBDataSource pool) throws SQLException {
+        String rootDir = System.getProperty("user.dir");
         String string;
         StringBuffer buffer = new StringBuffer();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("MarketPlace2/src/marketplace/util/mockupData.sql"));
+            BufferedReader reader = new BufferedReader(new FileReader(rootDir + "/MarketPlace2/src/marketplace/util/mockupData.sql"));
             while ((string = reader.readLine()) != null) {
                 buffer.append(string + "\n");
             }
@@ -129,7 +130,7 @@ public class ServerHandler {
     public static void main(String[] args) throws SQLException {
         pooledDataSource = MariaDBDataSource.getInstance();
         initDb(pooledDataSource);
-        loadMockData(pooledDataSource);
+//        loadMockData(pooledDataSource);
         Properties props = loadServerConfig();
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new ReconcileOrders(pooledDataSource), 0, 10000);

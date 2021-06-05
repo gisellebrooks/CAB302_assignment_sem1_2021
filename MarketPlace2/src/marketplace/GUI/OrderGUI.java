@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class OrderGUI extends JPanel implements ActionListener {
+public class OrderGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel assetNamePromptLabel;
     private static JComboBox assetBox;
@@ -62,6 +62,7 @@ public class OrderGUI extends JPanel implements ActionListener {
         add(assetBox);
         assetBox.addActionListener(this::actionPerformed);
         assetBox.setForeground(Color.BLACK);
+        assetBox.setBackground(Color.WHITE);
         assetBox.setOpaque(true);
         assetBox.setFont(fonts.small);
 

@@ -1,5 +1,6 @@
 package marketplace.GUI.Settings;
 
+import marketplace.GUI.FullSizeJPanel;
 import marketplace.GUI.MainGUIHandler;
 
 import javax.swing.*;
@@ -8,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class RemoveOrganisationGUI extends JPanel implements ActionListener {
+public class RemoveOrganisationGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel organisationIDPromptLabel;
     private static JTextField organisationIDText;
@@ -21,7 +22,6 @@ public class RemoveOrganisationGUI extends JPanel implements ActionListener {
     public RemoveOrganisationGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 600, 600);
 
         organisationIDPromptLabel = new JLabel("ID of organisation to remove");
         organisationIDPromptLabel.setBounds(10, 20, 160, 25);

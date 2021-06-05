@@ -1,5 +1,6 @@
 package marketplace.GUI.Settings;
 
+import marketplace.GUI.FullSizeJPanel;
 import marketplace.GUI.MainGUIHandler;
 
 import javax.swing.*;
@@ -7,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RemoveUserGUI extends JPanel implements ActionListener {
+public class RemoveUserGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel userIDPromptLabel;
     private static JTextField userIDText;
@@ -19,7 +20,6 @@ public class RemoveUserGUI extends JPanel implements ActionListener {
     public RemoveUserGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 600, 600);
 
         userIDPromptLabel = new JLabel("ID of user to remove");
         userIDPromptLabel.setBounds(10, 20, 180, 25);

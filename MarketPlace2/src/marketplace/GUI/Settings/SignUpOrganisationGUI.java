@@ -1,5 +1,6 @@
 package marketplace.GUI.Settings;
 
+import marketplace.GUI.FullSizeJPanel;
 import marketplace.GUI.MainGUIHandler;
 
 import javax.swing.*;
@@ -7,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SignUpOrganisationGUI extends JPanel implements ActionListener {
+public class SignUpOrganisationGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel namePromptLabel;
     private static JTextField nameText;
@@ -22,7 +23,6 @@ public class SignUpOrganisationGUI extends JPanel implements ActionListener {
     public SignUpOrganisationGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 1181, 718);
 
         namePromptLabel = new JLabel("Organisation Name:");
         namePromptLabel.setBounds(10, 20, 160, 25);

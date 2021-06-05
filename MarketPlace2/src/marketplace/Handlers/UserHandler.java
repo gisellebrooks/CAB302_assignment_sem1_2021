@@ -16,18 +16,18 @@ public class UserHandler {
         this.client = client;
     }
 
-    public List<User> getAllUsers() throws Exception {
+    public List<User> getAllUsers() {
         List<User> result = null;
         try {
             client.writeToServer("SELECT * FROM USER_INFORMATION;", TableObject.USER);
             result = (List) client.readListFromServer();
         } catch (Exception exception) {
-            throw new Exception("User can't be found");
+            exception.printStackTrace();
         }
         return result;
     }
 
-    public User getUser(String userID) throws Exception {
+    public User searchUser(String userID) throws Exception {
         List<User> users = getAllUsers();
         User result = null;
 
@@ -128,7 +128,7 @@ public class UserHandler {
 
     public boolean userIDExists(String userID) throws Exception {
         User user = null;
-        user = getUser(userID);
+        user = searchUser(userID);
         if (user.getUserID() != null) {
             return true;
         }
@@ -159,7 +159,7 @@ public class UserHandler {
 
     public Boolean loginUser(String userID, String passwordString) throws Exception {
 
-        User user = MainGUIHandler.userHandler.getUser(userID);
+        User user = MainGUIHandler.userHandler.searchUser(userID);
         String passwordHash = PasswordHandler.IntoHash(passwordString);
 
         if (!userIDExists(userID) || user == null) {

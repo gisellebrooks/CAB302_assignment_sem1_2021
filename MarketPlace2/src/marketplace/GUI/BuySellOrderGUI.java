@@ -9,19 +9,23 @@
  *
  */
 
-
 package marketplace.GUI;
 
 import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
 import marketplace.GUI.Settings.SettingsNavigationUserGUI;
+import marketplace.Handlers.UserHandler;
 import marketplace.Objects.Order;
+import marketplace.Objects.Organisation;
+import marketplace.Objects.SellOrder;
+import marketplace.Objects.User;
 import marketplace.Util.Fonts;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.math.BigDecimal;
-import java.net.URL;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -44,13 +48,13 @@ import java.util.Collection;
  * * @since   2014-03-31
  */
 
-public class BuySellOrderGUI extends JPanel {
-    JPanel mainPanel;
-    String assetName;
-    Fonts fonts;
-    List<Order> buyHistory;
-    List<Order> sellHistory;
-    Boolean isSellOrder;
+public class BuySellOrderGUI extends FullSizeJPanel {
+    public JPanel mainPanel;
+    public String assetName;
+    public Fonts fonts;
+    public List<Order> activeBuyOrders;
+    public List<SellOrder> activeSellOrders;
+    public Boolean isSellOrder;
 
     public String getActionText() {
         if (isSellOrder) {
@@ -61,33 +65,34 @@ public class BuySellOrderGUI extends JPanel {
     }
 
     public BuySellOrderGUI(String assetName, Boolean isSellOrder) {
-        /*
-        List<Order> buyHistory = orderHandler.getAllActiveBuyOrders();
-
-        System.out.println(buyHistory);
+        System.out.println("Buy history " + activeBuyOrders);
         List<String> timestamp = new ArrayList<String>();
-        List<String> price = new ArrayList<String>();
-        */
+//        List<String> price = new ArrayList<String>();
+
         this.isSellOrder = isSellOrder;
         java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0");
-        this.buyHistory =  new ArrayList<>();
-        // this.buyHistory = MainGUIHandler.orderHandler.getAllActiveBuyOrdersForAsset(assetName).toArray()
+        this.activeBuyOrders = MainGUIHandler.orderHandler.getAllActiveBuyOrdersForAsset(assetName);
+        this.activeSellOrders = MainGUIHandler.orderHandler.getAllActiveSellOrdersForAsset(assetName);
+        this.activeSellOrders = MainGUIHandler.orderHandler.getAllActiveSellOrdersForAsset(assetName);
+
+        System.out.println("Buy history " + activeBuyOrders);
+
         // MOCKED DATA, Use above call ^
-        this.buyHistory.add(new Order(
-                "123", "456", assetName, 100, new BigDecimal(100), java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0")
-        ));
-        this.buyHistory.add(new Order(
-                "123", "456", assetName, 25, new BigDecimal(200), java.sql.Timestamp.valueOf("2017-09-23 10:10:10.0")
-        ));
-        this.sellHistory =  new ArrayList<>();
-        // this.sellHistory = MainGUIHandler.orderHandler.getAllActiveSellOrdersForAsset(assetName).toArray()
-        // MOCKED DATA, Use above call ^
-        this.sellHistory.add(new Order(
-                "123", "456", assetName, 100, new BigDecimal(100), java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0")
-        ));
-        this.sellHistory.add(new Order(
-                "123", "456", assetName, 25, new BigDecimal(200), java.sql.Timestamp.valueOf("2017-09-23 10:10:10.0")
-        ));
+//        this.activeBuyOrders.add(new Order(
+//                "123", "456", assetName, 100, new BigDecimal(100), java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0")
+//        ));
+//        this.activeBuyOrders.add(new Order(
+//                "123", "456", assetName, 25, new BigDecimal(200), java.sql.Timestamp.valueOf("2017-09-23 10:10:10.0")
+//        ));
+//        this.activeSellOrders =  new ArrayList<>();
+//        // this.sellHistory = MainGUIHandler.orderHandler.getAllActiveSellOrdersForAsset(assetName).toArray()
+//        // MOCKED DATA, Use above call ^
+//        this.activeSellOrders.add(new Order(
+//                "123", "456", assetName, 100, new BigDecimal(100), java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0")
+//        ));
+//        this.activeSellOrders.add(new Order(
+//                "123", "456", assetName, 25, new BigDecimal(200), java.sql.Timestamp.valueOf("2017-09-23 10:10:10.0")
+//        ));
         this.assetName = assetName;
         this.fonts = new Fonts();
         mainPanel = new MainPanel();
@@ -137,7 +142,7 @@ public class BuySellOrderGUI extends JPanel {
             add(placeOrder);
 
             JPanel main = new DefaultJPanel();
-            main.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 100));
+            main.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 100));
             main.add(new DataPanel());
 //            add(new TextPanel());
             main.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -150,12 +155,13 @@ public class BuySellOrderGUI extends JPanel {
     class PlaceOrderPanel extends JPanel {
         CustomTextField buyQuantityText;
         CustomTextField buyPriceText;
-        float quantity;
+        int quantity;
         float price;
         JLabel invalidOrderLabel;
+        JLabel invalidCreditLabel;
         OrderSummaryPanel orderSummaryPanel;
 
-        public void setQuantity(float quantity) {
+        public void setQuantity(int quantity) {
             this.quantity = quantity;
         }
 
@@ -164,26 +170,39 @@ public class BuySellOrderGUI extends JPanel {
         }
 
         public void calculateOrder() {
-            //TODO: add giselle's method to check if user has enough credits to place order.
             try {
-                setQuantity(Float.parseFloat(buyQuantityText.getText()));
-            } catch (NumberFormatException ex) {
-                invalidOrderLabel.setText("Invalid Quantity");
-                return;
+                    try {
+                        setQuantity(Integer.parseInt(buyQuantityText.getText()));
+                    } catch (NumberFormatException ex) {
+                        invalidOrderLabel.setText("Invalid Quantity");
+                        return;
+                    }
+                    try {
+                        setPrice(Float.parseFloat(buyPriceText.getText()));
+                    } catch (NumberFormatException ex) {
+                        invalidOrderLabel.setText("Invalid Price");
+                        return;
+                    }
+                    if (MainGUIHandler.organisationHandler.organisationHasCredits(MainGUIHandler.orgID, BigDecimal.valueOf(price))){
+                        System.out.println("org id is " + MainGUIHandler.orgID + " price is " +price);
+                    }else {
+                        System.out.println("false");
+                        invalidCreditLabel.setText("You don't have enough credits!");
+                        return;
+                    }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            try {
-                setPrice(Float.parseFloat(buyPriceText.getText()));
-            } catch (NumberFormatException ex) {
-                invalidOrderLabel.setText("Invalid Price");
-                return;
-            }
+            invalidCreditLabel.setText("");
             invalidOrderLabel.setText("");
             orderSummaryPanel.updateSummary(this.quantity, this.price);
+            System.out.println("this is the total" + price);
         }
 
         public PlaceOrderPanel(){
             setBackground(Color.WHITE);
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            setPreferredSize(new Dimension(450, 500));
 
             JLabel buyQuantityLabel;
 
@@ -248,11 +267,16 @@ public class BuySellOrderGUI extends JPanel {
                 }
             });
             inputsPanel.add(calculateButton);
+            invalidCreditLabel = new JLabel("");
+            invalidCreditLabel.setForeground(Color.red);
+            invalidCreditLabel.setBounds(10, 220, 340, 25);
+            add(invalidCreditLabel);
 
             invalidOrderLabel = new JLabel("");
             invalidOrderLabel.setForeground(Color.red);
             invalidOrderLabel.setBounds(10, 220, 340, 25);
             add(invalidOrderLabel);
+
             add(Box.createRigidArea(new Dimension(0, 150)));
             orderSummaryPanel = new OrderSummaryPanel();
             add(orderSummaryPanel);
@@ -300,6 +324,7 @@ public class BuySellOrderGUI extends JPanel {
         public OrderSummaryPanel() {
             this.toggleOrdered = false;
             setBackground(new Color(255,246,246));
+
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createMatteBorder(2,2,2,2, new Color(255,185,175)),
@@ -345,18 +370,21 @@ public class BuySellOrderGUI extends JPanel {
 
         public DataPanel(){
             JPanel container = new DefaultJPanel();
-            container.setPreferredSize(new Dimension(600, 580));
+            setPreferredSize(new Dimension(650, 500));
+            container.setPreferredSize(new Dimension(650, 1580));
 //            container.setBackground(Color.YELLOW);
             JScrollPane scroll = new JScrollPane(container);
-            scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+            scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-            scroll.setPreferredSize(new Dimension(600, 580));
+            scroll.setPreferredSize(new Dimension(650, 500));
 
-            JLabel buyHistoryLabel = new CustomLabel(String.format("Price History for %s", assetName), fonts.smallHeading, true);
+            JLabel buyHistoryLabel = new CustomLabel(String.format("Price History for %s", assetName), fonts.smallHeading, false);
+            buyHistoryLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             container.add(buyHistoryLabel);
 
             add(scroll);
             graph = new GraphView();
+
             container.add(graph);
             // MOCKED DATA, THIS NEEDS TO READ ALL RECENT PRICES FOR THIS "this.assetName" from the DB
             Integer[] data = {1,4,7,3,4,5,6,7,8,3,4,6};
@@ -382,13 +410,12 @@ public class BuySellOrderGUI extends JPanel {
             JLabel buyHistoryLabel = new CustomLabel(String.format("Recent %s Orders", isSell ? "sell" : "buy"), fonts.smallHeading, true);
             add(buyHistoryLabel);
             add(new TableRow(
-                    "Status",
                     "Organisational Unit",
                     "Quantity",
                     "Price per unit",
                     "Order Date"
             ));
-            for (Order order: isSell ? sellHistory : buyHistory ) {
+            for (Order order: isSell ? activeSellOrders : activeBuyOrders) {
                 add(new OrderRow(order));
             }
 //            add(new BuyOrderTable());
@@ -397,21 +424,32 @@ public class BuySellOrderGUI extends JPanel {
     class OrderRow extends DefaultJPanel {
 
         public OrderRow(Order order){
+            System.out.println(order.getAssetName());
+            System.out.println(order.getPrice());
+            System.out.println(order.getQuantity());
+
+            String organisationUnit;
+            try {
+                User user = MainGUIHandler.userHandler.searchUser(order.getUserID());
+                Organisation organisation = MainGUIHandler.organisationHandler.getOrganisation(user.getOrganisationID());
+                organisationUnit = organisation.getOrgName();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                organisationUnit = "Not Found";
+            }
+
             add(new TableRow(
-                "Pending",
-                "Computer Hardware",
+                organisationUnit,
                 String.format("%d", order.getQuantity()),
-                String.format("$%d", order.getPrice().divide(new BigDecimal(order.getQuantity())).intValue()),
+                NumberFormat.getCurrencyInstance().format(order.getPrice().divide(new BigDecimal(order.getQuantity()), 2, RoundingMode.HALF_UP)),
                 new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(order.getOrderDate())
             ));
         }
     }
 
     class TableRow extends DefaultJPanel {
-        public TableRow(String status, String organisationalUnit, String quantity, String pricePerUnit, String orderDate){
+        public TableRow(String organisationalUnit, String quantity, String pricePerUnit, String orderDate){
             JPanel container = new DefaultJPanel();
-            JLabel statusLabel = new CustomLabel(status, fonts.small, true);
-            statusLabel.setPreferredSize(new Dimension(65, 20));
             JLabel organisationalUnitLabel = new CustomLabel(organisationalUnit, fonts.small, true);
             organisationalUnitLabel.setPreferredSize(new Dimension(150, 20));
             JLabel quantityLabel =  new CustomLabel(quantity, fonts.small, true);
@@ -420,7 +458,6 @@ public class BuySellOrderGUI extends JPanel {
             pricePerUnitLabel.setPreferredSize(new Dimension(100, 20));
             JLabel orderDateLabel = new CustomLabel(orderDate, fonts.small, true);
             orderDateLabel.setPreferredSize(new Dimension(140, 20));
-            container.add(statusLabel);
             container.add(organisationalUnitLabel);
             container.add(quantityLabel);
             container.add(pricePerUnitLabel);
@@ -441,7 +478,7 @@ public class BuySellOrderGUI extends JPanel {
             @Override
             public void run(){
                 JFrame frame = new JFrame("Buy Orders");
-                BuySellOrderGUI gui = new BuySellOrderGUI("Doge Coin", true);
+                BuySellOrderGUI gui = new BuySellOrderGUI("", true);
                 frame.setDefaultLookAndFeelDecorated(true);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.add(gui.getMainPanel());

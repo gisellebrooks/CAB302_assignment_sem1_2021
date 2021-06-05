@@ -1,5 +1,6 @@
 package marketplace.GUI.Settings;
 
+import marketplace.GUI.FullSizeJPanel;
 import marketplace.GUI.MainGUIHandler;
 import marketplace.Objects.User;
 import marketplace.PasswordHandler;
@@ -8,11 +9,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 
-public class ModifyUserGUI extends JPanel implements ActionListener {
+public class ModifyUserGUI extends FullSizeJPanel implements ActionListener {
 
     private static JButton modifyUserButton;
     private static JButton toSettingsButton;
@@ -35,7 +35,6 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
     public ModifyUserGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 1181, 718);
 
         resetPasswordButton = new JButton("Reset User's Password");
         resetPasswordButton.setBounds(300, 40, 180, 25);
@@ -121,7 +120,7 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
             try {
                 userValid = true;
                 userID = userIDText.getText();
-                user = MainGUIHandler.userHandler.getUser(userID);
+                user = MainGUIHandler.userHandler.searchUser(userID);
 
                 invalid.setText("");
                 valid.setText(user.getUserID() + " selected");
@@ -164,7 +163,7 @@ public class ModifyUserGUI extends JPanel implements ActionListener {
             }
 
             try {
-                MainGUIHandler.user = MainGUIHandler.userHandler.getUser(MainGUIHandler.user.getUserID());
+                MainGUIHandler.user = MainGUIHandler.userHandler.searchUser(MainGUIHandler.user.getUserID());
             } catch (Exception exception) {
                 invalid.setText("Error");
             }

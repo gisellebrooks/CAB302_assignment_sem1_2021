@@ -1,5 +1,6 @@
 package marketplace.GUI.Settings;
 
+import marketplace.GUI.FullSizeJPanel;
 import marketplace.GUI.MainGUIHandler;
 import marketplace.PasswordHandler;
 
@@ -10,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-public class SignUpUserGUI extends JPanel implements ActionListener {
+public class SignUpUserGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel namePromptLabel;
     private static JTextField nameText;
@@ -30,7 +31,6 @@ public class SignUpUserGUI extends JPanel implements ActionListener {
     public SignUpUserGUI() {
 
         setLayout(null);
-        setBounds(0, 0, 1181, 718);
 
         namePromptLabel = new JLabel("Full Name:");
         namePromptLabel.setBounds(10, 20, 80, 25);
