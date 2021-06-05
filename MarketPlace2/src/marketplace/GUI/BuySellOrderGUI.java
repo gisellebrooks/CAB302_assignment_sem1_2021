@@ -72,6 +72,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
     public BuySellOrderGUI(String assetName, Inventory inventory, Boolean isSellOrder) {
         System.out.println("Buy history " + activeBuyOrders);
         List<String> timestamp = new ArrayList<String>();
+
 //        List<String> price = new ArrayList<String>();
 
         this.isSellOrder = isSellOrder;

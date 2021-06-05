@@ -7,15 +7,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.*;
 
-/**
- * Client
- * Will connect to the server using a Socket. Provides an interface to
- * to that socket to read and write to the socket.
- *
- * @author Cory Gross
- * @version October 22, 2012
- */
-public class Client {
+
+public class Client{
     private static String rootDir;
     private static Properties props;
     private Socket socket;
@@ -36,7 +29,7 @@ public class Client {
         FileInputStream in = null;
 
         try {
-            in = new FileInputStream("MarketPlace2/src/marketplace/util/server.props");
+            in = new FileInputStream("MarketPlace2/src/marketplace/Util/server.props");
             props.load(in);
             in.close();
 
@@ -105,13 +98,6 @@ public class Client {
         output.flush();
     }
 
-    /**
-     * Attempt to read from the connection socket.
-     */
-    public Object readObjectFromServer() throws IOException, ClassNotFoundException {
-        Object object = inp.readObject();
-        return object;
-    }
 
     public List readListFromServer() throws IOException, ClassNotFoundException {
         List objectList = (List) inp.readObject();
