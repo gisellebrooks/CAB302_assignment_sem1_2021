@@ -12,6 +12,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * <h1>The login page</h1>
+ * * a login screen to allow users and admins to log in to the app
+ * *
+ * * @author Ali
+ */
 public class LoginGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel userLabel;

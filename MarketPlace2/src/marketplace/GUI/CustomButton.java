@@ -27,5 +27,4 @@ public class CustomButton extends JButton {
         setFocusPainted(false);
         setFont(fonts.small);
     }
-
 }

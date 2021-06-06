@@ -43,7 +43,6 @@ import java.util.Collection;
  * *
  * * @author Ali
  */
-
 public class BuySellOrderGUI extends FullSizeJPanel {
     public JPanel mainPanel;
     public String assetName;
@@ -52,6 +51,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
     public List<Order> activeBuyOrders;
     public List<SellOrder> activeSellOrders;
     public Boolean isSellOrder;
+    public Integer availableQuantity;
 
     /**
      *  Gets the user readable text for this GUI
@@ -62,6 +62,33 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         } else {
             return "Buy";
         }
+    }
+
+    /**
+     *  Computes the quantity of the asset you have available to sell
+     *  Does this buy subtracting your orgs total active sell order quantity from your inventory
+     */
+    public int getAvailableQuantity() {
+        if (availableQuantity != null) {
+            return availableQuantity;
+        }
+        if (inventory == null) {
+            this.availableQuantity = 0;
+        } else {
+            int quantityInActive = 0;
+            for (SellOrder order: activeSellOrders) {
+                try {
+                    User user = MainGUI.userHandler.searchUser(order.getUserID());
+                    if (user.getOrganisationID().equals(MainGUI.orgID)) {
+                        quantityInActive += order.getQuantity();
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+            this.availableQuantity = inventory.getQuantity() - quantityInActive;
+        }
+        return availableQuantity;
     }
 
     /**
@@ -169,25 +196,23 @@ public class BuySellOrderGUI extends FullSizeJPanel {
 
         public void calculateOrder() {
             try {
-                    try {
-                        setQuantity(Integer.parseInt(buyQuantityText.getText()));
-                    } catch (NumberFormatException ex) {
-                        invalidOrderLabel.setText("Invalid Quantity");
-                        return;
-                    }
-                    try {
-                        setPrice(Float.parseFloat(buyPriceText.getText()));
-                    } catch (NumberFormatException ex) {
-                        invalidOrderLabel.setText("Invalid Price");
-                        return;
-                    }
-                    if (isSellOrder || MainGUI.organisationHandler.organisationHasCredits(MainGUI.orgID, BigDecimal.valueOf(price))){
-                    } else {
-                        
-                        invalidCreditLabel.setText("You don't have enough credits!");
-                        return;
-                    }
-                if (isSellOrder && inventory.getQuantity() <= quantity) {
+                try {
+                    setQuantity(Integer.parseInt(buyQuantityText.getText()));
+                } catch (NumberFormatException ex) {
+                    invalidOrderLabel.setText("Invalid Quantity");
+                    return;
+                }
+                try {
+                    setPrice(Float.parseFloat(buyPriceText.getText()));
+                } catch (NumberFormatException ex) {
+                    invalidOrderLabel.setText("Invalid Price");
+                    return;
+                }
+                if (!isSellOrder && !MainGUI.organisationHandler.organisationHasCredits(MainGUI.orgID, BigDecimal.valueOf(price * quantity))){
+                    invalidCreditLabel.setText("You don't have enough credits!");
+                    return;
+                }
+                if (isSellOrder && getAvailableQuantity() <= quantity) {
                     invalidCreditLabel.setText("You don't have enough to sell!");
                     return;
                 }
@@ -267,18 +292,31 @@ public class BuySellOrderGUI extends FullSizeJPanel {
                     calculateOrder();
                 }
             });
+
+            try {
+                JPanel notePanel = new DefaultJPanel();
+                JLabel notesLabel = new CustomLabel(isSellOrder
+                        ? String.format("Your organisations available quantity of %s: %d", assetName, getAvailableQuantity())
+                        : String.format("Your organisations credits: $%s", MainGUI.organisationHandler.organisationCredits(MainGUI.orgID).toString()),
+                        fonts.small, true);
+                notePanel.add(notesLabel);
+                add(notePanel);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+
             inputsPanel.add(calculateButton);
             invalidCreditLabel = new JLabel("");
             invalidCreditLabel.setForeground(Color.red);
-            invalidCreditLabel.setBounds(10, 220, 340, 25);
+            invalidCreditLabel.setBounds(10, 250, 340, 25);
             add(invalidCreditLabel);
 
             invalidOrderLabel = new JLabel("");
             invalidOrderLabel.setForeground(Color.red);
-            invalidOrderLabel.setBounds(10, 220, 340, 25);
+            invalidOrderLabel.setBounds(10, 250, 340, 25);
             add(invalidOrderLabel);
 
-            add(Box.createRigidArea(new Dimension(0, 150)));
+            add(Box.createRigidArea(new Dimension(0, 110)));
             orderSummaryPanel = new OrderSummaryPanel();
             add(orderSummaryPanel);
             add(Box.createRigidArea(new Dimension(0, 180)));
@@ -372,6 +410,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
                     MainGUI.orderHandler.addNewSellOrder(
                             MainGUI.user.getUserID(),
                             inventory.getAssetID(),
+                            assetName,
                             quantity,
                             price
                     );
@@ -428,7 +467,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         private XYDataset createDataset( ) {
             final TimeSeries series = new TimeSeries( "Price History" );
             List<SellOrderHistory> orderHistory = MainGUI.orderHandler.getAllSellOrderHistoryForAsset(assetName);
-
             for (SellOrderHistory order: orderHistory) {
                 try {
                     series.addOrUpdate(new Second(order.getOrderDate()), order.getPrice().doubleValue() );

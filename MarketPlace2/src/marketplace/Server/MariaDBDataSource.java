@@ -1,16 +1,13 @@
 package marketplace.Server;
 
 import org.mariadb.jdbc.MariaDbPoolDataSource;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.Properties;
 
 public class MariaDBDataSource {
@@ -18,13 +15,12 @@ public class MariaDBDataSource {
     private MariaDbPoolDataSource MDBDS;
     private static Connection instance = null;
 
-
     /**
      * Constructor intializes the connection.
      */
     private MariaDBDataSource() throws SQLException {
         Properties props = new Properties();
-        FileInputStream in = null;
+        FileInputStream in;
 
         try {
             MDBDS = new MariaDbPoolDataSource();
@@ -103,12 +99,10 @@ public class MariaDBDataSource {
             e.printStackTrace();
         }
         return false;
-
     }
 
     public static void CloseInstance() {
         if (ds != null)
             ds.Close();
     }
-
 }

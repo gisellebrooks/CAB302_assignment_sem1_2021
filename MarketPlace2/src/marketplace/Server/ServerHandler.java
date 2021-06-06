@@ -26,7 +26,6 @@ public class ServerHandler extends Thread {
         try {
             pooledDataSource = MariaDBDataSource.getInstance();
             initDb(pooledDataSource);
-            //loadMockData(pooledDataSource);
             Properties props = loadServerConfig();
 
             rootDir = System.getProperty("user.dir");
@@ -35,10 +34,8 @@ public class ServerHandler extends Thread {
             while (true){
                 clientSocket = newClientConnection();
                 try {
-                    
 
                     clientSocket = listener.accept();
-                    
 
                     Thread thread = new ClientHandler(clientSocket, pooledDataSource);
                     thread.start();
@@ -136,6 +133,7 @@ public class ServerHandler extends Thread {
 
         for (String query : queries) {
             if (query.isBlank()) continue;
+            System.out.println(query);
             try (Connection conn = pool.getConnection();
                  PreparedStatement statement = conn.prepareStatement(query)) {
                 statement.execute();
@@ -146,7 +144,11 @@ public class ServerHandler extends Thread {
       public static void main(String[] args) throws SQLException {
           pooledDataSource = MariaDBDataSource.getInstance();
           initDb(pooledDataSource);
+
+          // uncomment this line to load a new set of test data for the database
 //          loadMockData(pooledDataSource);
+
+
           Properties props = loadServerConfig();
           Timer timer = new Timer();
           timer.scheduleAtFixedRate(new ReconcileOrders(pooledDataSource), 0, 10000);

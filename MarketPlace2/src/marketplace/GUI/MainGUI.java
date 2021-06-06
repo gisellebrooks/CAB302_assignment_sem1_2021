@@ -32,7 +32,6 @@ public class MainGUI extends JFrame implements Runnable {
     public static String assetName;
     public static Boolean isSellOrder;
 
-
     /**
      * This method runs when the MainGUI is initialised and it starts the gui and program for the client.
      */
@@ -53,13 +52,11 @@ public class MainGUI extends JFrame implements Runnable {
 
         }
 
-
         userHandler = new UserHandler(client);
         orderHandler = new OrderHandler(client);
         organisationHandler = new OrganisationHandler(client);
         inventoryHandler = new InventoryHandler(client);
 
-        
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new MainGUI());
     }

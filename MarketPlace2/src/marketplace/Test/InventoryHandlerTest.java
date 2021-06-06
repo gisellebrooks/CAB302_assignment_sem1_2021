@@ -123,6 +123,4 @@ public class InventoryHandlerTest {
             inventoryHandler.addAsset(newAssetID, assetName, orgID, quantity);
         });
     }
-
-
 }

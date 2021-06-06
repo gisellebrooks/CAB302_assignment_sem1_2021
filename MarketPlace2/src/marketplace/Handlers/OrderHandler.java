@@ -1,6 +1,7 @@
 package marketplace.Handlers;
 
 import marketplace.Client.Client;
+import marketplace.GUI.MainGUI;
 import marketplace.Objects.*;
 import marketplace.TableObject;
 
@@ -72,23 +73,17 @@ public class OrderHandler implements Serializable {
         try {
             client.writeToServer("SELECT * FROM ACTIVE_SELL_ORDERS;", TableObject.SELL_ORDER);
             result =  (List<SellOrder>) client.readListFromServer();
+            System.out.println("GETTING SELL ORDERS");
+            System.out.println(result);
+            for (SellOrder sellOrder: result){
+                System.out.println(sellOrder);
+            }
             
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         
         
-        return result;
-    }
-
-    public List<SellOrderHistory> getAllSellOrderHistory(){
-        List<SellOrderHistory> result = null;
-        try {
-            client.writeToServer("SELECT * FROM SELL_ORDER_HISTORY;", TableObject.SELL_HISTORY);
-            result =  client.readListFromServer();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
         return result;
     }
 
@@ -103,10 +98,11 @@ public class OrderHandler implements Serializable {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-
+        System.out.println("GEtting getAllSellOrderHistoryForAsset");
+        System.out.println(assetName);
+        System.out.println(result);
         return result;
     }
-
 
     public String newOrderID() {
         UUID uuid = UUID.randomUUID();
@@ -120,41 +116,34 @@ public class OrderHandler implements Serializable {
 
         try {
             client.writeToServer("INSERT INTO ACTIVE_BUY_ORDERS VALUES('"+id+"', '"+userID+"', '"+assetName+"', '"+ quantity +
-                    "', '" + price +"', '" +orderDate+ "' );", TableObject.SELL_ORDER);
+                    "', '" + price +"', '" +orderDate+ "' );", TableObject.BUY_ORDER);
+            client.readListFromServer();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void addNewSellOrder(String userID, String assetID, int quantity, BigDecimal price){
+    public void addNewSellOrder(String userID, String assetID, String assetName, int quantity, BigDecimal price){
         Timestamp orderDate = new Timestamp(System.currentTimeMillis());
         String sellID = newOrderID();
 
         try {
             client.writeToServer("INSERT INTO ACTIVE_SELL_ORDERS VALUES('"+sellID+"', '"+userID+"', '"+ assetID +
-                    "', '"+ quantity + "', '" + price +"', '" +orderDate+ "' );", TableObject.SELL_ORDER);
+                    "', '" + assetName + "', '" + quantity + "', '" + price +"', '" +orderDate+ "' );", TableObject.SELL_ORDER);
+            client.readListFromServer();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void ammendOrder(String orderType, String orderID, int quantity, BigDecimal price){
-        if (orderType == "buy"){
-            try {
-                client.writeToServer("UPDATE ACTIVE_BUY_ORDERS SET quantity= '" + quantity + "', priceUpper= '"+ price +"' WHERE buyID= '"+ orderID +"' ;", TableObject.UPDATE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (orderType == "sell"){
-            try {
-                client.writeToServer("UPDATE ACTIVE_SELL_ORDERS SET quantity= '" + quantity + "', priceLower= '"+ price +"' WHERE sellID= '"+ orderID +"' ;", TableObject.UPDATE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void deleteOrder(String orderType, String orderID){
+        System.out.println("DELETEING ORDER");
+        System.out.println(orderType);
+        System.out.println(orderID);
         if (orderType == "buy"){
             try {
                 client.writeToServer("DELETE FROM ACTIVE_BUY_ORDERS WHERE buyID= '"+ orderID +"' ;", TableObject.DELETE);
@@ -173,20 +162,23 @@ public class OrderHandler implements Serializable {
     public List<String> getAllActiveAssetNames() {
         List<Order> allBuyOrders = getAllActiveBuyOrders();
         List<SellOrder> allSellOrders = getAllActiveSellOrders();
+        List<Inventory> allInventory = MainGUI.inventoryHandler.getAllInventory();
         List<String> allAssetNames = new ArrayList<>();
 
-        if (allBuyOrders != null || allSellOrders != null ) {
+        if (allBuyOrders != null || allSellOrders != null || allInventory != null ) {
             for (Order order : allBuyOrders) {
                 if (!allAssetNames.contains(order.getAssetName())) {
                     allAssetNames.add(order.getAssetName());
                 }
             }
-            
-            
-
             for (Order order : allSellOrders) {
                 if (!allAssetNames.contains(order.getAssetName())) {
                     allAssetNames.add(order.getAssetName());
+                }
+            }
+            for (Inventory inv : allInventory) {
+                if (!allAssetNames.contains(inv.getAssetName())) {
+                    allAssetNames.add(inv.getAssetName());
                 }
             }
         }

@@ -1,5 +1,6 @@
 package marketplace.GUI;
 
+import marketplace.Handlers.PasswordHandler;
 import marketplace.Objects.*;
 import marketplace.Util.Fonts;
 
@@ -9,13 +10,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.security.NoSuchAlgorithmException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-
+/**
+ * <h1>The Home scree</h1>
+ * * adds a screen of full size. All pages are built on this component
+ * *
+ * * @author Ali
+ */
 public class HomeGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel assetNamePromptLabel;
@@ -50,7 +58,7 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
         toSettingButton.setBounds(1000, 20, 120, 25);
         toSettingButton.addActionListener(e -> {
             removeAll();
-            if (MainGUI.userType.equals("admin")) {
+            if (MainGUI.userType.equals("ADMIN")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());
@@ -65,7 +73,8 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
         add(assetNamePromptLabel);
 
         List<String> assetNames =  MainGUI.orderHandler.getAllActiveAssetNames();
-        assetBox= new JComboBox(MainGUI.orderHandler.getAllActiveAssetNames().toArray(new String[0]));
+        Collections.sort(assetNames);
+        assetBox= new JComboBox(assetNames.toArray(new String[0]));
         
 
         assetBox.setBounds(510, 100, 160, 25);
@@ -122,11 +131,20 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
         invalid.setBounds(10, 120, 340, 25);
         add(invalid);
 
+        Comparator<Order> descDate = new Comparator<Order>() {
+            public int compare(Order o1, Order o2) {
+                if (o1.getOrderDate().before(o2.getOrderDate())) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        };
         activeBuyOrders = MainGUI.orderHandler.getAllOrganisationBuyOrders(MainGUI.orgID);
-        Collections.reverse(activeBuyOrders);
+        Collections.sort(activeBuyOrders, descDate);
 
         activeSellOrders = MainGUI.orderHandler.getAllOrganisationSellOrders(MainGUI.orgID);
-        Collections.reverse(activeSellOrders);
+        Collections.sort(activeSellOrders, descDate);
 
         JLabel buyOrdersLabel = new CustomLabel("Your Buy Orders", fonts.smallHeading, false);
         buyOrdersLabel.setBounds(10, 200, 340, 25);

@@ -10,7 +10,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * <h1>Page to update user password</h1>
+ * * Shows a GUI to update the users password
+ * *
+ * * @author Ali
+ */
 public class ChangeUsersPasswordGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel oldPasswordPromptLabel;

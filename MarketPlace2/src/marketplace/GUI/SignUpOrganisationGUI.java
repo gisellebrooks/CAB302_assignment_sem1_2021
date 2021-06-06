@@ -8,6 +8,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * <h1>Sign up page for an organisation</h1>
+ * *
+ * *
+ * * @author Ali
+ */
 public class SignUpOrganisationGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel namePromptLabel;
@@ -54,7 +60,7 @@ public class SignUpOrganisationGUI extends FullSizeJPanel implements ActionListe
         toSettingsButton.setBounds(300, 50, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            if (MainGUI.userType.equals("admin")) {
+            if (MainGUI.userType.equals("ADMIN")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());

@@ -5,6 +5,13 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.text.Document;
 
+/**
+ * <h1>Component for the Password Field </h1>
+ * * A custom password field for use within our app.
+ * * Adds relevant styles to match our apps design system
+ * *
+ * * @author Ali
+ */
 @SuppressWarnings("serial")
 public class CustomPasswordField extends JPasswordField {
     public void addStyles() {

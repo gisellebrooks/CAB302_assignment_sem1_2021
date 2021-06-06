@@ -5,6 +5,12 @@ import marketplace.Util.Fonts;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * <h1>Component for a Yellow Button </h1>
+ * * A CustomButton but with a yellow design, as described in our design system
+ * *
+ * * @author Ali
+ */
 public class CustomYellowButton extends JButton {
 
     public CustomYellowButton(String text) {

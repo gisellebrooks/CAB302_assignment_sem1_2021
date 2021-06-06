@@ -6,7 +6,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.*;
 
-
 public class Client{
     private static String rootDir;
     private static Properties props;

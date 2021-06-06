@@ -7,6 +7,12 @@ import marketplace.Util.Fonts;
 
 import javax.swing.*;
 
+/**
+ * <h1>Settings page for the user level</h1>
+ * *
+ * *
+ * * @author Ali
+ */
 public class SettingsNavigationUserGUI extends FullSizeJPanel {
 
     private static JButton changePasswordButton;

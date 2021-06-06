@@ -9,6 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+/**
+ * <h1>Page to create a new user</h1>
+ * * Shows a GUI to create a new user
+ * *
+ * * @author Ali
+ */
 public class CreateUserGUI extends FullSizeJPanel implements ActionListener {
 
     private static CustomLabel namePromptLabel;
@@ -25,15 +31,11 @@ public class CreateUserGUI extends FullSizeJPanel implements ActionListener {
     private static CustomButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
-    public JPanel logo;
     public Fonts fonts;
 
     public CreateUserGUI() {
         setLayout(null);
         setBounds(0, 0, 1181, 718);
-        logo = new LogoPanel();
-        logo.setBounds(10, 10, 200, 50);
-        add(logo);
 
         this.fonts = new Fonts();
 
@@ -88,8 +90,8 @@ public class CreateUserGUI extends FullSizeJPanel implements ActionListener {
         givenPasswordText.setBounds(10, 340, 180, 25);
         add(givenPasswordText);
 
-        JButton toSettingButton = new CustomButton("Settings");
-        toSettingButton.setBounds(1020, 20, 120, 25);
+        toSettingsButton = new CustomButton("Settings");
+        toSettingsButton.setBounds(1020, 20, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
             add(new SettingsNavigationAdminGUI());

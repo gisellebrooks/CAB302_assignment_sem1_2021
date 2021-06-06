@@ -12,11 +12,9 @@ import java.util.List;
 public class ClientHandler extends Thread {
 
     private Socket socket;
-    private ObjectInputStream inputFromClient;
     private ObjectOutputStream outputToClient;
     private MariaDBDataSource pool;
     private BufferedReader in;
-    private PrintWriter out;
 
     public ClientHandler (Socket socket, MariaDBDataSource pool) throws IOException {
         this.socket = socket;
@@ -41,6 +39,7 @@ public class ClientHandler extends Thread {
                         pool.updateResult(query);
                     }
                     else{
+                        System.out.println(query);
                         result = pool.getResult(query);
                     }
 
@@ -128,9 +127,9 @@ public class ClientHandler extends Thread {
                             break;
 
                         case SELL_HISTORY:
-                            List<SellOrder> sellHistory = new ArrayList<>();
+                            List<SellOrderHistory> sellHistory = new ArrayList<>();
                             while (result.next()){
-                                SellOrder oldSell = new SellOrder();
+                                SellOrderHistory oldSell = new SellOrderHistory();
                                 oldSell.setOrderID(result.getString("oldSellID"));
                                 oldSell.setUserID(result.getString("userID"));
                                 oldSell.setAssetID(result.getString("assetID"));

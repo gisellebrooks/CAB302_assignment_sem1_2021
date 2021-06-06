@@ -21,17 +21,6 @@ public class InventoryHandler {
         this.client = client;
     }
 
-    public Inventory getAssetInformation(String assetID){
-        Inventory result = null;
-        try {
-            client.writeToServer("SELECT * FROM INVENTORY WHERE assetID = '" + assetID + "';", TableObject.INVENTORY);
-            result = (Inventory) client.readListFromServer();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return result;
-    }
-
     public void addAsset(String assetID, String assetName, String orgID, int quantity) throws Exception {
 
         if (assetNameExists(assetName, orgID)) {
@@ -48,10 +37,6 @@ public class InventoryHandler {
 
         if (quantity < 1) {
             throw new Exception("Please enter a quantity more than 0");
-        }
-
-        if (assetNameExists(assetName, orgID)) {
-            throw new Exception("Organisation already has that asset");
         }
 
         try {
@@ -97,39 +82,26 @@ public class InventoryHandler {
         return newID;
     }
 
-    public void removeAsset(String assetID, String assetName, String orgID, int quantity) {
-
-        try {
-            client.writeToServer("D INTO INVENTORY VALUES('" + assetID + "', '" + assetName + "', '" + orgID +
-                    "', '" + quantity + "' );", TableObject.INVENTORY);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-    }
-
     public void updateOrganisationAssetQuantity(String assetID, String orgID, int quantity) throws Exception {
 
         if (quantity < 0) {
             throw new Exception("Please enter a valid number");
         }
 
-        if (quantity < (MainGUI.organisationHandler.getOrganisationSellingQuantity(orgID, assetID))) {
-            throw new Exception("Current sell orders don't allow that");
-        }
-
         if (quantity == 0) {
             try {
-                client.writeToServer("DELETE FROM INVENTORY WHERE assetID = '" + assetID + "' orgID = '" + orgID + "';", TableObject.INVENTORY);
-                client.readListFromServer();
-            } catch (IOException | ClassNotFoundException exception) {
+                client.writeToServer("DELETE FROM INVENTORY WHERE assetID = '" + assetID + "' AND orgID = '" + orgID + "';", TableObject.DELETE);
+            } catch (IOException exception) {
                 exception.printStackTrace();
             }
         } else {
             try {
-                client.writeToServer("UPDATE INVENTORY SET quantity = '"+ quantity +"' WHERE assetID= '" + assetID
+                client.writeToServer("UPDATE INVENTORY SET quantity = '"+ quantity +"' WHERE assetID = '" + assetID
                         + "' AND orgID = '" + orgID + "';", TableObject.INVENTORY);
                 client.readListFromServer();
-            } catch (IOException | ClassNotFoundException exception) {
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            } catch (ClassNotFoundException exception) {
                 exception.printStackTrace();
             }
         }
@@ -138,7 +110,7 @@ public class InventoryHandler {
     public void updateAssetQuantity(String assetID, int quantity) {
 
         try {
-            client.writeToServer("UPDATE INVENTORY SET quantity= '"+ quantity +"' WHERE assetID= '"+ assetID +"';", TableObject.INVENTORY);
+            client.writeToServer("UPDATE INVENTORY SET quantity= '"+ quantity +"' WHERE assetID = '"+ assetID +"';", TableObject.UPDATE);
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -207,8 +179,6 @@ public class InventoryHandler {
     }
 
     public boolean assetNameExists(String assetName, String orgID) throws Exception {
-        Inventory asset = null;
-
         try {
             List<Inventory> inventories = getOrganisationsAssets(orgID);
 
@@ -221,28 +191,5 @@ public class InventoryHandler {
             exception.printStackTrace();
         }
         return false;
-    }
-
-    public boolean assetIDExists(String assetID) {
-        Inventory asset = null;
-        try {
-            client.writeToServer("SELECT * FROM INVENTORY WHERE assetID = '" + assetID + "';", TableObject.INVENTORY);
-            asset = (Inventory) client.readListFromServer();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        if (asset.getAssetID() != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public void deleteOrganisationAsset(String assetID, String organisationID) {
-        try {
-            client.writeToServer("DELETE FROM INVENTORY WHERE assetID = '" + assetID + "' orgID = '" + organisationID + "';", TableObject.INVENTORY);
-            client.readListFromServer();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 }

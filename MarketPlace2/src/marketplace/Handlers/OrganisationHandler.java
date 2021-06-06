@@ -1,6 +1,7 @@
 package marketplace.Handlers;
 
 import marketplace.Client.Client;
+import marketplace.GUI.MainGUI;
 import marketplace.Objects.Order;
 import marketplace.Objects.Organisation;
 import marketplace.Objects.User;
@@ -183,7 +184,6 @@ public class OrganisationHandler implements Serializable {
     /**
      * Searches through all the organisation's to get each orgName and returns it in a list of strings.
      *
-     * @throws Exception when an error occurs in the database process and returns an error message.
      * @return a lsit of strings with all organisation names in it.
      */
     public List<String> getAllOrganisationsNames() {
@@ -257,6 +257,24 @@ public class OrganisationHandler implements Serializable {
             throw new Exception("Organisation does not exist");
         }
         return false;
+    }
+
+    public BigDecimal organisationCredits(String orgID) throws Exception {
+        List<Organisation> orgInformation;
+        BigDecimal result = new BigDecimal(0);
+        try {
+            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgID = '" +
+                    orgID + "';", TableObject.ORGANISATION);
+            orgInformation = client.readListFromServer();
+
+            if (orgInformation != null){
+                result = orgInformation.get(0).getCredits();
+            }
+
+        } catch (Exception exception) {
+            throw new Exception("Organisation does not exist");
+        }
+        return result;
     }
 
     public void updateOrganisationCredits(String orgID, BigDecimal credits) throws Exception {

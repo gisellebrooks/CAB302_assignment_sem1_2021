@@ -1,6 +1,6 @@
 INSERT INTO USER_INFORMATION
-VALUES ('user1', 'e127334cf782d06dd8a88c72ca0a6b8157405ee1c7fa8b048f93ce861b1319a1', 'USER', 'org1', 'Mike Wazowski');
--- password is "!123asddasADS@#zxc"
+VALUES ('user1', '14e3885dc3a6764f84023badcdaa54b9f3f6121ff28c68174636f533ce97e3a5', 'USER', 'org1', 'Mike Wazowski');
+-- password is "password123"
 
 INSERT INTO USER_INFORMATION
 VALUES ('user2', 'ecf5577aaca9e2b0a167bc0325f4206b5a2473db0eeb618660fb353a19537624', 'ADMIN', 'org2', 'John Smith');
@@ -13,6 +13,10 @@ VALUES ('user3', '85e6fe2a495e23a81bc93a14608df3e2a58cbdcdd99e01fa4c90d486c7509f
 INSERT INTO USER_INFORMATION
 VALUES ('user4', '7d20c8a43dab45cfa7b2a7f5c6366f53b6bd064f3b65e16591cd08d69e087a50', 'USER', 'org4', 'Missy Moo');
 -- password is "!@z123as#231!@#dsaASD"
+
+INSERT INTO USER_INFORMATION
+VALUES ('user5', '14e3885dc3a6764f84023badcdaa54b9f3f6121ff28c68174636f533ce97e3a5', 'ADMIN', 'org1', 'Joe Smith');
+-- password is "password123"
 
 INSERT INTO ORGANISATIONAL_UNIT_INFORMATION
 VALUES ('org1', 'Hardware Unit', 3000);
@@ -37,7 +41,7 @@ INSERT INTO INVENTORY
 VALUES ('asset3', 'ARDUINOS', 'org3', 30);
 
 INSERT INTO INVENTORY
-VALUES ('asset4', 'CPU', 'org4', 30);
+VALUES ('asset4', 'CPU', 'org4', 200);
 
 INSERT INTO INVENTORY
 VALUES ('asset5', 'RAM', 'org1', 50);
@@ -64,6 +68,18 @@ VALUES ('buy5', 'user1', 'DOGE', 10, 15, '2021-03-24 16:34:26.0');
 INSERT INTO ACTIVE_BUY_ORDERS
 VALUES ('buy6', 'user4', 'RAM', 30, 50, '2021-03-24 16:34:26.0');
 
+-- INSERT INTO ACTIVE_BUY_ORDERS 
+-- VALUES ('buy7', 'user2', 'CPU', 15, 9, '2021-02-24 16:34:26.0');
+
+-- INSERT INTO ACTIVE_BUY_ORDERS 
+-- VALUES ('buy8', 'user2', 'CPU', 15, 8.5, '2021-01-24 16:34:26.0');
+
+-- INSERT INTO ACTIVE_BUY_ORDERS 
+-- VALUES ('buy9', 'user2', 'CPU', 15, 9.2, '2021-01-12 16:34:26.0');
+
+-- INSERT INTO ACTIVE_BUY_ORDERS 
+-- VALUES ('buy10', 'user2', 'CPU', 15, 10.2, '2021-04-12 16:34:26.0');
+
 
 INSERT INTO ACTIVE_SELL_ORDERS 
 VALUES ('sell1', 'user3', 'asset3', 'ARDUINOS', 15, 10, '2021-03-24 16:34:26.0');
@@ -80,5 +96,31 @@ VALUES ('sell4', 'user1', 'asset5', 'RAM', 10, 17, '2021-03-24 16:34:29.0');
 INSERT INTO ACTIVE_SELL_ORDERS
 VALUES ('sell5', 'user4', 'asset6', 'DOGE', 10, 10, '2021-03-24 16:34:30.0');
 
+-- INSERT INTO ACTIVE_SELL_ORDERS 
+-- VALUES ('sell6', 'user4', 'asset4', 'CPU', 15, 9, '2021-02-24 16:34:26.0');
+
+-- INSERT INTO ACTIVE_SELL_ORDERS 
+-- VALUES ('sell7', 'user4', 'asset4', 'CPU', 15, 8.5, '2021-01-24 16:34:26.0');
+
+-- INSERT INTO ACTIVE_SELL_ORDERS 
+-- VALUES ('sell8', 'user4', 'asset4', 'CPU', 15, 9.2, '2021-01-12 16:34:26.0');
+
+-- INSERT INTO ACTIVE_SELL_ORDERS 
+-- VALUES ('sell9', 'user4', 'asset4', 'CPU', 15, 10.2, '2021-04-12 16:34:26.0');
+
+INSERT INTO SELL_ORDER_HISTORY
+VALUES ('oldSell1', 'sell2', 'user4', 'asset4', '15', "10.00",' 2021-06-07 08:12:27');
+
+INSERT INTO SELL_ORDER_HISTORY
+VALUES ('oldSell2', 'sell9', 'user4', 'asset4', '15', "10.20",' 2021-05-07 08:12:27');
+
+INSERT INTO SELL_ORDER_HISTORY
+VALUES ('oldSell2', 'sell8', 'user4', 'asset4', '15', "9.20",' 2021-04-07 08:12:27');
+
+INSERT INTO SELL_ORDER_HISTORY
+VALUES ('oldSell2', 'sell6', 'user4', 'asset4', '15', "9.00",' 2021-03-07 08:12:27');
+
+INSERT INTO SELL_ORDER_HISTORY
+VALUES ('oldSell2', 'sell7', 'user4', 'asset4', '15', "8.50",' 2021-02-07 08:12:27');
 
 

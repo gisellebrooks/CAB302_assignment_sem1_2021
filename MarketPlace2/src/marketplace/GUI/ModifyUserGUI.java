@@ -11,7 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-
+/**
+ * <h1>Settings to modify a user</h1>
+ * *
+ * *
+ * * @author Ali
+ */
 public class ModifyUserGUI extends FullSizeJPanel implements ActionListener {
 
     private static JButton modifyUserButton;

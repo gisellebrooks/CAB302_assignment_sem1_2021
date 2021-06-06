@@ -138,13 +138,6 @@ public class UserHandler {
 
         OrganisationHandler organisationHandler = new OrganisationHandler(this.client);
 
-        try {
-            if (userIDExists(user.getUserID())) {
-                throw new Exception("That user ID already exists");
-            }
-        } catch (Exception exception) {
-
-        }
 
         if (!user.getUserID().contains("user") || user.getUserID().length() < 4) {
             throw new Exception("That user ID is invalid");

@@ -231,31 +231,6 @@ public class ReconcileOrders extends TimerTask {
         return organisationList;
     }
 
-    public Inventory getInventoryInformation(String assetID) {
-        ResultSet result = null;
-        Inventory inventory = new Inventory();
-
-        try (Connection conn = pool.getConnection()) {
-            try (PreparedStatement statement = conn.prepareStatement("SELECT * FROM INVENTORY WHERE assetID= '" + assetID + "';")) {
-                result = statement.executeQuery();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if (result != null && result.next()) {
-                inventory.setAssetID(result.getString("assetID"));
-                inventory.setAssetName(result.getString("assetName"));
-                inventory.setOrgID(result.getString("orgID"));
-                inventory.setQuantity(result.getInt("quantity"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return inventory;
-    }
-
     public boolean checkIfAssetExists(String assetName, String orgID){
         ResultSet result = null;
         boolean assetExists = false;
@@ -352,7 +327,8 @@ public class ReconcileOrders extends TimerTask {
         }
     }
 
-    public void removeAssetFromInventory(String sellAssetID){
+    public void removeAssetFromInventory
+            (String sellAssetID){
         try (Connection conn = pool.getConnection()) {
             try (PreparedStatement statement = conn.prepareStatement("DELETE FROM INVENTORY  WHERE assetID= '" +
                     sellAssetID + "';")) {
@@ -436,7 +412,7 @@ public class ReconcileOrders extends TimerTask {
         String buyOrgID;
         String buyAssetName;
         int buyQuantity;
-        int remainderBuyQuantity = 0;
+        int remainderBuyQuantity;
         BigDecimal buyOrgCredits;
         BigDecimal buyPrice;
         Organisation buyOrgInformation;
@@ -448,7 +424,7 @@ public class ReconcileOrders extends TimerTask {
         String sellAssetID;
         String sellAssetName;
         int sellQuantity;
-        int remainderSellQuantity = 0;
+        int remainderSellQuantity;
         BigDecimal sellOrgCredits;
         BigDecimal sellPrice;
         BigDecimal sellPriceUpper;
@@ -558,8 +534,6 @@ public class ReconcileOrders extends TimerTask {
 
                                 if (newSellOrgQuantity > 0) {
                                     updateSellInventory(sellAssetID, newSellOrgQuantity);
-                                } else {
-                                    removeAssetFromInventory(sellAssetID);
                                 }
 
                                 // UPDATE BUY ORG ORGANISATION CREDITS

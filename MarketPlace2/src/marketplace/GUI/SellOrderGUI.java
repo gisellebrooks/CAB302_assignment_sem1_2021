@@ -11,7 +11,12 @@ import java.util.List;
 
 import static marketplace.GUI.MainGUI.orderHandler;
 
-
+/**
+ * <h1>Sell order gui</h1>
+ * *
+ * *
+ * * @author Ali
+ */
 public class SellOrderGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel Title;

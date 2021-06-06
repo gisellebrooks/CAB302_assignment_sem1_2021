@@ -99,7 +99,6 @@ public class OrderHandlerTest {
         expectedFirstSellOrder.add("2021-03-24 16:34:26.0");
 
         assertEquals(expectedFirstSellOrder, actualFirstSellOrder);
-
     }
 
     @Test
@@ -112,7 +111,6 @@ public class OrderHandlerTest {
         actualAssetName = actualFirstBuyOrderObject.getAssetName();
 
         assertEquals(expectedAssetName, actualAssetName);
-
     }
 
     @Test
@@ -125,6 +123,5 @@ public class OrderHandlerTest {
         actualAssetName = actualFirstSellOrderObject.getAssetName();
 
         assertEquals(expectedAssetName, actualAssetName);
-
     }
 }

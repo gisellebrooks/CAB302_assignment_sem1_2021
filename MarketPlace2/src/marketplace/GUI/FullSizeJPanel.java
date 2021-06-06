@@ -2,8 +2,13 @@ package marketplace.GUI;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * <h1>A full size screen </h1>
+ * * adds a screen of full size. All pages are built on this component
+ * *
+ * * @author Ali
+ */
 public class FullSizeJPanel extends JPanel {
-    public LogoPanel logo;
     public FullSizeJPanel() {
         super();
 

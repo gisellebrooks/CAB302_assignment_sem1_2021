@@ -10,6 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 
+/**
+ * <h1>Settings to modify an organisation</h1>
+ * *
+ * *
+ * * @author Ali
+ */
 public class ModifyOrganisationGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel organisationIDPromptLabel;
@@ -128,7 +134,7 @@ public class ModifyOrganisationGUI extends FullSizeJPanel implements ActionListe
         toSettingsButton.setBounds(460, 40, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            if (MainGUI.userType.equals("admin")) {
+            if (MainGUI.userType.equals("ADMIN")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());

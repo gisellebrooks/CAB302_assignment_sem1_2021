@@ -5,6 +5,12 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.text.Document;
 
+/**
+ * <h1>Component for a Text Field </h1>
+ * * A Text Field with styles matching our design system
+ * *
+ * * @author Ali
+ */
 @SuppressWarnings("serial")
 public class CustomTextField extends JTextField {
 

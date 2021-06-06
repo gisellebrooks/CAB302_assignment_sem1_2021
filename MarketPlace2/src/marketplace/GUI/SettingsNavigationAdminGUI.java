@@ -4,6 +4,12 @@ import marketplace.GUI.FullSizeJPanel;
 import marketplace.GUI.HomeGUI;
 import javax.swing.*;
 
+/**
+ * <h1>Settings page for the admin level</h1>
+ * *
+ * *
+ * * @author Ali
+ */
 public class SettingsNavigationAdminGUI extends FullSizeJPanel {
 
     private static CustomButton createUserButton;

@@ -10,6 +10,12 @@ import java.awt.Container;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+/**
+ * <h1>Component for a Pink Button </h1>
+ * * A CustomButton but with a pink design, as described in our design system
+ * *
+ * * @author Ali
+ */
 public class CustomPinkButton extends JButton {
 
     public CustomPinkButton(String text) {
