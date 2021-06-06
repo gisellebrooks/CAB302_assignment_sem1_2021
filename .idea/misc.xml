@@ -5,6 +5,11 @@
       <item index="0" class="java.lang.String" itemvalue="org.junit.jupiter.api.BeforeAll" />
     </list>
   </component>
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/Javadocs" />
+    <option name="OPTION_SCOPE" value="public" />
+    <option name="OPTION_INCLUDE_LIBS" value="true" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
