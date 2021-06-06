@@ -1,4 +1,4 @@
-package marketplace.GUI.Settings;
+package marketplace.GUI;
 
 import marketplace.GUI.MainGUI;
 import marketplace.GUI.FullSizeJPanel;

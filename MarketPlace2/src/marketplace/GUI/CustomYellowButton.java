@@ -5,9 +5,9 @@ import marketplace.Util.Fonts;
 import javax.swing.*;
 import java.awt.*;
 
-public class CustomPinkButton extends JButton {
+public class CustomYellowButton extends JButton {
 
-    public CustomPinkButton(String text) {
+    public CustomYellowButton(String text) {
         super(text);
         Fonts fonts;
         fonts = new Fonts();

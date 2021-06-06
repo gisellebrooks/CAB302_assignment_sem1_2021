@@ -1,4 +1,4 @@
-package marketplace.GUI.Settings;
+package marketplace.GUI;
 
 import marketplace.GUI.FullSizeJPanel;
 import marketplace.GUI.HomeGUI;
@@ -29,7 +29,7 @@ public class SettingsNavigationAdminGUI extends FullSizeJPanel {
         createUserButton.setBounds(50, 20, 160, 25);
         createUserButton.addActionListener(e -> {
             removeAll();
-            add(new SignUpUserGUI());
+            add(new CreateUserGUI());
             updateUI();
         });
         add(createUserButton);

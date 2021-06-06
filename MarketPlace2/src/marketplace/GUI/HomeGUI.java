@@ -1,7 +1,5 @@
 package marketplace.GUI;
 
-import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
-import marketplace.GUI.Settings.SettingsNavigationUserGUI;
 import marketplace.Objects.Inventory;
 import marketplace.Objects.Order;
 import marketplace.Util.Fonts;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class OrderGUI extends FullSizeJPanel implements ActionListener {
+public class HomeGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel assetNamePromptLabel;
     private static JComboBox assetBox;
@@ -25,7 +23,7 @@ public class OrderGUI extends FullSizeJPanel implements ActionListener {
     private static JLabel invalid;
     Fonts fonts;
 
-    public OrderGUI() {
+    public HomeGUI() {
         this.fonts = new Fonts();
         setLayout(null);
         setBounds(0, 0, 1181, 718);

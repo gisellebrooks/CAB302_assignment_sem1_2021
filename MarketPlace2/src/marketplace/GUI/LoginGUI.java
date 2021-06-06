@@ -90,7 +90,7 @@ public class LoginGUI extends FullSizeJPanel implements ActionListener {
             MainGUI.setUser(user);
             System.out.println(MainGUI.user.getUserID());
             removeAll();
-            add(new OrderGUI());
+            add(new HomeGUI());
             updateUI();
 
         } catch (Exception exception) {

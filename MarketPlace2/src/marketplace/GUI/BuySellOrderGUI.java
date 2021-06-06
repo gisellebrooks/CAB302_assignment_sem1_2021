@@ -12,8 +12,6 @@
 package marketplace.GUI;
 
 import com.sun.tools.javac.Main;
-import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
-import marketplace.GUI.Settings.SettingsNavigationUserGUI;
 import marketplace.Objects.*;
 import marketplace.Util.Fonts;
 import org.jfree.chart.ChartFactory;
@@ -112,7 +110,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         backToAssets.setBounds(300, 50, 120, 25);
         backToAssets.addActionListener(e -> {
             removeAll();
-            add(new OrderGUI());
+            add(new HomeGUI());
             updateUI();
         });
         add(backToAssets);
@@ -394,7 +392,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         }
     }
     class DataPanel extends DefaultJPanel {
-        GraphView graph;
 
         public DataPanel(){
             JPanel container = new DefaultJPanel();

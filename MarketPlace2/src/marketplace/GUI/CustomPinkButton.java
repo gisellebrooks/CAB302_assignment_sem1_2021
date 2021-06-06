@@ -10,9 +10,9 @@ import java.awt.Container;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-public class CustomButton extends JButton {
+public class CustomPinkButton extends JButton {
 
-    public CustomButton(String text) {
+    public CustomPinkButton(String text) {
         super(text);
         Fonts fonts;
         fonts = new Fonts();
