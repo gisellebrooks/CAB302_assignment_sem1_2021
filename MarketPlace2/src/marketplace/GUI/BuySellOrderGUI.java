@@ -431,9 +431,9 @@ public class BuySellOrderGUI extends FullSizeJPanel {
 
         private XYDataset createDataset( ) {
             final TimeSeries series = new TimeSeries( "Price History" );
-            List<SellOrder> orderHistory = MainGUI.orderHandler.getAllSellOrderHistoryForAsset(assetName);
+            List<SellOrderHistory> orderHistory = MainGUI.orderHandler.getAllSellOrderHistoryForAsset(assetName);
 
-            for (SellOrder order: orderHistory) {
+            for (SellOrderHistory order: orderHistory) {
                 try {
                     series.addOrUpdate(new Second(order.getOrderDate()), order.getPrice().doubleValue() );
                 } catch ( SeriesException e ) {
