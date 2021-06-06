@@ -11,31 +11,30 @@
 
 package marketplace.GUI;
 
-import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
-import marketplace.GUI.Settings.SettingsNavigationUserGUI;
+import com.sun.tools.javac.Main;
 import marketplace.Objects.*;
 import marketplace.Util.Fonts;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.SeriesException;
-import org.jfree.data.time.Second;
-import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-
+import org.jfree.data.time.Second;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.chart.ChartPanel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * <h1>Create the Buy and sell order GUIs!</h1>
@@ -179,25 +178,25 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         public void calculateOrder() {
             //TODO: add giselle's method to check if user has enough credits to place order.
             try {
-                    try {
-                        setQuantity(Integer.parseInt(buyQuantityText.getText()));
-                    } catch (NumberFormatException ex) {
-                        invalidOrderLabel.setText("Invalid Quantity");
-                        return;
-                    }
-                    try {
-                        setPrice(Float.parseFloat(buyPriceText.getText()));
-                    } catch (NumberFormatException ex) {
-                        invalidOrderLabel.setText("Invalid Price");
-                        return;
-                    }
-                    if (MainGUI.organisationHandler.organisationHasCredits(MainGUI.orgID, BigDecimal.valueOf(price))){
-                        System.out.println("org id is " + MainGUI.orgID + " price is " +price);
-                    }else {
-                        System.out.println("false");
-                        invalidCreditLabel.setText("You don't have enough credits!");
-                        return;
-                    }
+                try {
+                    setQuantity(Integer.parseInt(buyQuantityText.getText()));
+                } catch (NumberFormatException ex) {
+                    invalidOrderLabel.setText("Invalid Quantity");
+                    return;
+                }
+                try {
+                    setPrice(Float.parseFloat(buyPriceText.getText()));
+                } catch (NumberFormatException ex) {
+                    invalidOrderLabel.setText("Invalid Price");
+                    return;
+                }
+                if (MainGUI.organisationHandler.organisationHasCredits(MainGUI.orgID, BigDecimal.valueOf(price))){
+                    System.out.println("org id is " + MainGUI.orgID + " price is " +price);
+                }else {
+                    System.out.println("false");
+                    invalidCreditLabel.setText("You don't have enough credits!");
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -495,10 +494,10 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             }
 
             add(new TableRow(
-                organisationUnit,
-                String.format("%d", order.getQuantity()),
-                NumberFormat.getCurrencyInstance().format(order.getPrice().divide(new BigDecimal(order.getQuantity()), 2, RoundingMode.HALF_UP)),
-                new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(order.getOrderDate())
+                    organisationUnit,
+                    String.format("%d", order.getQuantity()),
+                    NumberFormat.getCurrencyInstance().format(order.getPrice().divide(new BigDecimal(order.getQuantity()), 2, RoundingMode.HALF_UP)),
+                    new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(order.getOrderDate())
             ));
         }
     }
