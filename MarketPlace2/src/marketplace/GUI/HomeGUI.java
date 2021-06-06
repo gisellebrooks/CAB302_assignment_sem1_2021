@@ -141,9 +141,9 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
         public History(boolean isSell){
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             if (!isSell) {
-                setBounds(10, 240, 600, 200);
+                setBounds(10, 240, 500, 400);
             } else {
-                setBounds(10, 440, 600, 200);
+                setBounds(610, 240, 500, 400);
             }
 //            setPreferredSize(new Dimension(600, 200));
 //            container.setBackground(Color.YELLOW);
@@ -158,6 +158,10 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
             for (Order order: isSell ? activeSellOrders : activeBuyOrders) {
                 add(new OrderRow(order));
             }
+            Dimension minSize = new Dimension(600, Short.MAX_VALUE);
+            Dimension prefSize = new Dimension(600, Short.MAX_VALUE);
+            Dimension maxSize = new Dimension(600, Short.MAX_VALUE);
+            add(new Box.Filler(minSize, prefSize, maxSize));
 //            add(new BuyOrderTable());
         }
     }
