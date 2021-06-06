@@ -29,6 +29,9 @@ public class OrderGUI extends FullSizeJPanel implements ActionListener {
         this.fonts = new Fonts();
         setLayout(null);
         setBounds(0, 0, 1181, 718);
+        LogoPanel logo = new LogoPanel();
+        logo.setBounds(10, 10, 200, 50);
+        add(logo);
 
         List<Order> buy = MainGUI.orderHandler.getAllActiveBuyOrders();
         List<String> assets = new ArrayList<String>();

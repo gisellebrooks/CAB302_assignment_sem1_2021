@@ -1,7 +1,7 @@
 package marketplace.GUI.Settings;
 
 import marketplace.GUI.FullSizeJPanel;
-import marketplace.GUI.OrderGUI;
+import marketplace.GUI.HomeGUI;
 import javax.swing.*;
 
 public class SettingsNavigationAdminGUI extends FullSizeJPanel {
@@ -20,7 +20,7 @@ public class SettingsNavigationAdminGUI extends FullSizeJPanel {
         toHomeButton.setBounds(450, 20, 120, 25);
         toHomeButton.addActionListener(e -> {
             removeAll();
-            add(new OrderGUI());
+            add(new HomeGUI());
             updateUI();
         });
         add(toHomeButton);
