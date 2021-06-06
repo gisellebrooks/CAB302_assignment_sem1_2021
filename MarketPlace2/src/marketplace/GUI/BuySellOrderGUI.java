@@ -507,10 +507,10 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             }
 
             add(new TableRow(
-                organisationUnit,
-                String.format("%d", order.getQuantity()),
-                NumberFormat.getCurrencyInstance().format(order.getPrice().divide(new BigDecimal(order.getQuantity()), 2, RoundingMode.HALF_UP)),
-                new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(order.getOrderDate())
+                    organisationUnit,
+                    String.format("%d", order.getQuantity()),
+                    NumberFormat.getCurrencyInstance().format(order.getPrice().divide(new BigDecimal(order.getQuantity()), 2, RoundingMode.HALF_UP)),
+                    new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(order.getOrderDate())
             ));
         }
     }

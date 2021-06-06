@@ -5,11 +5,9 @@ import marketplace.Handlers.InventoryHandler;
 import marketplace.Handlers.OrderHandler;
 import marketplace.Handlers.OrganisationHandler;
 import marketplace.Handlers.UserHandler;
-import marketplace.Objects.Order;
 import marketplace.Objects.User;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 
 /**

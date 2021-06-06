@@ -1,8 +1,5 @@
 package marketplace.Server;
 
-import marketplace.Objects.Inventory;
-import marketplace.Objects.Order;
-
 import java.io.*;
 import java.net.*;
 import java.sql.Connection;
