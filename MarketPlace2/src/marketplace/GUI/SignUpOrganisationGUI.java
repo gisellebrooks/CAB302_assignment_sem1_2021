@@ -28,7 +28,7 @@ public class SignUpOrganisationGUI extends FullSizeJPanel implements ActionListe
         namePromptLabel.setBounds(10, 20, 160, 25);
         add(namePromptLabel);
 
-        nameText = new JTextField(20);
+        nameText = new CustomTextField(20);
         nameText.setBounds(10, 40, 165, 25);
         add(nameText);
 
@@ -36,11 +36,11 @@ public class SignUpOrganisationGUI extends FullSizeJPanel implements ActionListe
         creditsPromptLabel.setBounds(10, 80, 180, 25);
         add(creditsPromptLabel);
 
-        creditsText = new JTextField(20);
+        creditsText = new CustomTextField(20);
         creditsText.setBounds(10, 100, 165, 25);
         add(creditsText);
 
-        createOrganisationButton = new JButton("Create Organisation");
+        createOrganisationButton = new CustomButton("Create Organisation");
         createOrganisationButton.setBounds(10, 140, 160, 25);
         createOrganisationButton.addActionListener(this);
         add(createOrganisationButton);
@@ -50,7 +50,7 @@ public class SignUpOrganisationGUI extends FullSizeJPanel implements ActionListe
         givenIDLabel.setBounds(10, 200, 220, 25);
         add(givenIDLabel);
 
-        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton = new CustomButton("SETTINGS");
         toSettingsButton.setBounds(300, 50, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();

@@ -36,7 +36,7 @@ public class ModifyUserGUI extends FullSizeJPanel implements ActionListener {
 
         setLayout(null);
 
-        resetPasswordButton = new JButton("Reset User's Password");
+        resetPasswordButton = new CustomButton("Reset User's Password");
         resetPasswordButton.setBounds(300, 40, 180, 25);
         resetPasswordButton.addActionListener(this);
         add(resetPasswordButton);
@@ -45,7 +45,7 @@ public class ModifyUserGUI extends FullSizeJPanel implements ActionListener {
         newPasswordPromptLabel.setBounds(300, 70, 160, 25);
         add(newPasswordPromptLabel);
 
-        newPasswordText = new JTextField(30);
+        newPasswordText = new CustomTextField(30);
         newPasswordText.setBounds(300, 100, 180, 25);
         add(newPasswordText);
 
@@ -53,11 +53,11 @@ public class ModifyUserGUI extends FullSizeJPanel implements ActionListener {
         userIDPromptLabel.setBounds(10, 20, 160, 25);
         add(userIDPromptLabel);
 
-        userIDText = new JTextField(20);
+        userIDText = new CustomTextField(20);
         userIDText.setBounds(10, 40, 165, 25);
         add(userIDText);
 
-        findUserButton = new JButton("Find");
+        findUserButton = new CustomButton("Find");
         findUserButton.setBounds(10, 70, 80, 25);
         findUserButton.addActionListener(this);
         add(findUserButton);
@@ -84,12 +84,12 @@ public class ModifyUserGUI extends FullSizeJPanel implements ActionListener {
         userTypeComboBox.setBounds(10, 220, 165, 25);
         add(userTypeComboBox);
 
-        modifyUserButton = new JButton("Modify");
+        modifyUserButton = new CustomButton("Modify");
         modifyUserButton.setBounds(10, 260, 80, 25);
         modifyUserButton.addActionListener(this);
         add(modifyUserButton);
 
-        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton = new CustomButton("SETTINGS");
         toSettingsButton.setBounds(200, 400, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();

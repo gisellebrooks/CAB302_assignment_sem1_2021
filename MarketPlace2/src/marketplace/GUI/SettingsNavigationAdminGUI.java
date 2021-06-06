@@ -6,17 +6,18 @@ import javax.swing.*;
 
 public class SettingsNavigationAdminGUI extends FullSizeJPanel {
 
-    private static JButton createUserButton;
-    private static JButton modifyUserButton;
-    private static JButton changePasswordButton;
-    private static JButton createOrganisationButton;
-    private static JButton modifyOrganisationButton;
-    private static JButton toHomeButton;
+    private static CustomButton createUserButton;
+    private static CustomButton modifyUserButton;
+    private static CustomButton changePasswordButton;
+    private static CustomButton createOrganisationButton;
+    private static CustomButton modifyOrganisationButton;
+    private static CustomButton toHomeButton;
 
     public SettingsNavigationAdminGUI() {
+        
         setLayout(null);
 
-        toHomeButton = new JButton("Home");
+        toHomeButton = new CustomButton("Home");
         toHomeButton.setBounds(450, 20, 120, 25);
         toHomeButton.addActionListener(e -> {
             removeAll();
@@ -25,7 +26,7 @@ public class SettingsNavigationAdminGUI extends FullSizeJPanel {
         });
         add(toHomeButton);
 
-        createUserButton = new JButton("Create User");
+        createUserButton = new CustomButton("Create User");
         createUserButton.setBounds(50, 20, 160, 25);
         createUserButton.addActionListener(e -> {
             removeAll();
@@ -34,7 +35,7 @@ public class SettingsNavigationAdminGUI extends FullSizeJPanel {
         });
         add(createUserButton);
 
-        modifyUserButton = new JButton("Modify User");
+        modifyUserButton = new CustomButton("Modify User");
         modifyUserButton.setBounds(50, 100, 160, 25);
         modifyUserButton.addActionListener(e -> {
             removeAll();
@@ -43,7 +44,7 @@ public class SettingsNavigationAdminGUI extends FullSizeJPanel {
         });
         add(modifyUserButton);
 
-        changePasswordButton = new JButton("Change Password");
+        changePasswordButton = new CustomButton("Change Password");
         changePasswordButton.setBounds(50, 140, 160, 25);
         changePasswordButton.addActionListener(e -> {
             removeAll();
@@ -52,7 +53,7 @@ public class SettingsNavigationAdminGUI extends FullSizeJPanel {
         });
         add(changePasswordButton);
 
-        createOrganisationButton = new JButton("Create Organisation");
+        createOrganisationButton = new CustomButton("Create Organisation");
         createOrganisationButton.setBounds(250, 20, 160, 25);
         createOrganisationButton.addActionListener(e -> {
             removeAll();
@@ -61,7 +62,7 @@ public class SettingsNavigationAdminGUI extends FullSizeJPanel {
         });
         add(createOrganisationButton);
 
-        modifyOrganisationButton = new JButton("Modify Organisation");
+        modifyOrganisationButton = new CustomButton("Modify Organisation");
         modifyOrganisationButton.setBounds(250, 100, 160, 25);
         modifyOrganisationButton.addActionListener(e -> {
             removeAll();

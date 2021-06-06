@@ -24,6 +24,7 @@ public class LoginGUI extends FullSizeJPanel implements ActionListener {
     private static JTextField passwordText;
     private static JButton button;
     private static JLabel invalid;
+    public LogoPanel logo;
     Fonts fonts;
     public JPanel image;
 
@@ -31,6 +32,10 @@ public class LoginGUI extends FullSizeJPanel implements ActionListener {
 
         setLayout(null);
         setBounds(0, 0, 1181, 718);
+
+        logo = new LogoPanel();
+        logo.setBounds(10, 10, 200, 50);
+        add(logo);
 
         image = new ImagePanel();
         image.setBounds(110, 135, 500, 500);

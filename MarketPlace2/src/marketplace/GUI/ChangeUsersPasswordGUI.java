@@ -35,7 +35,7 @@ public class ChangeUsersPasswordGUI extends FullSizeJPanel implements ActionList
         oldPasswordPromptLabel.setBounds(20, 30, 160, 25);
         add(oldPasswordPromptLabel);
 
-        oldPasswordText = new JTextField(30);
+        oldPasswordText = new CustomTextField(30);
         oldPasswordText.setBounds(20, 50, 180, 25);
         add(oldPasswordText);
 
@@ -43,7 +43,7 @@ public class ChangeUsersPasswordGUI extends FullSizeJPanel implements ActionList
         newPasswordPromptLabel.setBounds(20, 90, 160, 25);
         add(newPasswordPromptLabel);
 
-        newPasswordText = new JTextField(30);
+        newPasswordText = new CustomTextField(30);
         newPasswordText.setBounds(20, 110, 180, 25);
         add(newPasswordText);
 
@@ -51,11 +51,11 @@ public class ChangeUsersPasswordGUI extends FullSizeJPanel implements ActionList
         confirmPasswordPromptLabel.setBounds(20, 140, 160, 25);
         add(confirmPasswordPromptLabel);
 
-        confirmPasswordText = new JTextField(30);
+        confirmPasswordText = new CustomTextField(30);
         confirmPasswordText.setBounds(20, 160, 180, 25);
         add(confirmPasswordText);
 
-        changePasswordButton = new JButton("Change");
+        changePasswordButton = new CustomButton("Change");
         changePasswordButton.setBounds(20, 200, 80, 25);
         changePasswordButton.addActionListener(this);
         add(changePasswordButton);
@@ -70,7 +70,7 @@ public class ChangeUsersPasswordGUI extends FullSizeJPanel implements ActionList
         invalid.setBounds(20, 240, 340, 25);
         add(invalid);
 
-        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton = new CustomButton("SETTINGS");
         toSettingsButton.setBounds(200, 400, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();

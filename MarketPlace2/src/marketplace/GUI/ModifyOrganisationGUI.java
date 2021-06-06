@@ -47,11 +47,11 @@ public class ModifyOrganisationGUI extends FullSizeJPanel implements ActionListe
         organisationIDPromptLabel.setBounds(10, 20, 160, 25);
         add(organisationIDPromptLabel);
 
-        organisationIDText = new JTextField(20);
+        organisationIDText = new CustomTextField(20);
         organisationIDText.setBounds(10, 40, 165, 25);
         add(organisationIDText);
 
-        findOrganisationButton = new JButton("Find Organisation");
+        findOrganisationButton = new CustomButton("Find Organisation");
         findOrganisationButton.setBounds(10, 80, 140, 25);
         findOrganisationButton.addActionListener(this);
         add(findOrganisationButton);
@@ -60,7 +60,7 @@ public class ModifyOrganisationGUI extends FullSizeJPanel implements ActionListe
         namePromptLabel.setBounds(10, 130, 160, 25);
         add(namePromptLabel);
 
-        nameText = new JTextField(20);
+        nameText = new CustomTextField(20);
         nameText.setBounds(10, 150, 165, 25);
         add(nameText);
 
@@ -68,11 +68,11 @@ public class ModifyOrganisationGUI extends FullSizeJPanel implements ActionListe
         creditsPromptLabel.setBounds(10, 180, 180, 25);
         add(creditsPromptLabel);
 
-        creditsText = new JTextField(20);
+        creditsText = new CustomTextField(20);
         creditsText.setBounds(10, 200, 165, 25);
         add(creditsText);
 
-        modifyCreditsButton = new JButton("Change Credits");
+        modifyCreditsButton = new CustomButton("Change Credits");
         modifyCreditsButton.setBounds(10, 240, 160, 25);
         modifyCreditsButton.addActionListener(this);
         add(modifyCreditsButton);
@@ -81,11 +81,11 @@ public class ModifyOrganisationGUI extends FullSizeJPanel implements ActionListe
         assetNamePromptLabel.setBounds(250, 20, 180, 25);
         add(assetNamePromptLabel);
 
-        assetNameText = new JTextField();
+        assetNameText = new CustomTextField();
         assetNameText.setBounds(250, 40, 165, 25);
         add(assetNameText);
 
-        findAssetButton = new JButton("Find Asset");
+        findAssetButton = new CustomButton("Find Asset");
         findAssetButton.setBounds(250, 80, 160, 25);
         findAssetButton.addActionListener(this);
         add(findAssetButton);
@@ -94,11 +94,11 @@ public class ModifyOrganisationGUI extends FullSizeJPanel implements ActionListe
         assetQuantityPromptLabel.setBounds(250, 130, 180, 25);
         add(assetQuantityPromptLabel);
 
-        assetQuantityText = new JTextField();
+        assetQuantityText = new CustomTextField();
         assetQuantityText.setBounds(250, 150, 165, 25);
         add(assetQuantityText);
 
-        modifyAssetQuantityButton = new JButton("Change");
+        modifyAssetQuantityButton = new CustomButton("Change");
         modifyAssetQuantityButton.setBounds(250, 190, 160, 25);
         modifyAssetQuantityButton.addActionListener(this);
         add(modifyAssetQuantityButton);
@@ -107,7 +107,7 @@ public class ModifyOrganisationGUI extends FullSizeJPanel implements ActionListe
         newAssetPromptLabel.setBounds(250, 240, 180, 25);
         add(newAssetPromptLabel);
 
-        newAssetNameText = new JTextField();
+        newAssetNameText = new CustomTextField();
         newAssetNameText.setBounds(250, 260, 165, 25);
         add(newAssetNameText);
 
@@ -115,16 +115,16 @@ public class ModifyOrganisationGUI extends FullSizeJPanel implements ActionListe
         newAssetQuantityPromptLabel.setBounds(250, 290, 180, 25);
         add(newAssetQuantityPromptLabel);
 
-        newAssetQuantityText = new JTextField();
+        newAssetQuantityText = new CustomTextField();
         newAssetQuantityText.setBounds(250, 310, 165, 25);
         add(newAssetQuantityText);
 
-        addNewAssetButton = new JButton("Add");
+        addNewAssetButton = new CustomButton("Add");
         addNewAssetButton.setBounds(250, 350, 160, 25);
         addNewAssetButton.addActionListener(this);
         add(addNewAssetButton);
 
-        toSettingsButton = new JButton("SETTINGS");
+        toSettingsButton = new CustomButton("SETTINGS");
         toSettingsButton.setBounds(460, 40, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();

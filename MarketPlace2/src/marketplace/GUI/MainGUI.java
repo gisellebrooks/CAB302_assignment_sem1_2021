@@ -34,6 +34,7 @@ public class MainGUI extends JFrame implements Runnable {
     public static String assetName;
     public static Boolean isSellOrder;
 
+
     /**
      * This method runs when the MainGUI is initialised and it starts the gui and program for the client.
      */

@@ -19,7 +19,7 @@ public class SettingsNavigationUserGUI extends FullSizeJPanel {
 
 //        JPanel settingsHeading = new CustomLabel("Settings", fonts.smallHeading, false);
 
-        toHomeButton = new JButton("Home");
+        toHomeButton = new CustomButton("Home");
         toHomeButton.setBounds(450, 20, 120, 25);
         toHomeButton.addActionListener(e -> {
             removeAll();
@@ -28,7 +28,7 @@ public class SettingsNavigationUserGUI extends FullSizeJPanel {
         });
         add(toHomeButton);
 
-        changePasswordButton = new JButton("Change Password");
+        changePasswordButton = new CustomButton("Change Password");
         changePasswordButton.setBounds(50, 20, 160, 25);
         changePasswordButton.addActionListener(e -> {
             removeAll();
@@ -37,7 +37,7 @@ public class SettingsNavigationUserGUI extends FullSizeJPanel {
         });
         add(changePasswordButton);
 
-//        logOutButton = new JButton("Logout");
+//        logOutButton = new CustomButton("Logout");
 //        logOutButton.setBounds(50, 60, 160, 25);
 //        logOutButton.addActionListener(e -> {
 //            removeAll();

@@ -106,7 +106,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         setPreferredSize(new Dimension(1181, 718));
         setBounds(0, 0, 1181, 718);
         setLayout(null);
-        JButton backToAssets = new JButton("Back to Assets");
+        JButton backToAssets = new CustomButton("Back to Assets");
         backToAssets.setBounds(300, 50, 120, 25);
         backToAssets.addActionListener(e -> {
             removeAll();
@@ -115,7 +115,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         });
         add(backToAssets);
 
-        JButton toSettingButton = new JButton("SETTINGS");
+        JButton toSettingButton = new CustomButton("SETTINGS");
         toSettingButton.setBounds(800, 50, 120, 25);
         toSettingButton.addActionListener(e -> {
             removeAll();
