@@ -95,7 +95,11 @@ public class ReconcileOrders extends TimerTask {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return userList.get(0);
+        try {
+            return userList.get(0);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public String newAssetID() {
@@ -197,7 +201,11 @@ public class ReconcileOrders extends TimerTask {
     public List<Organisation> getOrgInformation(String orderID, String orderType) {
         String orgID;
         ResultSet result = null;
-        orgID = getUserInformation(orderID, orderType).getOrganisationID();
+        try {
+            orgID = getUserInformation(orderID, orderType).getOrganisationID();
+        } catch (Exception e){
+            return null;
+        }
         try (Connection conn = pool.getConnection()) {
             try (PreparedStatement statement = conn.prepareStatement(
                     "SELECT * FROM organisational_unit_information WHERE orgID='" + orgID + "';")) {
@@ -358,7 +366,7 @@ public class ReconcileOrders extends TimerTask {
     public void addNewAssetToInventory(String assetName, String orgID, int quantitySold) {
         String assetID = newAssetID();
         try (Connection conn = pool.getConnection()) {
-            try (PreparedStatement statement = conn.prepareStatement("INSERT INTO INVENTORY VALUES('" + assetID + "', " + assetName + "', " + orgID + "', " + quantitySold + "';")) {
+            try (PreparedStatement statement = conn.prepareStatement("INSERT INTO INVENTORY VALUES('" + assetID + "', '" + assetName + "', '" + orgID + "', " + quantitySold + ");")) {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -422,8 +430,6 @@ public class ReconcileOrders extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println("we're running");
-
         List<Order> buyOrders = null;
         String buyID;
         String buyUserID;
@@ -475,7 +481,11 @@ public class ReconcileOrders extends TimerTask {
                         sellAssetID = sellOrder.getAssetID();
                         sellAssetName = sellOrder.getAssetName();
 
-                        sellOrgInformation = getOrgInformation(sellID, "sell").get(0);
+                        try {
+                            sellOrgInformation = getOrgInformation(sellID, "sell").get(0);
+                        } catch (Exception e){
+                            continue;
+                        }
                         sellOrgCredits = sellOrgInformation.getCredits();
                         sellOrgID = sellOrgInformation.getOrgID();
 
@@ -486,11 +496,14 @@ public class ReconcileOrders extends TimerTask {
                             sellPriceUpper = sellPrice.multiply(BigDecimal.valueOf(1.1));
 
                             // check if the buy price is within the range of the sell price
-                            if (sellPrice.compareTo(buyPrice) <= 0 && sellPriceUpper.compareTo(buyPrice) >= 0) {
+                            if (sellPrice.compareTo(buyPrice) <= 0 && buyPrice.compareTo(sellPriceUpper) <= 0) {
+
                                 buyQuantity = buyOrder.getQuantity();
-                                sellQuantity = getInventoryInformation(sellAssetID).getQuantity();
+
+                                sellQuantity = sellOrder.getQuantity();
 
                                 if (buyQuantity < sellQuantity) {
+
                                     quantitySold = buyQuantity;
                                     remainderSellQuantity = sellQuantity - buyQuantity;
                                     remainderBuyQuantity = 0;
@@ -533,7 +546,7 @@ public class ReconcileOrders extends TimerTask {
 
                                 // UPDATE BUY ORG INVENTORY INFORMATION
                                 boolean buyOrgHasAsset = checkIfAssetExists(buyAssetName, buyOrgID);
-                                if (buyOrgHasAsset) {
+                                if (!buyOrgHasAsset) {
                                     addNewAssetToInventory(buyAssetName, buyOrgID, quantitySold);
 
                                 } else {

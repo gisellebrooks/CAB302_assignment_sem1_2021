@@ -4,10 +4,12 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
 
 import marketplace.Objects.Order;
 import marketplace.Handlers.OrderHandler;
 import marketplace.Objects.SellOrder;
+import marketplace.TableObject;
 import org.junit.jupiter.api.*;
 import marketplace.Server.*;
 import marketplace.Client.Client;
@@ -30,9 +32,7 @@ public class OrderHandlerTest {
 
     @BeforeAll
     static void startClientServer() throws SQLException {
-        pooledDataSource = MariaDBDataSource.getInstance();
-        ServerHandler.initDb(pooledDataSource);
-        props = ServerHandler.loadServerConfig();
+
         Thread thread = new ServerHandler();
         thread.start();
         // We sleep this thread so that the server handler has time to finish setting up before we continue
@@ -41,6 +41,10 @@ public class OrderHandlerTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @BeforeAll
+    public static void startClientConnection(){
         client = new Client();
         try {
             client.connect();
@@ -49,6 +53,11 @@ public class OrderHandlerTest {
         }
         orderHandler = new OrderHandler(client);
     }
+
+//    @AfterAll
+//    public static void closeClientConnection() {
+//        client.disconnect();
+//    }
 
     @Test
     public void testFirstBuyOrder() throws SQLException {
@@ -115,7 +124,7 @@ public class OrderHandlerTest {
         String expectedNewBuyOrderID;
         String actualNewBuyOrderID;
 
-        expectedNewBuyOrderID = "buy7";
+        expectedNewBuyOrderID = "buy10";
         actualNewBuyOrderID = orderHandler.newOrderID("buy");
 
         assertEquals(expectedNewBuyOrderID, actualNewBuyOrderID);
@@ -133,8 +142,82 @@ public class OrderHandlerTest {
         assertEquals(expectedNewSellOrderID, actualNewSellOrderID);
     }
 
+    @Test
+    public void testGetAllActiveBuyOrdersForAsset(){
+        String expectedAssetName = "CPU";
+        String actualAssetName;
+
+        List<Order> buyOrders = orderHandler.getAllActiveBuyOrdersForAsset(expectedAssetName);
+        Order actualFirstBuyOrderObject = buyOrders.get(0);
+        actualAssetName = actualFirstBuyOrderObject.getAssetName();
+
+        // Assert both lists are equal
+        assertEquals(expectedAssetName, actualAssetName);
+
+    }
+
+    @Test
+    public void testGetAllActiveSellOrdersForAsset(){
+        String expectedAssetName = "ARDUINOS";
+        String actualAssetName;
+
+        List<SellOrder> sellOrders = orderHandler.getAllActiveSellOrdersForAsset(expectedAssetName);
+        SellOrder actualFirstSellOrderObject = sellOrders.get(0);
+        actualAssetName = actualFirstSellOrderObject.getAssetName();
+
+        // Assert both lists are equal
+        assertEquals(expectedAssetName, actualAssetName);
+
+    }
+
 //    @Test
-//    public void
+//    public void testAddNewBuyOrder(){
+//        String expectedUserID = "user1";
+//        String expectedAssetName = "CPU";
+//        int expectedQuantity = 5;
+//        BigDecimal expectedPrice = BigDecimal.valueOf(32);
+//
+//        List<Order> actualBuyOrderList = new ArrayList<>();
+//        Order actualBuyOrderObject;
+//
+//
+//        // Lists to hold values from the expected and actual new buy order
+//        List<Object> expectedNewBuyOrder = new ArrayList<>();
+//        List<Object> actualNewBuyOrder = new ArrayList<>();
+//
+//        actualBuyOrderList = orderHandler.getAllActiveBuyOrders();
+//        for (Order ord: actualBuyOrderList){
+//            System.out.println(ord.getOrderID());
+//        }
+//
+//        expectedNewBuyOrder.add(expectedUserID);
+//        expectedNewBuyOrder.add(expectedAssetName);
+//        expectedNewBuyOrder.add(expectedQuantity);
+//        expectedNewBuyOrder.add(expectedPrice);
+//
+//        orderHandler.addNewBuyOrder(expectedUserID, expectedAssetName, expectedQuantity, expectedPrice);
+//
+//        // Fetch the most recent buy order added to the database
+//
+//
+////        try {
+////            client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS ORDER BY buyID DESC LIMIT 1;",
+////                    TableObject.BUY_ORDER);
+////            System.out.println(client.readListFromServer().get(0));
+////            actualBuyOrderList = (List<Order>) client.readListFromServer();
+////            actualBuyOrderObject = actualBuyOrderList.get(0);
+////            actualNewBuyOrder.add(actualBuyOrderObject.getUserID());
+////            actualNewBuyOrder.add(actualBuyOrderObject.getAssetName());
+////            actualNewBuyOrder.add(actualBuyOrderObject.getQuantity());
+////            actualNewBuyOrder.add(actualBuyOrderObject.getPrice());
+////
+////        } catch (IOException | ClassNotFoundException e) {
+////            e.printStackTrace();
+////        }
+//
+//        assertEquals(expectedNewBuyOrder, actualNewBuyOrder);
+//
+//    }
 
     // test new order ID with empty database
     // test getting active orders with empty database
@@ -142,6 +225,8 @@ public class OrderHandlerTest {
     // test adding a new sell order
     // test ammending an order
     // test deleting an order
+
+        // only put in a sell order for what they have!
 
 
 }

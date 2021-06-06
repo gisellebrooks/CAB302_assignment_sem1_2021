@@ -70,7 +70,8 @@ public class OrderHandler implements Serializable {
         List<SellOrder> result = null;
         try {
             client.writeToServer("SELECT * FROM ACTIVE_SELL_ORDERS;", TableObject.SELL_ORDER);
-            result =  client.readListFromServer();
+            result =  (List<SellOrder>) client.readListFromServer();
+
         } catch (Exception exception) {
             exception.printStackTrace();
         }
