@@ -1,8 +1,7 @@
-package marketplace.GUI.Settings;
+package marketplace.GUI;
 
-import marketplace.GUI.MainGUI;
 import marketplace.Handlers.PasswordHandler;
-import marketplace.GUI.FullSizeJPanel;
+import marketplace.Util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,34 +11,41 @@ import java.util.ArrayList;
 
 public class SignUpUserGUI extends FullSizeJPanel implements ActionListener {
 
-    private static JLabel namePromptLabel;
-    private static JTextField nameText;
-    private static JLabel passwordPromptLabel;
-    private static JLabel organisationLabel;
+    private static CustomLabel namePromptLabel;
+    private static CustomTextField nameText;
+    private static CustomLabel passwordPromptLabel;
+    private static CustomLabel organisationLabel;
     private static JComboBox organisationComboBox;
-    private static JLabel userTypeLabel;
+    private static CustomLabel userTypeLabel;
     private static JComboBox userTypeComboBox;
-    private static JTextField givenPasswordText;
-    private static JLabel IDPromptLabel;
-    private static JLabel givenIDLabel;
-    private static JButton signUpButton;
-    private static JButton toSettingsButton;
+    private static CustomTextField givenPasswordText;
+    private static CustomLabel IDPromptLabel;
+    private static CustomLabel givenIDLabel;
+    private static CustomButton signUpButton;
+    private static CustomButton toSettingsButton;
     private static JLabel valid;
     private static JLabel invalid;
+    public JPanel logo;
+    public Fonts fonts;
 
     public SignUpUserGUI() {
-
         setLayout(null);
+        setBounds(0, 0, 1181, 718);
+        logo = new LogoPanel();
+        logo.setBounds(10, 10, 200, 50);
+        add(logo);
 
-        namePromptLabel = new JLabel("Full Name:");
+        this.fonts = new Fonts();
+
+        namePromptLabel = new CustomLabel("Full Name:" , fonts.inputLabel, true);
         namePromptLabel.setBounds(10, 20, 80, 25);
         add(namePromptLabel);
 
-        nameText = new JTextField(20);
+        nameText = new CustomTextField(20);
         nameText.setBounds(10, 40, 165, 25);
         add(nameText);
 
-        organisationLabel = new JLabel("Select your organisation:");
+        organisationLabel = new CustomLabel("Select your organisation:", fonts.inputLabel, true);
         organisationLabel.setBounds(10, 80, 180, 25);
         add(organisationLabel);
 
@@ -47,7 +53,7 @@ public class SignUpUserGUI extends FullSizeJPanel implements ActionListener {
         organisationComboBox.setBounds(10, 100, 165, 25);
         add(organisationComboBox);
 
-        userTypeLabel = new JLabel("Select your user type:");
+        userTypeLabel = new CustomLabel("Select your user type:", fonts.inputLabel, true);
         userTypeLabel.setBounds(10, 140, 180, 25);
         add(userTypeLabel);
 
@@ -59,31 +65,31 @@ public class SignUpUserGUI extends FullSizeJPanel implements ActionListener {
         userTypeComboBox.setBounds(10, 160, 165, 25);
         add(userTypeComboBox);
 
-        signUpButton = new JButton("Signup");
+        signUpButton = new CustomButton("Signup");
         signUpButton.setBounds(10, 200, 80, 25);
         signUpButton.addActionListener(this);
         add(signUpButton);
 
-        IDPromptLabel = new JLabel("Your userID is:");
+        IDPromptLabel = new CustomLabel("Your userID is:", fonts.inputLabel, true);
         IDPromptLabel.setBounds(10, 260, 180, 25);
         add(IDPromptLabel);
 
         // where the given password goes
-        givenIDLabel = new JLabel("");
+        givenIDLabel = new CustomLabel("", fonts.inputLabel, true);
         givenIDLabel.setBounds(10, 280, 180, 25);
         add(givenIDLabel);
 
-        passwordPromptLabel = new JLabel("Your password is:");
+        passwordPromptLabel = new CustomLabel("Your password is:", fonts.inputLabel, true);
         passwordPromptLabel.setBounds(10, 320, 180, 25);
         add(passwordPromptLabel);
 
         // where the given password goes
-        givenPasswordText = new JTextField(30);
+        givenPasswordText = new CustomTextField(30);
         givenPasswordText.setBounds(10, 340, 180, 25);
         add(givenPasswordText);
 
-        toSettingsButton = new JButton("SETTINGS");
-        toSettingsButton.setBounds(200, 400, 120, 25);
+        JButton toSettingButton = new CustomButton("Settings");
+        toSettingButton.setBounds(1020, 20, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
             add(new SettingsNavigationAdminGUI());
