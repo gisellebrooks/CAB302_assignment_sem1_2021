@@ -29,6 +29,12 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
     List<SellOrder> activeSellOrders;
     Fonts fonts;
 
+    public void refreshPage() {
+        this.removeAll();
+        this.add(new HomeGUI());
+        this.updateUI();
+    }
+
     public HomeGUI() {
         this.fonts = new Fonts();
         setLayout(null);
@@ -153,21 +159,22 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
                     "Asset",
                     "Quantity",
                     "Price per unit",
-                    "Order Date"
+                    "Order Date",
+                    null,
+                    false
             ));
             for (Order order: isSell ? activeSellOrders : activeBuyOrders) {
-                add(new OrderRow(order));
+                add(new OrderRow(order, isSell));
             }
             Dimension minSize = new Dimension(600, Short.MAX_VALUE);
             Dimension prefSize = new Dimension(600, Short.MAX_VALUE);
             Dimension maxSize = new Dimension(600, Short.MAX_VALUE);
             add(new Box.Filler(minSize, prefSize, maxSize));
-//            add(new BuyOrderTable());
         }
     }
     class OrderRow extends DefaultJPanel {
 
-        public OrderRow(Order order){
+        public OrderRow(Order order, boolean isSell){
             System.out.println(order.getAssetName());
             System.out.println(order.getPrice());
             System.out.println(order.getQuantity());
@@ -176,13 +183,15 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
                     order.getAssetName(),
                     String.format("%d", order.getQuantity()),
                     NumberFormat.getCurrencyInstance().format(order.getPrice().divide(new BigDecimal(order.getQuantity()), 2, RoundingMode.HALF_UP)),
-                    new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(order.getOrderDate())
+                    new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(order.getOrderDate()),
+                    order,
+                    isSell
             ));
         }
     }
 
     class TableRow extends DefaultJPanel {
-        public TableRow(String assetName, String quantity, String pricePerUnit, String orderDate){
+        public TableRow(String assetName, String quantity, String pricePerUnit, String orderDate, Order order, boolean isSell){
             JPanel container = new DefaultJPanel();
             JLabel assetLabel =  new CustomLabel(assetName, fonts.small, true);
             assetLabel.setPreferredSize(new Dimension(70, 20));
@@ -196,6 +205,19 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
             container.add(quantityLabel);
             container.add(pricePerUnitLabel);
             container.add(orderDateLabel);
+            if (order != null) {
+                JButton delete = new CustomButton("Delete");
+                delete.setPreferredSize(new Dimension(70, 20));
+                delete.addActionListener(e -> {
+                    MainGUI.orderHandler.deleteOrder(isSell ? "sell" : "buy", order.getOrderID());
+                    refreshPage();
+                });
+                container.add(delete);
+            } else {
+                JLabel emptyLabel = new CustomLabel("", fonts.small, true);
+                emptyLabel.setPreferredSize(new Dimension(70, 20));
+                container.add(emptyLabel);
+            }
             add(container);
         }
     }

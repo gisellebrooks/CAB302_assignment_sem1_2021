@@ -154,6 +154,22 @@ public class OrderHandler implements Serializable {
         }
     }
 
+    public void deleteOrder(String orderType, String orderID){
+        if (orderType == "buy"){
+            try {
+                client.writeToServer("DELETE FROM ACTIVE_BUY_ORDERS WHERE buyID= '"+ orderID +"' ;", TableObject.DELETE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (orderType == "sell"){
+            try {
+                client.writeToServer("DELETE FROM ACTIVE_SELL_ORDERS WHERE sellID= '"+ orderID +"' ;", TableObject.DELETE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public List<String> getAllActiveAssetNames() {
         List<Order> allBuyOrders = getAllActiveBuyOrders();
         List<SellOrder> allSellOrders = getAllActiveSellOrders();
