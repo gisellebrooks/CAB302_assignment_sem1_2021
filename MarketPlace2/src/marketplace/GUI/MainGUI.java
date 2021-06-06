@@ -58,6 +58,7 @@ public class MainGUI extends JFrame implements Runnable {
         organisationHandler = new OrganisationHandler(client);
         inventoryHandler = new InventoryHandler(client);
 
+        System.out.println("hereee");
         JFrame.setDefaultLookAndFeelDecorated(true);
         SwingUtilities.invokeLater(new MainGUI());
     }
@@ -69,6 +70,9 @@ public class MainGUI extends JFrame implements Runnable {
 
         this.setVisible(true);
 
+        for (String name: orderHandler.getAllActiveAssetNames() ){
+            System.out.println(name);
+        }
         setTitle("Market");
         setSize(FullSizeJPanel.fullWidth, FullSizeJPanel.fullHeight);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,12 +85,20 @@ public class MainGUI extends JFrame implements Runnable {
         panel.add(new LoginGUI());
 //        panel.add(new SettingsNavigationAdminGUI());
 //        panel.add(new SettingsNavigationUserGUI());
+
 //        panel.add(new BuySellOrderGUI(assetName, isSellOrder));
 //        panel.add(new OrderGUI());
 //        panel.add(new BuyOrderGUI());
 //        panel.add(new OrderGUI());
+        System.out.println(user);
+
 //        panel.add(new OrderGUI());
+
 //        panel.add(new SignUpUserGUI());
+//        panel.add(new SignUpOrganisationGUI());
+//        panel.add(new ModifyUserGUI());
+//        panel.add(new ModifyOrganisationGUI());
+//        panel.add(new ChangeUsersPasswordGUI());
 
         add(panel);
     }

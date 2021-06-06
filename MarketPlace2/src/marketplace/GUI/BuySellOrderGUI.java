@@ -103,6 +103,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         this.assetName = assetName;
         this.fonts = new Fonts();
         mainPanel = new MainPanel();
+        System.out.println("WE DID IT");
         setPreferredSize(new Dimension(1181, 718));
         setBounds(0, 0, 1181, 718);
         setLayout(null);
@@ -110,7 +111,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         backToAssets.setBounds(300, 50, 120, 25);
         backToAssets.addActionListener(e -> {
             removeAll();
-            add(new OrderGUI());
+            add(new HomeGUI());
             updateUI();
         });
         add(backToAssets);
@@ -392,7 +393,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         }
     }
     class DataPanel extends DefaultJPanel {
-        GraphView graph;
 
         public DataPanel(){
             JPanel container = new DefaultJPanel();
@@ -432,9 +432,9 @@ public class BuySellOrderGUI extends FullSizeJPanel {
 
         private XYDataset createDataset( ) {
             final TimeSeries series = new TimeSeries( "Price History" );
-            List<SellOrder> orderHistory = MainGUI.orderHandler.getAllSellOrderHistoryForAsset(assetName);
+            List<SellOrderHistory> orderHistory = MainGUI.orderHandler.getAllSellOrderHistoryForAsset(assetName);
 
-            for (SellOrder order: orderHistory) {
+            for (SellOrderHistory order: orderHistory) {
                 try {
                     series.addOrUpdate(new Second(order.getOrderDate()), order.getPrice().doubleValue() );
                 } catch ( SeriesException e ) {
@@ -480,6 +480,9 @@ public class BuySellOrderGUI extends FullSizeJPanel {
     class OrderRow extends DefaultJPanel {
 
         public OrderRow(Order order){
+            System.out.println(order.getAssetName());
+            System.out.println(order.getPrice());
+            System.out.println(order.getQuantity());
 
             String organisationUnit;
             try {

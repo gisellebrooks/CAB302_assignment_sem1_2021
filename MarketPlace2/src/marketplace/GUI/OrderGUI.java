@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class OrderGUI extends FullSizeJPanel implements ActionListener {
+public class HomeGUI extends FullSizeJPanel implements ActionListener {
 
     private static JLabel assetNamePromptLabel;
     private static JComboBox assetBox;
@@ -25,10 +25,13 @@ public class OrderGUI extends FullSizeJPanel implements ActionListener {
     private static JLabel invalid;
     Fonts fonts;
 
-    public OrderGUI() {
+    public HomeGUI() {
         this.fonts = new Fonts();
         setLayout(null);
         setBounds(0, 0, 1181, 718);
+        LogoPanel logo = new LogoPanel();
+        logo.setBounds(10, 10, 200, 50);
+        add(logo);
 
         List<Order> buy = MainGUI.orderHandler.getAllActiveBuyOrders();
         List<String> assets = new ArrayList<String>();
@@ -53,6 +56,7 @@ public class OrderGUI extends FullSizeJPanel implements ActionListener {
 
         List<String> assetNames =  MainGUI.orderHandler.getAllActiveAssetNames();
         assetBox= new JComboBox(MainGUI.orderHandler.getAllActiveAssetNames().toArray(new String[0]));
+        System.out.println(assetNames);
 
 //        assetNames = assetBox.getSelectedItem().toString();
 

@@ -78,8 +78,8 @@ public class OrderHandler implements Serializable {
         return result;
     }
 
-    public List<SellOrder> getAllSellOrderHistory(){
-        List<SellOrder> result = null;
+    public List<SellOrderHistory> getAllSellOrderHistory(){
+        List<SellOrderHistory> result = null;
         try {
             client.writeToServer("SELECT * FROM SELL_ORDER_HISTORY;", TableObject.SELL_HISTORY);
             result =  client.readListFromServer();
@@ -89,18 +89,19 @@ public class OrderHandler implements Serializable {
         return result;
     }
 
-    public List<SellOrder> getAllSellOrderHistoryForAsset(String assetName){
-        List<SellOrder> allSellOrderHistory;
-        List<SellOrder> allSellOrderHistoryForAsset = new ArrayList<>();
-        allSellOrderHistory = getAllSellOrderHistory();
+    public List<SellOrderHistory> getAllSellOrderHistoryForAsset(String assetName){
+        List<SellOrderHistory> result = null;
+        try {
+            client.writeToServer(" SELECT sell_order_history.* FROM sell_order_history LEFT JOIN " +
+                            "inventory ON sell_order_history.assetID = inventory.assetID WHERE inventory.assetName = " +
+                            "'" + assetName + "';", TableObject.SELL_HISTORY);
 
-        for (SellOrder sellOrder: allSellOrderHistory){
-            String name = sellOrder.getAssetName();
-            if(name != null && name.equals(assetName)){
-                allSellOrderHistoryForAsset.add(sellOrder);
-            }
+            result =  client.readListFromServer();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
-        return allSellOrderHistoryForAsset;
+
+        return result;
     }
 
 
@@ -213,6 +214,38 @@ public class OrderHandler implements Serializable {
         }
 
         return allAssetNames;
+    }
+
+    public List<Order> getAllOrganisationBuyOrders(String orgID){
+        List<Order> allBuyOrdersFromOrg = new ArrayList<>();
+        try {
+            client.writeToServer("SELECT active_buy_orders.* FROM active_buy_orders LEFT JOIN user_information" +
+                    " ON active_buy_orders.userID = user_information.userID WHERE user_information.orgID" +
+                    " = '"+ orgID +"';", TableObject.BUY_ORDER);
+
+            allBuyOrdersFromOrg = (List<Order>) client.readListFromServer();
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return allBuyOrdersFromOrg;
+    }
+
+    public List<SellOrder> getAllOrganisationSellOrders(String orgID){
+        List<SellOrder> allSellOrdersFromOrg = new ArrayList<>();
+        try {
+            client.writeToServer("SELECT active_sell_orders.* FROM active_sell_orders LEFT JOIN user_information" +
+                    " ON active_sell_orders.userID = user_information.userID WHERE user_information.orgID" +
+                    " = '"+ orgID +"';", TableObject.SELL_ORDER);
+
+            allSellOrdersFromOrg = (List<SellOrder>) client.readListFromServer();
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return allSellOrdersFromOrg;
     }
 
     public List<String> getAllOrganisationsAssets(String orgID) {

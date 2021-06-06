@@ -1,9 +1,9 @@
-package marketplace.GUI.Settings;
+package marketplace.GUI;
 
-import marketplace.GUI.MainGUI;
-import marketplace.GUI.FullSizeJPanel;
-import marketplace.Objects.User;
+import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
+import marketplace.GUI.Settings.SettingsNavigationUserGUI;
 import marketplace.Handlers.PasswordHandler;
+import marketplace.Objects.User;
 
 import javax.swing.*;
 import java.awt.*;

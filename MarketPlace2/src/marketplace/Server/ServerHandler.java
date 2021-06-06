@@ -1,13 +1,12 @@
 package marketplace.Server;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
+
 import java.util.Timer;
 
 public class ServerHandler extends Thread {
@@ -147,10 +146,10 @@ public class ServerHandler extends Thread {
       public static void main(String[] args) throws SQLException {
           pooledDataSource = MariaDBDataSource.getInstance();
           initDb(pooledDataSource);
-//          loadMockData(pooledDataSource);
+          //loadMockData(pooledDataSource);
           Properties props = loadServerConfig();
-          Timer timer = new Timer();
-          timer.scheduleAtFixedRate(new ReconcileOrders(pooledDataSource), 0, 10000);
+//          Timer timer = new Timer();
+//          timer.scheduleAtFixedRate(new ReconcileOrders(pooledDataSource), 0, 10000);
           ServerHandler server = new ServerHandler();
           server.run();
       }
