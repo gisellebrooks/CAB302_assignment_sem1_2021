@@ -2,7 +2,6 @@ package marketplace.Objects;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-
 /**
  * Sell Order class for orders that involve selling an asset. A user makes an order using their organisation's credits.
  * Extends order class.

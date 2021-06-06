@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS ORGANISATIONAL_UNIT_INFORMATION
                 PRIMARY KEY ( orgID ));
 
 CREATE TABLE IF NOT EXISTS ACTIVE_BUY_ORDERS
-                (buyID VARCHAR(255), 
+                (buyID VARCHAR(255),
                 userID VARCHAR(255),
                 assetName VARCHAR(255),
                 quantity INTEGER,

@@ -115,10 +115,9 @@ public class ClientHandler extends Thread {
                         case BUY_HISTORY:
                             List<Order> buyHistory = new ArrayList<>();
                             while (result.next()){
-                                SellOrder oldBuy = new SellOrder();
+                                Order oldBuy = new Order();
                                 oldBuy.setOrderID(result.getString("oldBuyID"));
                                 oldBuy.setUserID(result.getString("userID"));
-                                oldBuy.setAssetID(result.getString("assetID"));
                                 oldBuy.setQuantity(result.getInt("quantity"));
                                 oldBuy.setPrice(result.getBigDecimal("reconcilePrice"));
                                 oldBuy.setOrderDate(result.getTimestamp("reconcileDate"));
