@@ -128,7 +128,7 @@ public class ModifyOrganisationGUI extends FullSizeJPanel implements ActionListe
         toSettingsButton.setBounds(460, 40, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            if (MainGUI.userType.equals("ADMIN")) {
+            if (MainGUI.userType.equals("admin")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());

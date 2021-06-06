@@ -41,9 +41,7 @@ import java.util.Collection;
  * * Displays a 'Place order panel' and to calculate buy and sell orders
  * * based on price and quantity and place them.
  * *
- * * @author  Ali
- * * @version 1.0
- * * @since   2021-06-01
+ * * @author Ali
  */
 
 public class BuySellOrderGUI extends FullSizeJPanel {
@@ -108,7 +106,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         toSettingButton.setBounds(800, 50, 120, 25);
         toSettingButton.addActionListener(e -> {
             removeAll();
-            if (MainGUI.userType.equals("ADMIN")) {
+            if (MainGUI.userType.equals("admin")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());

@@ -84,7 +84,7 @@ public class SellOrderGUI extends FullSizeJPanel implements ActionListener {
         toSettingsButton.setBounds(350, 50, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            if (MainGUI.userType.equals("ADMIN")) {
+            if (MainGUI.userType.equals("admin")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());

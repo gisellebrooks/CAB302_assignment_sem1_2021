@@ -54,7 +54,7 @@ public class SignUpOrganisationGUI extends FullSizeJPanel implements ActionListe
         toSettingsButton.setBounds(300, 50, 120, 25);
         toSettingsButton.addActionListener(e -> {
             removeAll();
-            if (MainGUI.userType.equals("ADMIN")) {
+            if (MainGUI.userType.equals("admin")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());
