@@ -216,6 +216,38 @@ public class OrderHandler implements Serializable {
         return allAssetNames;
     }
 
+    public List<Order> getAllOrganisationBuyOrders(String orgID){
+        List<Order> allBuyOrdersFromOrg = new ArrayList<>();
+        try {
+            client.writeToServer("SELECT active_buy_orders.* FROM active_buy_orders LEFT JOIN user_information" +
+                    " ON active_buy_orders.userID = user_information.userID WHERE user_information.orgID" +
+                    " = '"+ orgID +"';", TableObject.BUY_ORDER);
+
+            allBuyOrdersFromOrg = (List<Order>) client.readListFromServer();
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return allBuyOrdersFromOrg;
+    }
+
+    public List<SellOrder> getAllOrganisationSellOrders(String orgID){
+        List<SellOrder> allSellOrdersFromOrg = new ArrayList<>();
+        try {
+            client.writeToServer("SELECT active_sell_orders.* FROM active_sell_orders LEFT JOIN user_information" +
+                    " ON active_sell_orders.userID = user_information.userID WHERE user_information.orgID" +
+                    " = '"+ orgID +"';", TableObject.SELL_ORDER);
+
+            allSellOrdersFromOrg = (List<SellOrder>) client.readListFromServer();
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return allSellOrdersFromOrg;
+    }
+
     public List<String> getAllOrganisationsAssets(String orgID) {
         List<Order> allBuyOrders = getAllActiveBuyOrders();
         List<SellOrder> allSellOrders = getAllActiveSellOrders();
