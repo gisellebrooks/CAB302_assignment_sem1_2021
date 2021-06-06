@@ -41,13 +41,9 @@ import java.util.Collection;
  * * Displays a 'Place order panel' and to calculate buy and sell orders
  * * based on price and quantity and place them.
  * *
- * * <p>
- * * <b>Note:</b> Giving proper comments in your program makes it more
- * * user friendly and it is assumed as a high quality code.
- * *
- * * @author  Zara Ali
+ * * @author  Ali
  * * @version 1.0
- * * @since   2014-03-31
+ * * @since   2021-06-01
  */
 
 public class BuySellOrderGUI extends FullSizeJPanel {
@@ -59,6 +55,9 @@ public class BuySellOrderGUI extends FullSizeJPanel {
     public List<SellOrder> activeSellOrders;
     public Boolean isSellOrder;
 
+    /**
+     *  Gets the user readable text for this GUI
+     */
     public String getActionText() {
         if (isSellOrder) {
             return "Sell";
@@ -67,12 +66,21 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         }
     }
 
+    /**
+     *  Takes you back to the home page
+     */
     public void backToHome() {
         this.removeAll();
         this.add(new HomeGUI());
         this.updateUI();
     }
 
+    /**
+     *
+     * @param assetName The name of the asset you want to buy / sell
+     * @param inventory The existing inventory for your asset (only needed for sell orders)
+     * @param isSellOrder If true, this GUI is used to sell the asset, if false, you are buying more
+     */
     public BuySellOrderGUI(String assetName, Inventory inventory, Boolean isSellOrder) {
         List<String> timestamp = new ArrayList<String>();
 
@@ -115,6 +123,9 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         return mainPanel;
     }
 
+    /**
+     *  The main panel contains everything aside from the navigation
+     */
     class MainPanel extends DefaultJPanel {
 
         public MainPanel(){
@@ -138,6 +149,9 @@ public class BuySellOrderGUI extends FullSizeJPanel {
     }
 
 
+    /**
+     *  This is the right hand side panel used to make an order
+     */
     class PlaceOrderPanel extends JPanel {
         CustomTextField buyQuantityText;
         CustomTextField buyPriceText;
@@ -272,6 +286,10 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             add(Box.createRigidArea(new Dimension(0, 180)));
         }
     }
+
+    /**
+     *  This is the Red box that shows your order summary after you calculate
+     */
     class OrderSummaryPanel extends JPanel {
         JLabel priceLabel;
         JLabel quantityLabel;
@@ -373,6 +391,10 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             updateSummary(0, new BigDecimal(0));
         }
     }
+
+    /**
+     * This is the left hand side panel, showing contextual data about the asset you're transacting
+     */
     class DataPanel extends DefaultJPanel {
 
         public DataPanel(){
@@ -399,7 +421,12 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             container.add(new History(true));
         }
 
-
+        /**
+         * This is used to generate the price history data for your asset
+         *
+         * For more info, look into the docs for JFreeChart
+         * @return
+         */
         private XYDataset createDataset( ) {
             final TimeSeries series = new TimeSeries( "Price History" );
             List<SellOrderHistory> orderHistory = MainGUI.orderHandler.getAllSellOrderHistoryForAsset(assetName);
@@ -415,6 +442,10 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             return new TimeSeriesCollection(series);
         }
 
+        /**
+         * For more info, look into the docs for JFreeChart
+         * @return
+         */
         private JFreeChart createChart(final XYDataset dataset ) {
             return ChartFactory.createTimeSeriesChart(
                     "Price History",
@@ -427,12 +458,16 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         }
     }
 
+    /**
+    * This is a table showing historical orders for the asset
+    */
     class History extends DefaultJPanel {
 
         public History(boolean isSell){
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             JLabel buyHistoryLabel = new CustomLabel(String.format("Recent %s Orders", isSell ? "sell" : "buy"), fonts.smallHeading, true);
             add(buyHistoryLabel);
+            // The Header Row
             add(new TableRow(
                     "Organisational Unit",
                     "Quantity",
@@ -444,13 +479,13 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             }
         }
     }
+
+    /**
+    * This is a row in the table for an order
+    */
     class OrderRow extends DefaultJPanel {
 
         public OrderRow(Order order){
-            
-            
-            
-
             String organisationUnit;
             try {
                 User user = MainGUI.userHandler.searchUser(order.getUserID());
@@ -470,6 +505,9 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         }
     }
 
+    /**
+    * This is a row in the table for both the header and body
+    */
     class TableRow extends DefaultJPanel {
         public TableRow(String organisationalUnit, String quantity, String pricePerUnit, String orderDate){
             JPanel container = new DefaultJPanel();
@@ -487,22 +525,5 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             container.add(orderDateLabel);
             add(container);
         }
-    }
-
-    public static void main(String[] args) throws SQLException {
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run(){
-                JFrame frame = new JFrame("Buy Orders");
-                BuySellOrderGUI gui = new BuySellOrderGUI("",null, true);
-                frame.setDefaultLookAndFeelDecorated(true);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.add(gui.getMainPanel());
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
-        });
-
     }
 }

@@ -151,7 +151,7 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
             } else {
                 setBounds(610, 240, 500, 400);
             }
-            JLabel buyHistoryLabel = new CustomLabel(String.format("Your Recent %s Orders", isSell ? "sell" : "buy"), fonts.smallHeading, true);
+            JLabel buyHistoryLabel = new CustomLabel(String.format("Your Recent %s Orders", isSell ? "sell" : "buy"), fonts.smallHeading, false);
             add(buyHistoryLabel);
             add(new TableRow(
                     "Asset",
