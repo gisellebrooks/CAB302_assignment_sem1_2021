@@ -207,7 +207,7 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
             container.add(orderDateLabel);
             if (order != null) {
                 JButton delete = new CustomButton("Delete");
-                delete.setPreferredSize(new Dimension(70, 20));
+                delete.setPreferredSize(new Dimension(70, 30));
                 delete.addActionListener(e -> {
                     MainGUI.orderHandler.deleteOrder(isSell ? "sell" : "buy", order.getOrderID());
                     refreshPage();
