@@ -1,18 +1,18 @@
 INSERT INTO USER_INFORMATION
-VALUES ('user1', '14e3885dc3a6764f84023badcdaa54b9f3f6121ff28c68174636f533ce97e3a5', 'user', 'org1', 'Mike Wazowski');
--- password123
+VALUES ('user1', 'e127334cf782d06dd8a88c72ca0a6b8157405ee1c7fa8b048f93ce861b1319a1', 'USER', 'org1', 'Mike Wazowski');
+-- password is "!123asddasADS@#zxc"
 
 INSERT INTO USER_INFORMATION
-VALUES ('user2', '14e3885dc3a6764f84023badcdaa54b9f3f6121ff28c68174636f533ce97e3a5', 'admin', 'org2', 'John Smith');
--- password123
+VALUES ('user2', 'ecf5577aaca9e2b0a167bc0325f4206b5a2473db0eeb618660fb353a19537624', 'ADMIN', 'org2', 'John Smith');
+-- password is "!@z123as#asdasADSxc"
 
 INSERT INTO USER_INFORMATION
-VALUES ('user3', '434848baf76dabf925abbf64374170f281fcf08e5fd6fda3648275ad3a602819', 'user', 'org3', 'Jane Smith');
--- password is 123ps
+VALUES ('user3', '85e6fe2a495e23a81bc93a14608df3e2a58cbdcdd99e01fa4c90d486c7509f6b', 'USER', 'org3', 'Jane Smith');
+-- password is "123asPERDS!@#dazxc"
 
 INSERT INTO USER_INFORMATION
-VALUES ('user4', '8213448bc7c05ea87c37e2d8c02b5a9f46c7391c8ea8697b4d776c831b01545f', 'user', 'org4', 'Missy Moo');
--- password is 123
+VALUES ('user4', '7d20c8a43dab45cfa7b2a7f5c6366f53b6bd064f3b65e16591cd08d69e087a50', 'USER', 'org4', 'Missy Moo');
+-- password is "!@z123as#231!@#dsaASD"
 
 INSERT INTO ORGANISATIONAL_UNIT_INFORMATION
 VALUES ('org1', 'Hardware Unit', 3000);

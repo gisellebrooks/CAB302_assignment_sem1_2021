@@ -34,8 +34,16 @@ public class InventoryHandler {
 
     public void addAsset(String assetID, String assetName, String orgID, int quantity) throws Exception {
 
+        if (assetNameExists(assetName, orgID)) {
+            throw new Exception("That organisation already has that asset");
+        }
+
         if (assetName == null || assetName.length() < 2) {
             throw new Exception("Please enter an asset name");
+        }
+
+        if (assetName.length() > 249) {
+            throw new Exception("Asset name is too long");
         }
 
         if (quantity < 1) {
@@ -49,8 +57,9 @@ public class InventoryHandler {
         try {
             client.writeToServer("INSERT INTO INVENTORY VALUES('" + assetID + "', '" + assetName + "', '" + orgID +
                     "', '" + quantity + "' );", TableObject.INVENTORY);
+            client.readListFromServer();
         } catch (IOException exception) {
-            exception.printStackTrace();
+            throw new Exception("Inventory can't be added");
         }
     }
 

@@ -83,6 +83,32 @@ public class UserHandler {
     public void addUser(String userID, String passwordHash, String accountType, String organisationID, String name)
             throws Exception{
 
+        OrganisationHandler organisationHandler = new OrganisationHandler(this.client);
+
+        try {
+            if (userIDExists(userID)) {
+                throw new Exception("That user ID already exists");
+            }
+        } catch (Exception exception) {
+
+        }
+
+        if (!userID.contains("user") || userID.length() < 4) {
+            throw new Exception("That user ID is invalid");
+        }
+
+        if (passwordHash.length() > 65 || passwordHash.length() < 63) {
+            throw new Exception("Password hash is invalid");
+        }
+
+        if (accountType != "USER" && accountType != "ADMIN") {
+            throw new Exception("User type is invalid");
+        }
+
+        if (organisationHandler.getOrganisation(organisationID) == null) {
+            throw new Exception("Organisation ID doesn't matching existing organisation");
+        }
+
         if (name.length() < 2) {
             throw new Exception("Name is too short");
         }
@@ -109,6 +135,40 @@ public class UserHandler {
      *
      */
     public void updateUser(User user) throws Exception {
+
+        OrganisationHandler organisationHandler = new OrganisationHandler(this.client);
+
+        try {
+            if (userIDExists(user.getUserID())) {
+                throw new Exception("That user ID already exists");
+            }
+        } catch (Exception exception) {
+
+        }
+
+        if (!user.getUserID().contains("user") || user.getUserID().length() < 4) {
+            throw new Exception("That user ID is invalid");
+        }
+
+        if (user.getPasswordHash().length() > 65 || user.getPasswordHash().length() < 63) {
+            throw new Exception("Password hash is invalid");
+        }
+
+        if (user.getAccountType() != "USER" && user.getAccountType() != "ADMIN") {
+            throw new Exception("User type is invalid");
+        }
+
+        if (organisationHandler.getOrganisation(user.getOrganisationID()) == null) {
+            throw new Exception("Organisation ID doesn't matching existing organisation");
+        }
+
+        if (user.getName().length() < 2) {
+            throw new Exception("Name is too short");
+        }
+
+        if (user.getName().length() > 250) {
+            throw new Exception("That name is too long");
+        }
 
         // try to update the user with their current user ID, but with new accompanying values
         try {
@@ -141,7 +201,7 @@ public class UserHandler {
     {
 
         // test if desired password meets requirements to be considered
-        if (!PasswordHandler.IsPasswordStrong(currentPassword)) {
+        if (!PasswordHandler.IsPasswordStrong(newPassword)) {
             throw new Exception("That password is not strong enough");
         }
 
@@ -156,14 +216,17 @@ public class UserHandler {
         }
 
         // if the input current password is not correct then throw an exception
-        if (!PasswordHandler.IntoHash(newPassword).equals(user.getPasswordHash())) {
+        if (!PasswordHandler.IntoHash(currentPassword).equals(user.getPasswordHash())) {
             throw new Exception("Incorrect current password");
         }
 
         // try and update the user's passwordHash with the password hash of the new desired password
         try {
+
+            String newPasswordHash = PasswordHandler.IntoHash(newPassword);
+
             client.writeToServer("UPDATE USER_INFORMATION SET passwordHash = '" +
-                    user.getPasswordHash() + "' WHERE userID = '" + user.getUserID() + "';", TableObject.USER);
+                    newPasswordHash + "' WHERE userID = '" + user.getUserID() + "';", TableObject.USER);
             client.readListFromServer();
         } catch (IOException | ClassNotFoundException e) {
             throw new Exception("User's password can't be updated");
@@ -179,7 +242,6 @@ public class UserHandler {
      */
     public void updateUserPassword(User user) throws Exception
     {
-
         // try to update a user in the database with an updated password hash
         try {
             client.writeToServer("UPDATE USER_INFORMATION SET passwordHash = '" +

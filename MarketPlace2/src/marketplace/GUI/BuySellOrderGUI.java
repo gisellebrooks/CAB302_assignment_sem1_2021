@@ -178,25 +178,25 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         public void calculateOrder() {
             //TODO: add giselle's method to check if user has enough credits to place order.
             try {
-                    try {
-                        setQuantity(Integer.parseInt(buyQuantityText.getText()));
-                    } catch (NumberFormatException ex) {
-                        invalidOrderLabel.setText("Invalid Quantity");
-                        return;
-                    }
-                    try {
-                        setPrice(Float.parseFloat(buyPriceText.getText()));
-                    } catch (NumberFormatException ex) {
-                        invalidOrderLabel.setText("Invalid Price");
-                        return;
-                    }
-                    if (MainGUI.organisationHandler.organisationHasCredits(MainGUI.orgID, BigDecimal.valueOf(price))){
-                        System.out.println("org id is " + MainGUI.orgID + " price is " +price);
-                    }else {
-                        System.out.println("false");
-                        invalidCreditLabel.setText("You don't have enough credits!");
-                        return;
-                    }
+                try {
+                    setQuantity(Integer.parseInt(buyQuantityText.getText()));
+                } catch (NumberFormatException ex) {
+                    invalidOrderLabel.setText("Invalid Quantity");
+                    return;
+                }
+                try {
+                    setPrice(Float.parseFloat(buyPriceText.getText()));
+                } catch (NumberFormatException ex) {
+                    invalidOrderLabel.setText("Invalid Price");
+                    return;
+                }
+                if (MainGUI.organisationHandler.organisationHasCredits(MainGUI.orgID, BigDecimal.valueOf(price))){
+                    System.out.println("org id is " + MainGUI.orgID + " price is " +price);
+                }else {
+                    System.out.println("false");
+                    invalidCreditLabel.setText("You don't have enough credits!");
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -494,10 +494,10 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             }
 
             add(new TableRow(
-                organisationUnit,
-                String.format("%d", order.getQuantity()),
-                NumberFormat.getCurrencyInstance().format(order.getPrice().divide(new BigDecimal(order.getQuantity()), 2, RoundingMode.HALF_UP)),
-                new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(order.getOrderDate())
+                    organisationUnit,
+                    String.format("%d", order.getQuantity()),
+                    NumberFormat.getCurrencyInstance().format(order.getPrice().divide(new BigDecimal(order.getQuantity()), 2, RoundingMode.HALF_UP)),
+                    new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(order.getOrderDate())
             ));
         }
     }

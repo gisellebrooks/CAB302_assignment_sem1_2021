@@ -3,18 +3,14 @@ package marketplace.GUI;
 import marketplace.Objects.User;
 import marketplace.Util.Fonts;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.border.EmptyBorder;
 
 public class LoginGUI extends FullSizeJPanel implements ActionListener {
 
