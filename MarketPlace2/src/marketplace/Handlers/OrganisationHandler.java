@@ -9,7 +9,6 @@ import marketplace.TableObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,12 +117,16 @@ public class OrganisationHandler implements Serializable {
             throw new Exception("Organisation name is too short");
         }
 
-        if (orgName.length() > 200) {
+        if (orgName.length() > 249) {
             throw new Exception("Organisation name is too long");
         }
 
-        if (credits > 1000000000 * 1000000000) {
+        if (credits > 1000000000) {
             throw new Exception("Credits are too large");
+        }
+
+        if (credits < 0) {
+            throw new Exception("Credits must be positive");
         }
 
         if (getOrganisationID(orgName) != null) {
@@ -237,24 +240,6 @@ public class OrganisationHandler implements Serializable {
         }
     }
 
-    public boolean organisationNameExists(String organisationName) throws Exception {
-        List<Organisation> result;
-        try {
-            client.writeToServer("SELECT * FROM ORGANISATIONAL_UNIT_INFORMATION WHERE orgName = '" +
-                    organisationName + "';", TableObject.ORGANISATION);
-            result = (List<Organisation>) client.readListFromServer();
-
-            if (result != null) {
-                return true;
-            } else {
-                throw new Exception("Organisation does not exist");
-            }
-
-        } catch (Exception exception) {
-            throw new Exception("Organisation does not exist");
-        }
-    }
-
     public boolean organisationHasCredits(String orgID, BigDecimal totalPrice) throws Exception {
         List<Organisation> orgInformation;
         try {
@@ -263,10 +248,7 @@ public class OrganisationHandler implements Serializable {
             orgInformation = client.readListFromServer();
 
             if (orgInformation != null){
-                if (orgInformation.get(0).getCredits().compareTo(totalPrice) > 0){
-                    System.out.println(orgInformation.get(0).getCredits());
-                    System.out.println(totalPrice);
-                    System.out.println(orgInformation.get(0).getCredits().compareTo(totalPrice));
+                if (orgInformation.get(0).getCredits().compareTo(totalPrice) >= 0){
                     return true;
                 }
             }

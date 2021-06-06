@@ -53,7 +53,6 @@ public class OrderGUI extends FullSizeJPanel implements ActionListener {
 
         List<String> assetNames =  MainGUI.orderHandler.getAllActiveAssetNames();
         assetBox= new JComboBox(MainGUI.orderHandler.getAllActiveAssetNames().toArray(new String[0]));
-        System.out.println(assetNames);
 
 //        assetNames = assetBox.getSelectedItem().toString();
 

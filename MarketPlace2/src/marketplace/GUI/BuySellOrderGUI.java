@@ -11,32 +11,31 @@
 
 package marketplace.GUI;
 
-import com.sun.tools.javac.Main;
 import marketplace.GUI.Settings.SettingsNavigationAdminGUI;
 import marketplace.GUI.Settings.SettingsNavigationUserGUI;
 import marketplace.Objects.*;
 import marketplace.Util.Fonts;
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.SeriesException;
-import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
-import org.jfree.chart.ChartPanel;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * <h1>Create the Buy and sell order GUIs!</h1>
@@ -104,7 +103,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         this.assetName = assetName;
         this.fonts = new Fonts();
         mainPanel = new MainPanel();
-        System.out.println("WE DID IT");
         setPreferredSize(new Dimension(1181, 718));
         setBounds(0, 0, 1181, 718);
         setLayout(null);
@@ -482,9 +480,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
     class OrderRow extends DefaultJPanel {
 
         public OrderRow(Order order){
-            System.out.println(order.getAssetName());
-            System.out.println(order.getPrice());
-            System.out.println(order.getQuantity());
 
             String organisationUnit;
             try {

@@ -48,7 +48,6 @@ public class SellOrderGUI extends FullSizeJPanel implements ActionListener {
         add(graphTitle);
 
         List<Order> buyHistory = orderHandler.getAllActiveBuyOrders();
-        System.out.println(buyHistory);
         List<String> timestamp = new ArrayList<String>();
         List<String> price = new ArrayList<String>();
 

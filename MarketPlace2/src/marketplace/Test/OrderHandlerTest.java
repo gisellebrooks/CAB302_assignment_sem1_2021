@@ -1,27 +1,21 @@
 package marketplace.Test;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import marketplace.Client.Client;
+import marketplace.Handlers.OrderHandler;
+import marketplace.Objects.Order;
+import marketplace.Objects.SellOrder;
+import marketplace.Server.MariaDBDataSource;
+import marketplace.Server.ServerHandler;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import marketplace.Objects.Order;
-import marketplace.Handlers.OrderHandler;
-import marketplace.Objects.SellOrder;
-import marketplace.TableObject;
-import org.junit.jupiter.api.*;
-import marketplace.Server.*;
-import marketplace.Client.Client;
-
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OrderHandlerTest {
     private static Client client;
