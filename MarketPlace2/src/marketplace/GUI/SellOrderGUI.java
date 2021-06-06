@@ -36,7 +36,7 @@ public class SellOrderGUI extends FullSizeJPanel implements ActionListener {
         setBounds(0, 0, 1181, 718);
 
 
-        Title = new JLabel("Sell " + MainGUI.assetName);  /////// NEED LOGIC TO GET SELECTION FROM COMBO BOX FROM ORDERGUI AND ADD THE ASSET NAME HERE
+        Title = new JLabel("Sell " + MainGUI.assetName);
         Title.setBounds(300, 20, 200, 25);
         Title.setFont (Title.getFont ().deriveFont (20.0f));
         add(Title);

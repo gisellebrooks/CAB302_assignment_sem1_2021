@@ -15,7 +15,7 @@ public class LogoPanel extends JPanel {
             JLabel picLabel = new JLabel(new ImageIcon(myPicture));
             add(picLabel);
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+          ex.printStackTrace();  
         }
     }
 }

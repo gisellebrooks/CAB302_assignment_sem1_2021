@@ -89,7 +89,7 @@ public class LoginGUI extends FullSizeJPanel implements ActionListener {
             MainGUI.userType = user.getAccountType();
             MainGUI.orgID = user.getOrganisationID();
             MainGUI.setUser(user);
-            System.out.println(MainGUI.user.getUserID());
+            
             removeAll();
             add(new HomeGUI());
             updateUI();
@@ -108,7 +108,7 @@ public class LoginGUI extends FullSizeJPanel implements ActionListener {
                 JLabel picLabel = new JLabel(new ImageIcon(myPicture));
                 add(picLabel);
             } catch (IOException ex) {
-                System.out.println(ex.getMessage());
+                
             }
         }
     }

@@ -30,8 +30,8 @@ public class Fonts {
             ge.registerFont(openSans);
             ge.registerFont(delaGothic);
         } catch (IOException | FontFormatException e) {
-            System.out.println("Caught an error setting fonts");
-            System.out.println(e.getMessage());
+            
+            
         }
     }
 }

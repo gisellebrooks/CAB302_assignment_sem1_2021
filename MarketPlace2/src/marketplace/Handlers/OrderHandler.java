@@ -72,12 +72,12 @@ public class OrderHandler implements Serializable {
         try {
             client.writeToServer("SELECT * FROM ACTIVE_SELL_ORDERS;", TableObject.SELL_ORDER);
             result =  (List<SellOrder>) client.readListFromServer();
-            System.out.println("GOT RESULT");
+            
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        System.out.println("GETTING ALL SELL ORDERS");
-        System.out.println(result);
+        
+        
         return result;
     }
 
@@ -181,8 +181,8 @@ public class OrderHandler implements Serializable {
                     allAssetNames.add(order.getAssetName());
                 }
             }
-            System.out.println(allBuyOrders);
-            System.out.println(allSellOrders);
+            
+            
 
             for (Order order : allSellOrders) {
                 if (!allAssetNames.contains(order.getAssetName())) {

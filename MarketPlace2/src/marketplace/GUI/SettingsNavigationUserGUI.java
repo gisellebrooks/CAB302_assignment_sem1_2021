@@ -11,13 +11,10 @@ public class SettingsNavigationUserGUI extends FullSizeJPanel {
 
     private static JButton changePasswordButton;
     private static JButton toHomeButton;
-//    private static CustomLabel settingsHeading;
     public Fonts fonts;
 
     public SettingsNavigationUserGUI() {
         setLayout(null);
-
-//        JPanel settingsHeading = new CustomLabel("Settings", fonts.smallHeading, false);
 
         toHomeButton = new CustomButton("Home");
         toHomeButton.setBounds(450, 20, 120, 25);
@@ -36,16 +33,5 @@ public class SettingsNavigationUserGUI extends FullSizeJPanel {
             updateUI();
         });
         add(changePasswordButton);
-
-//        logOutButton = new CustomButton("Logout");
-//        logOutButton.setBounds(50, 60, 160, 25);
-//        logOutButton.addActionListener(e -> {
-//            removeAll();
-//            MainGUIHandler.user = null;
-//            MainGUIHandler.userType = "USER";
-//            add(new LoginGUI());
-//            updateUI();
-//        });
-//        add(logOutButton);
     }
 }

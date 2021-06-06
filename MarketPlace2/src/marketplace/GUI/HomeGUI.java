@@ -66,7 +66,7 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
 
         List<String> assetNames =  MainGUI.orderHandler.getAllActiveAssetNames();
         assetBox= new JComboBox(MainGUI.orderHandler.getAllActiveAssetNames().toArray(new String[0]));
-        System.out.println(assetNames);
+        
 
         assetBox.setBounds(510, 100, 160, 25);
         add(assetBox);
@@ -151,8 +151,6 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
             } else {
                 setBounds(610, 240, 500, 400);
             }
-//            setPreferredSize(new Dimension(600, 200));
-//            container.setBackground(Color.YELLOW);
             JLabel buyHistoryLabel = new CustomLabel(String.format("Your Recent %s Orders", isSell ? "sell" : "buy"), fonts.smallHeading, true);
             add(buyHistoryLabel);
             add(new TableRow(
@@ -175,9 +173,9 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
     class OrderRow extends DefaultJPanel {
 
         public OrderRow(Order order, boolean isSell){
-            System.out.println(order.getAssetName());
-            System.out.println(order.getPrice());
-            System.out.println(order.getQuantity());
+            
+            
+            
 
             add(new TableRow(
                     order.getAssetName(),

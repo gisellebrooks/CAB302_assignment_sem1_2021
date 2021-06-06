@@ -24,9 +24,6 @@ public class UserTesting {
 
 
         ServerHandler server = new ServerHandler();
-//        MainGUIHandler mainGUIHandler = new MainGUIHandler();
-
-//        System.out.println("good");
 
         Client client = new Client();
 

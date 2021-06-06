@@ -35,10 +35,10 @@ public class ServerHandler extends Thread {
             while (true){
                 clientSocket = newClientConnection();
                 try {
-                    System.out.println("Waiting for client connection...");
+                    
 
                     clientSocket = listener.accept();
-                    System.out.println("A new client is connected : " + clientSocket);
+                    
 
                     Thread thread = new ClientHandler(clientSocket, pooledDataSource);
                     thread.start();

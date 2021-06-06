@@ -74,11 +74,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
     }
 
     public BuySellOrderGUI(String assetName, Inventory inventory, Boolean isSellOrder) {
-        System.out.println("Buy history " + activeBuyOrders);
         List<String> timestamp = new ArrayList<String>();
-
-//        List<String> price = new ArrayList<String>();
-
 
         this.isSellOrder = isSellOrder;
         this.inventory = inventory;
@@ -87,28 +83,9 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         this.activeBuyOrders = MainGUI.orderHandler.getAllActiveBuyOrdersForAsset(assetName);
         this.activeSellOrders = MainGUI.orderHandler.getAllActiveSellOrdersForAsset(assetName);
 
-        System.out.println("Buy history " + activeBuyOrders);
-
-        // MOCKED DATA, Use above call ^
-//        this.activeBuyOrders.add(new Order(
-//                "123", "456", assetName, 100, new BigDecimal(100), java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0")
-//        ));
-//        this.activeBuyOrders.add(new Order(
-//                "123", "456", assetName, 25, new BigDecimal(200), java.sql.Timestamp.valueOf("2017-09-23 10:10:10.0")
-//        ));
-//        this.activeSellOrders =  new ArrayList<>();
-//        // this.sellHistory = MainGUIHandler.orderHandler.getAllActiveSellOrdersForAsset(assetName).toArray()
-//        // MOCKED DATA, Use above call ^
-//        this.activeSellOrders.add(new Order(
-//                "123", "456", assetName, 100, new BigDecimal(100), java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0")
-//        ));
-//        this.activeSellOrders.add(new Order(
-//                "123", "456", assetName, 25, new BigDecimal(200), java.sql.Timestamp.valueOf("2017-09-23 10:10:10.0")
-//        ));
         this.assetName = assetName;
         this.fonts = new Fonts();
         mainPanel = new MainPanel();
-        System.out.println("WE DID IT");
         setPreferredSize(new Dimension(1181, 718));
         setBounds(0, 0, 1181, 718);
         setLayout(null);
@@ -154,7 +131,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             JPanel main = new DefaultJPanel();
             main.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 100));
             main.add(new DataPanel());
-//            add(new TextPanel());
             main.add(Box.createRigidArea(new Dimension(10, 0)));
             main.add(new PlaceOrderPanel());
             add(main);
@@ -180,7 +156,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         }
 
         public void calculateOrder() {
-            //TODO: add giselle's method to check if user has enough credits to place order.
             try {
                     try {
                         setQuantity(Integer.parseInt(buyQuantityText.getText()));
@@ -195,16 +170,12 @@ public class BuySellOrderGUI extends FullSizeJPanel {
                         return;
                     }
                     if (isSellOrder || MainGUI.organisationHandler.organisationHasCredits(MainGUI.orgID, BigDecimal.valueOf(price))){
-                        System.out.println("org id is " + MainGUI.orgID + " price is " +price);
                     } else {
-                        System.out.println("false");
+                        
                         invalidCreditLabel.setText("You don't have enough credits!");
                         return;
                     }
-                if (!isSellOrder || inventory.getQuantity() <= quantity){
-                    System.out.println("org id is " + MainGUI.orgID + " quantity is " + quantity);
-                } else {
-                    System.out.println("false");
+                if (isSellOrder && inventory.getQuantity() <= quantity) {
                     invalidCreditLabel.setText("You don't have enough to sell!");
                     return;
                 }
@@ -214,7 +185,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             invalidCreditLabel.setText("");
             invalidOrderLabel.setText("");
             orderSummaryPanel.updateSummary(this.quantity, new BigDecimal(this.price));
-            System.out.println("this is the total" + price);
+            
         }
 
         public PlaceOrderPanel(){
@@ -389,8 +360,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
                             price
                     );
                 } else {
-                    System.out.println();
-                    System.out.println("org id is " + MainGUI.orgID + " quantity is " + quantity);
                     MainGUI.orderHandler.addNewBuyOrder(
                             MainGUI.user.getUserID(),
                             assetName,
@@ -410,7 +379,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             JPanel container = new DefaultJPanel();
             setPreferredSize(new Dimension(650, 500));
             container.setPreferredSize(new Dimension(650, 1580));
-//            container.setBackground(Color.YELLOW);
             JScrollPane scroll = new JScrollPane(container);
             scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -421,14 +389,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             container.add(buyHistoryLabel);
 
             add(scroll);
-            // MOCKED DATA, THIS NEEDS TO READ ALL RECENT PRICES FOR THIS "this.assetName" from the DB
-//            Integer[] data = {1,4,7,3,4,5,6,7,8,3,4,6};
-//            Collection<Integer> intList = new ArrayList<Integer>(data.length);
-//            for (int i : data)
-//            {
-//                intList.add(i);
-//            }
-//            graph.setValues(intList);
             final XYDataset dataset = createDataset( );
             final JFreeChart chart = createChart( dataset );
             final ChartPanel chartPanel = new ChartPanel( chart );
@@ -437,8 +397,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             container.add( chartPanel );
             container.add(new History(false));
             container.add(new History(true));
-
-//            add(new BuyOrderTable());
         }
 
 
@@ -473,8 +431,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
 
         public History(boolean isSell){
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//            setPreferredSize(new Dimension(600, 200));
-//            container.setBackground(Color.YELLOW);
             JLabel buyHistoryLabel = new CustomLabel(String.format("Recent %s Orders", isSell ? "sell" : "buy"), fonts.smallHeading, true);
             add(buyHistoryLabel);
             add(new TableRow(
@@ -486,15 +442,14 @@ public class BuySellOrderGUI extends FullSizeJPanel {
             for (Order order: isSell ? activeSellOrders : activeBuyOrders) {
                 add(new OrderRow(order));
             }
-//            add(new BuyOrderTable());
         }
     }
     class OrderRow extends DefaultJPanel {
 
         public OrderRow(Order order){
-            System.out.println(order.getAssetName());
-            System.out.println(order.getPrice());
-            System.out.println(order.getQuantity());
+            
+            
+            
 
             String organisationUnit;
             try {
@@ -535,13 +490,6 @@ public class BuySellOrderGUI extends FullSizeJPanel {
     }
 
     public static void main(String[] args) throws SQLException {
-        /*
-        List<Order> buyHistory = orderHandler.getAllActiveBuyOrders();
-
-        System.out.println(buyHistory);
-        List<String> timestamp = new ArrayList<String>();
-        List<String> price = new ArrayList<String>();
-         */
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run(){

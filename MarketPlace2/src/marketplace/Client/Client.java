@@ -43,7 +43,6 @@ public class Client{
             Properties props = loadServerConfig();
             address = props.getProperty("app.hostname");
             port = Integer.parseInt(props.getProperty("app.port"));
-            System.out.println("Client has connected to the server with the address "+address+" on port "+port+".");
             socket = new Socket(address, port);
 
             try {
@@ -54,7 +53,6 @@ public class Client{
             }
             output = getOutputStream();
 
-            System.out.println("setup streams");
         } catch (IOException e) {
             this.input = null;
             this.output = null;
