@@ -67,18 +67,24 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         }
     }
 
+    public void backToHome() {
+        this.removeAll();
+        this.add(new HomeGUI());
+        this.updateUI();
+    }
+
     public BuySellOrderGUI(String assetName, Inventory inventory, Boolean isSellOrder) {
         System.out.println("Buy history " + activeBuyOrders);
         List<String> timestamp = new ArrayList<String>();
 
 //        List<String> price = new ArrayList<String>();
 
+
         this.isSellOrder = isSellOrder;
-        inventory = inventory;
-        assetName = assetName;
+        this.inventory = inventory;
+        this.assetName = assetName;
         java.sql.Timestamp.valueOf("2007-09-23 10:10:10.0");
         this.activeBuyOrders = MainGUI.orderHandler.getAllActiveBuyOrdersForAsset(assetName);
-        this.activeSellOrders = MainGUI.orderHandler.getAllActiveSellOrdersForAsset(assetName);
         this.activeSellOrders = MainGUI.orderHandler.getAllActiveSellOrdersForAsset(assetName);
 
         System.out.println("Buy history " + activeBuyOrders);
@@ -109,9 +115,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         JButton backToAssets = new CustomButton("Back to Assets");
         backToAssets.setBounds(300, 50, 120, 25);
         backToAssets.addActionListener(e -> {
-            removeAll();
-            add(new HomeGUI());
-            updateUI();
+            backToHome();
         });
         add(backToAssets);
 
@@ -190,13 +194,20 @@ public class BuySellOrderGUI extends FullSizeJPanel {
                         invalidOrderLabel.setText("Invalid Price");
                         return;
                     }
-                    if (MainGUI.organisationHandler.organisationHasCredits(MainGUI.orgID, BigDecimal.valueOf(price))){
+                    if (isSellOrder || MainGUI.organisationHandler.organisationHasCredits(MainGUI.orgID, BigDecimal.valueOf(price))){
                         System.out.println("org id is " + MainGUI.orgID + " price is " +price);
-                    }else {
+                    } else {
                         System.out.println("false");
                         invalidCreditLabel.setText("You don't have enough credits!");
                         return;
                     }
+                if (!isSellOrder || inventory.getQuantity() <= quantity){
+                    System.out.println("org id is " + MainGUI.orgID + " quantity is " + quantity);
+                } else {
+                    System.out.println("false");
+                    invalidCreditLabel.setText("You don't have enough to sell!");
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -299,8 +310,8 @@ public class BuySellOrderGUI extends FullSizeJPanel {
         BigDecimal price;
 
         public void updateSummary(int quantity, BigDecimal price) {
-            quantity = quantity;
-            price = price;
+            this.quantity = quantity;
+            this.price = price;
             priceLabel.setText(String.format("at $%.2f per unit", price));
             quantityLabel.setText(String.format("%d %s units", quantity, assetName));
             totalLabel.setText(String.format("Total: $%.2f",  price.multiply(new BigDecimal(quantity))));
@@ -378,6 +389,8 @@ public class BuySellOrderGUI extends FullSizeJPanel {
                             price
                     );
                 } else {
+                    System.out.println();
+                    System.out.println("org id is " + MainGUI.orgID + " quantity is " + quantity);
                     MainGUI.orderHandler.addNewBuyOrder(
                             MainGUI.user.getUserID(),
                             assetName,
@@ -385,7 +398,7 @@ public class BuySellOrderGUI extends FullSizeJPanel {
                             price
                     );
                 }
-                toggleOrdered();
+                backToHome();
             });
 
             updateSummary(0, new BigDecimal(0));

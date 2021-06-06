@@ -120,29 +120,6 @@ public class OrderHandlerTest {
     }
 
     @Test
-    public void testNewBuyOrderID(){
-        String expectedNewBuyOrderID;
-        String actualNewBuyOrderID;
-
-        expectedNewBuyOrderID = "buy10";
-        actualNewBuyOrderID = orderHandler.newOrderID("buy");
-
-        assertEquals(expectedNewBuyOrderID, actualNewBuyOrderID);
-    }
-
-    @Test
-    public void testNewSellOrderID(){
-        String expectedNewSellOrderID;
-        String actualNewSellOrderID;
-
-        expectedNewSellOrderID = "sell6";
-        actualNewSellOrderID = orderHandler.newOrderID("sell");
-
-
-        assertEquals(expectedNewSellOrderID, actualNewSellOrderID);
-    }
-
-    @Test
     public void testGetAllActiveBuyOrdersForAsset(){
         String expectedAssetName = "CPU";
         String actualAssetName;

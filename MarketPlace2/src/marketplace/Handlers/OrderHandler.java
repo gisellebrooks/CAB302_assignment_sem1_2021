@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Handler class for Order object type. Handles methods that main methods for interacting with Order type.
@@ -71,10 +72,12 @@ public class OrderHandler implements Serializable {
         try {
             client.writeToServer("SELECT * FROM ACTIVE_SELL_ORDERS;", TableObject.SELL_ORDER);
             result =  (List<SellOrder>) client.readListFromServer();
-
+            System.out.println("GOT RESULT");
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+        System.out.println("GETTING ALL SELL ORDERS");
+        System.out.println(result);
         return result;
     }
 
@@ -105,58 +108,15 @@ public class OrderHandler implements Serializable {
     }
 
 
-    public String newOrderID(String orderType) {
-        Order buyOrderID = null;
-        SellOrder sellOrderID = null;
-        String lastID = null;
-        if (orderType.equals("buy")){
-            List<Order> buyList = null;
-            try {
-                client.writeToServer("SELECT * FROM ACTIVE_BUY_ORDERS ORDER BY buyID DESC LIMIT 1;", TableObject.BUY_ORDER);
-
-                buyList = (List<Order>) client.readListFromServer();
-                if (buyList != null){
-                    buyOrderID = buyList.get(0);
-                    lastID = buyOrderID.getOrderID();
-                }
-                else {
-                    lastID = "buy0";
-                }
-
-            } catch (Exception exception) {
-
-                exception.printStackTrace();
-            }
-
-        } else if (orderType.equals("sell")) {
-            List<SellOrder> sellList = null;
-            try {
-                client.writeToServer(
-                        "SELECT * FROM ACTIVE_SELL_ORDERS ORDER BY sellID DESC LIMIT 1;", TableObject.SELL_ORDER);
-
-                sellList = (List<SellOrder>) client.readListFromServer();
-                if (sellList != null){
-                    sellOrderID = sellList.get(0);
-                    lastID = sellOrderID.getOrderID();
-                }
-                else {
-                    lastID = "sell0";
-                }
-
-            } catch (Exception exception) {
-
-                exception.printStackTrace();
-            }
-        }
-
-        String[] part = lastID.split("(?<=\\D)(?=\\d)");
-        int IDNumber = Integer.parseInt(part[1]) + 1;
-        return (orderType + IDNumber);
+    public String newOrderID() {
+        UUID uuid = UUID.randomUUID();
+        String uuidAsString = uuid.toString();
+        return uuidAsString;
     }
 
     public void addNewBuyOrder(String userID, String assetName, int quantity, BigDecimal price){
         Timestamp orderDate = new Timestamp(System.currentTimeMillis());
-        String id = newOrderID("buy");
+        String id = newOrderID();
 
         try {
             client.writeToServer("INSERT INTO ACTIVE_BUY_ORDERS VALUES('"+id+"', '"+userID+"', '"+assetName+"', '"+ quantity +
@@ -168,7 +128,7 @@ public class OrderHandler implements Serializable {
 
     public void addNewSellOrder(String userID, String assetID, int quantity, BigDecimal price){
         Timestamp orderDate = new Timestamp(System.currentTimeMillis());
-        String sellID = newOrderID("sell");
+        String sellID = newOrderID();
 
         try {
             client.writeToServer("INSERT INTO ACTIVE_SELL_ORDERS VALUES('"+sellID+"', '"+userID+"', '"+ assetID +
@@ -200,15 +160,17 @@ public class OrderHandler implements Serializable {
         List<String> allAssetNames = new ArrayList<>();
 
         if (allBuyOrders != null || allSellOrders != null ) {
-            for (Order assetName : allBuyOrders) {
-                if (!allAssetNames.contains(assetName.getAssetName())) {
-                    allAssetNames.add(assetName.getAssetName());
+            for (Order order : allBuyOrders) {
+                if (!allAssetNames.contains(order.getAssetName())) {
+                    allAssetNames.add(order.getAssetName());
                 }
             }
+            System.out.println(allBuyOrders);
+            System.out.println(allSellOrders);
 
-            for (SellOrder assetName : allSellOrders) {
-                if (!allAssetNames.contains(assetName.getAssetName())) {
-                    allAssetNames.add(assetName.getAssetName());
+            for (Order order : allSellOrders) {
+                if (!allAssetNames.contains(order.getAssetName())) {
+                    allAssetNames.add(order.getAssetName());
                 }
             }
         }

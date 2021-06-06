@@ -1,14 +1,18 @@
 package marketplace.GUI;
 
-import marketplace.Objects.Inventory;
-import marketplace.Objects.Order;
+import marketplace.Objects.*;
 import marketplace.Util.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -21,6 +25,8 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
     private static CustomButton toSettingButton;
     private static JLabel valid;
     private static JLabel invalid;
+    List<Order> activeBuyOrders;
+    List<SellOrder> activeSellOrders;
     Fonts fonts;
 
     public HomeGUI() {
@@ -38,7 +44,7 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
         toSettingButton.setBounds(1000, 20, 120, 25);
         toSettingButton.addActionListener(e -> {
             removeAll();
-            if (MainGUI.userType.equals("ADMIN")) {
+            if (MainGUI.userType.equals("admin")) {
                 add(new SettingsNavigationAdminGUI());
             } else {
                 add(new SettingsNavigationUserGUI());
@@ -55,10 +61,6 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
         List<String> assetNames =  MainGUI.orderHandler.getAllActiveAssetNames();
         assetBox= new JComboBox(MainGUI.orderHandler.getAllActiveAssetNames().toArray(new String[0]));
         System.out.println(assetNames);
-
-//        assetNames = assetBox.getSelectedItem().toString();
-
-//        assetBox = new JComboBox(assetNames.toArray());
 
         assetBox.setBounds(510, 100, 160, 25);
         add(assetBox);
@@ -114,6 +116,84 @@ public class HomeGUI extends FullSizeJPanel implements ActionListener {
         invalid.setBounds(10, 120, 340, 25);
         add(invalid);
 
+        activeBuyOrders = MainGUI.orderHandler.getAllOrganisationBuyOrders(MainGUI.orgID);
+        Collections.reverse(activeBuyOrders);
+
+        activeSellOrders = MainGUI.orderHandler.getAllOrganisationSellOrders(MainGUI.orgID);
+        Collections.reverse(activeSellOrders);
+
+        JLabel buyOrdersLabel = new CustomLabel("Your Buy Orders", fonts.smallHeading, false);
+        buyOrdersLabel.setBounds(10, 200, 340, 25);
+
+        add(buyOrdersLabel);
+
+        add(new History(false));
+
+        JLabel sellOrdersLabel = new CustomLabel("Your Sell Orders", fonts.smallHeading, false);
+        sellOrdersLabel.setBounds(10, 400, 340, 25);
+        add(sellOrdersLabel);
+        add(new History(true));
+
+    }
+
+    class History extends DefaultJPanel {
+
+        public History(boolean isSell){
+            this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            if (!isSell) {
+                setBounds(10, 240, 600, 200);
+            } else {
+                setBounds(10, 440, 600, 200);
+            }
+//            setPreferredSize(new Dimension(600, 200));
+//            container.setBackground(Color.YELLOW);
+            JLabel buyHistoryLabel = new CustomLabel(String.format("Your Recent %s Orders", isSell ? "sell" : "buy"), fonts.smallHeading, true);
+            add(buyHistoryLabel);
+            add(new TableRow(
+                    "Asset",
+                    "Quantity",
+                    "Price per unit",
+                    "Order Date"
+            ));
+            for (Order order: isSell ? activeSellOrders : activeBuyOrders) {
+                add(new OrderRow(order));
+            }
+//            add(new BuyOrderTable());
+        }
+    }
+    class OrderRow extends DefaultJPanel {
+
+        public OrderRow(Order order){
+            System.out.println(order.getAssetName());
+            System.out.println(order.getPrice());
+            System.out.println(order.getQuantity());
+
+            add(new TableRow(
+                    order.getAssetName(),
+                    String.format("%d", order.getQuantity()),
+                    NumberFormat.getCurrencyInstance().format(order.getPrice().divide(new BigDecimal(order.getQuantity()), 2, RoundingMode.HALF_UP)),
+                    new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(order.getOrderDate())
+            ));
+        }
+    }
+
+    class TableRow extends DefaultJPanel {
+        public TableRow(String assetName, String quantity, String pricePerUnit, String orderDate){
+            JPanel container = new DefaultJPanel();
+            JLabel assetLabel =  new CustomLabel(assetName, fonts.small, true);
+            assetLabel.setPreferredSize(new Dimension(70, 20));
+            JLabel quantityLabel =  new CustomLabel(quantity, fonts.small, true);
+            quantityLabel.setPreferredSize(new Dimension(70, 20));
+            JLabel pricePerUnitLabel =  new CustomLabel(pricePerUnit, fonts.small, true);
+            pricePerUnitLabel.setPreferredSize(new Dimension(100, 20));
+            JLabel orderDateLabel = new CustomLabel(orderDate, fonts.small, true);
+            orderDateLabel.setPreferredSize(new Dimension(140, 20));
+            container.add(assetLabel);
+            container.add(quantityLabel);
+            container.add(pricePerUnitLabel);
+            container.add(orderDateLabel);
+            add(container);
+        }
     }
 
     @Override
